@@ -10,14 +10,14 @@ Below steps to setup Accura SDK's to your project.
 
 ## 1. Setup Accura OCR
 
-Step 1: install the AccuraOCR pod
+Step 1: install the AccuraOCR pod <br />
          pod 'accuraocrSDK', '1.0.3'
 
-Step 2: Add licence file in to your project.        
+Step 2: Add licence file in to your project. <br />        
             - key.licence // for Accura OCR <br />
-            Generate your Accura licence from https://accurascan.com/developer/sdk-license
+            Generate your Accura licence from https://accurascan.com/developer/sdk-license<br />
 
-Step 3: Appdelegate.swift file in add
+Step 3: Appdelegate.swift file in add<br />
 
      import AccuraOCR
      
@@ -201,11 +201,11 @@ Step 5 : Set CameraView
 
 ## 2. Setup Accura Face Match
 
-Step 1: install the AccuraFaceMatch pod
+Step 1: install the AccuraFaceMatch pod <br />
             pod 'AccuraFaceMatchSDK', '1.0.4'
             
-Step 2: Add licence file in to your project.
-            - accuraface.license // for Accura Face Match 
+Step 2: Add licence file in to your project.<br />
+            - accuraface.license // for Accura Face Match <br />
             Generate your Accura licence from https://accurascan.com/developer/sdk-license  
             
 Step 3: Add FaceView.swift file in your project.            
