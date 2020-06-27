@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Aller_Std_Rg.ttf">
+            <string>Aller-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="212" id="dls-aD-quY" customClass="DocumentTableCell" customModule="Accura_KYC" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="359" height="212"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dls-aD-quY" id="w63-yj-RNy">
+                <rect key="frame" x="0.0" y="0.0" width="359" height="212"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Za7-VX-f91">
+                        <rect key="frame" x="0.0" y="0.0" width="359" height="212"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f8i-gT-kTI">
+                                <rect key="frame" x="0.0" y="0.0" width="359" height="60"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIp-B4-Khc">
+                                        <rect key="frame" x="10" y="0.0" width="349" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="PdD-g0-BOH"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Aller-Regular" family="Aller" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.93010860681533813" green="0.93841022253036499" blue="0.95848673582077026" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="7dS-53-MlY"/>
+                                    <constraint firstAttribute="bottom" secondItem="NIp-B4-Khc" secondAttribute="bottom" id="FmD-bb-NMH"/>
+                                    <constraint firstAttribute="trailing" secondItem="NIp-B4-Khc" secondAttribute="trailing" id="NUM-ym-Gsj"/>
+                                    <constraint firstItem="NIp-B4-Khc" firstAttribute="top" secondItem="f8i-gT-kTI" secondAttribute="top" id="bhK-1n-DaS"/>
+                                    <constraint firstItem="NIp-B4-Khc" firstAttribute="leading" secondItem="f8i-gT-kTI" secondAttribute="leading" constant="10" id="xUO-ta-9OH"/>
+                                </constraints>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bVx-7e-nZN">
+                                <rect key="frame" x="15" y="75" width="329" height="122"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="f8i-gT-kTI" secondAttribute="trailing" id="2dH-CM-JST"/>
+                            <constraint firstAttribute="trailing" secondItem="bVx-7e-nZN" secondAttribute="trailing" constant="15" id="8NT-le-27R"/>
+                            <constraint firstAttribute="bottom" secondItem="bVx-7e-nZN" secondAttribute="bottom" constant="15" id="OHe-UG-Cga"/>
+                            <constraint firstItem="bVx-7e-nZN" firstAttribute="top" secondItem="f8i-gT-kTI" secondAttribute="bottom" constant="15" id="cb8-lA-ViJ"/>
+                            <constraint firstItem="f8i-gT-kTI" firstAttribute="leading" secondItem="Za7-VX-f91" secondAttribute="leading" id="oPR-7h-hLv"/>
+                            <constraint firstItem="f8i-gT-kTI" firstAttribute="top" secondItem="Za7-VX-f91" secondAttribute="top" id="yEH-VD-W2p"/>
+                            <constraint firstItem="bVx-7e-nZN" firstAttribute="leading" secondItem="Za7-VX-f91" secondAttribute="leading" constant="15" id="yrL-wL-aS6"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Za7-VX-f91" firstAttribute="leading" secondItem="w63-yj-RNy" secondAttribute="leading" id="5DC-jY-foL"/>
+                    <constraint firstAttribute="trailing" secondItem="Za7-VX-f91" secondAttribute="trailing" id="CHR-x0-aP0"/>
+                    <constraint firstAttribute="bottom" secondItem="Za7-VX-f91" secondAttribute="bottom" id="Fyk-tR-dw7"/>
+                    <constraint firstItem="Za7-VX-f91" firstAttribute="top" secondItem="w63-yj-RNy" secondAttribute="top" id="RgS-HU-sMb"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="constraintLblHeight" destination="PdD-g0-BOH" id="BSS-04-Wfg"/>
+                <outlet property="imgDocument" destination="bVx-7e-nZN" id="0rU-nT-v6k"/>
+                <outlet property="lblDocName" destination="NIp-B4-Khc" id="Xa7-3W-xuv"/>
+                <outlet property="viewBG" destination="Za7-VX-f91" id="Odd-sl-bhG"/>
+            </connections>
+            <point key="canvasLocation" x="129.71014492753625" y="105.13392857142857"/>
+        </tableViewCell>
+    </objects>
+</document>

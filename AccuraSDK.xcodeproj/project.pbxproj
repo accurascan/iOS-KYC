@@ -1,0 +1,914 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0021908E22ACE78400E08B01 /* ListViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0021908D22ACE78400E08B01 /* ListViewVC.swift */; };
+		5C67D9812111E40B00154EB7 /* default_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C67D9802111E40A00154EB7 /* default_user.png */; };
+		5C7D02532143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7D02512143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift */; };
+		5C7D02542143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C7D02522143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib */; };
+		5C94E024211ACA8200428686 /* Aller_Std.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C94E01D211ACA8200428686 /* Aller_Std.ttf */; };
+		5C94E025211ACA8200428686 /* Aller_Std_BdIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C94E01E211ACA8200428686 /* Aller_Std_BdIt.ttf */; };
+		5C94E026211ACA8200428686 /* Aller_Std_It.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C94E01F211ACA8200428686 /* Aller_Std_It.ttf */; };
+		5C94E027211ACA8200428686 /* Aller_Std_Lt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C94E020211ACA8200428686 /* Aller_Std_Lt.ttf */; };
+		5C94E028211ACA8200428686 /* Aller_Std_LtIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C94E021211ACA8200428686 /* Aller_Std_LtIt.ttf */; };
+		5C94E029211ACA8200428686 /* Aller_Std_Rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C94E022211ACA8200428686 /* Aller_Std_Rg.ttf */; };
+		5C94E02A211ACA8200428686 /* AllerDisplay_Std_Rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C94E023211ACA8200428686 /* AllerDisplay_Std_Rg.ttf */; };
+		5C9AF4F42119995800700EDF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF4F32119995800700EDF /* libsqlite3.dylib */; };
+		5C9AF4F62119996D00700EDF /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF4F52119996D00700EDF /* libz.1.dylib */; };
+		5C9AF4F82119997700700EDF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF4F72119997700700EDF /* SystemConfiguration.framework */; };
+		5C9AF4FA2119998300700EDF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF4F92119998300700EDF /* CoreData.framework */; };
+		5C9AF4FC2119998E00700EDF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF4FB2119998E00700EDF /* MessageUI.framework */; };
+		5C9AF500211999B300700EDF /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF4FF211999B300700EDF /* libsqlite3.tbd */; };
+		5C9AF502211999BD00700EDF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF501211999BC00700EDF /* AudioToolbox.framework */; };
+		5C9AF504211999C600700EDF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF503211999C600700EDF /* QuartzCore.framework */; };
+		5C9AF506211999E500700EDF /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF505211999E400700EDF /* CoreImage.framework */; };
+		5C9AF508211999F200700EDF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF507211999F100700EDF /* CoreMedia.framework */; };
+		5C9AF50A211999FE00700EDF /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF509211999FD00700EDF /* CoreVideo.framework */; };
+		5C9AF50C21199A0A00700EDF /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF50B21199A0A00700EDF /* Accelerate.framework */; };
+		5C9AF50E21199A1300700EDF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF50D21199A1300700EDF /* UIKit.framework */; };
+		5C9AF51021199A1E00700EDF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF50F21199A1E00700EDF /* Foundation.framework */; };
+		5C9AF51221199A2800700EDF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF51121199A2700700EDF /* CoreGraphics.framework */; };
+		5CC9862421180B9000A0E290 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6104CC7920BB4E6D00AC428E /* AppDelegate.swift */; };
+		6104CC8420BB4E6E00AC428E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6104CC8320BB4E6E00AC428E /* Assets.xcassets */; };
+		6104CC9320BB515E00AC428E /* CodeScanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6104CC9220BB515E00AC428E /* CodeScanVC.swift */; };
+		617EB0E120BB705D00BCBFD9 /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617EB0E020BB705D00BCBFD9 /* NSObjectExtensions.swift */; };
+		617EB0E320BB78B300BCBFD9 /* MainV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617EB0E220BB78B300BCBFD9 /* MainV.swift */; };
+		8432A2872135132A006BA16A /* DrivingPDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432A2862135132A006BA16A /* DrivingPDF.swift */; };
+		8432A28D213517A8006BA16A /* DrivingPDF.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8432A28C213517A8006BA16A /* DrivingPDF.xib */; };
+		8432A29321352D87006BA16A /* DrivePDFTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432A29121352D87006BA16A /* DrivePDFTableViewCell.swift */; };
+		8432A29421352D87006BA16A /* DrivePDFTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8432A29221352D87006BA16A /* DrivePDFTableViewCell.xib */; };
+		84560228213691E900A844B6 /* Resultpdf417ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84560227213691E900A844B6 /* Resultpdf417ViewController.swift */; };
+		A30ABDAA2487B29D0091362E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30ABDA92487B29D0091362E /* ViewController.swift */; };
+		A324C4232476EC500002AE35 /* ShowResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324C4222476EC4F0002AE35 /* ShowResultVC.swift */; };
+		A324C4262476ECD10002AE35 /* FaceMatchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324C4242476ECD10002AE35 /* FaceMatchResultTableViewCell.swift */; };
+		A324C4272476ECD10002AE35 /* FaceMatchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A324C4252476ECD10002AE35 /* FaceMatchResultTableViewCell.xib */; };
+		A324C42A2476ECE50002AE35 /* ResultTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A324C4282476ECE50002AE35 /* ResultTableCell.xib */; };
+		A324C42B2476ECE50002AE35 /* ResultTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324C4292476ECE50002AE35 /* ResultTableCell.swift */; };
+		A324C4302476ED020002AE35 /* UserImgTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324C42C2476ED020002AE35 /* UserImgTableCell.swift */; };
+		A324C4312476ED020002AE35 /* DocumentTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A324C42D2476ED020002AE35 /* DocumentTableCell.xib */; };
+		A324C4322476ED020002AE35 /* UserImgTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A324C42E2476ED020002AE35 /* UserImgTableCell.xib */; };
+		A324C4332476ED020002AE35 /* DocumentTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324C42F2476ED020002AE35 /* DocumentTableCell.swift */; };
+		A324C4362476ED2E0002AE35 /* DocumantVarifyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A324C4342476ED2E0002AE35 /* DocumantVarifyCell.xib */; };
+		A324C4372476ED2E0002AE35 /* DocumantVarifyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324C4352476ED2E0002AE35 /* DocumantVarifyCell.swift */; };
+		A3268522247F649B0028BCA5 /* FirstTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3268520247F649B0028BCA5 /* FirstTableViewCell.xib */; };
+		A3268523247F649B0028BCA5 /* FirstTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3268521247F649B0028BCA5 /* FirstTableViewCell.swift */; };
+		A3268527247F95F70028BCA5 /* CustomAFNetWorking.m in Sources */ = {isa = PBXBuildFile; fileRef = A3268525247F95F70028BCA5 /* CustomAFNetWorking.m */; };
+		A33E204B23E2AA78004FED85 /* ListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A33E204423E2AA78004FED85 /* ListTableCell.xib */; };
+		A33E204E23E2AA78004FED85 /* CountryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E204723E2AA78004FED85 /* CountryListCell.swift */; };
+		A33E205023E2AA78004FED85 /* ListTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E204923E2AA78004FED85 /* ListTableCell.swift */; };
+		A33E205723E2B439004FED85 /* CountryNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E205623E2B439004FED85 /* CountryNameViewController.swift */; };
+		A33ED5C7230EA6EB00005B85 /* ZoomHybrid.pub in Resources */ = {isa = PBXBuildFile; fileRef = A341D735230EA44F00FDF946 /* ZoomHybrid.pub */; };
+		A36D91BE230C57D900B01801 /* FaceMatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36D91BD230C57D900B01801 /* FaceMatchViewController.swift */; };
+		A3704729248DF45900A65D98 /* Pods_AccuraSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B1E5ACBB7521B13715541C2 /* Pods_AccuraSDK.framework */; };
+		A382E69A230AA94800C56EAE /* FirstViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A382E697230AA94700C56EAE /* FirstViewVC.swift */; };
+		A384903E24A5EB4F00ECB42D /* FaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384903D24A5EB4F00ECB42D /* FaceView.swift */; };
+		A384904024A602E600ECB42D /* AccuraOCRSDKApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384903F24A602E600ECB42D /* AccuraOCRSDKApp.swift */; };
+		A384904724A61EC700ECB42D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A384904624A61EC700ECB42D /* README.md */; };
+		A3CE784F24877CF500B8D3F2 /* ZoomAuthenticationHybrid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A341D728230E9AE400FDF946 /* ZoomAuthenticationHybrid.framework */; };
+		A3CE785024877CF500B8D3F2 /* ZoomAuthenticationHybrid.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A341D728230E9AE400FDF946 /* ZoomAuthenticationHybrid.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A3E3D55C24A5BB710034A3EA /* key.license in Resources */ = {isa = PBXBuildFile; fileRef = A3E3D55B24A5BB710034A3EA /* key.license */; };
+		A3E9E1C624A5C1C200D0B9FA /* accuraface.license in Resources */ = {isa = PBXBuildFile; fileRef = A3E9E1C524A5C1C200D0B9FA /* accuraface.license */; };
+		A3F172C2242250F30050FB25 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3F172C1242250F30050FB25 /* Launch Screen.storyboard */; };
+		A3F172C624225BF60050FB25 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F172C524225BF60050FB25 /* LaunchScreenViewController.swift */; };
+		DC75E60220BF36FB0096BC5A /* CodeInfoV.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC75E60120BF36FB0096BC5A /* CodeInfoV.swift */; };
+		DC75E60420BF370A0096BC5A /* CodeInfoV.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC75E60320BF370A0096BC5A /* CodeInfoV.xib */; };
+		FAD8829823DDE04E007247EC /* CodeScanVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD8829423DDE04E007247EC /* CodeScanVC.storyboard */; };
+		FAD8829923DDE04E007247EC /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD8829623DDE04E007247EC /* MainStoryboard_iPhone.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A3CE785124877CF500B8D3F2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A3CE785024877CF500B8D3F2 /* ZoomAuthenticationHybrid.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0021908D22ACE78400E08B01 /* ListViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewVC.swift; sourceTree = "<group>"; };
+		0540F6CC908839F9619257A0 /* Pods-AccuraSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AccuraSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK.release.xcconfig"; sourceTree = "<group>"; };
+		081FC0F82D5D0D87B50F5A7D /* Pods_Accura_Lines.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Accura_Lines.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B1E5ACBB7521B13715541C2 /* Pods_AccuraSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AccuraSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C67D96B2111E03500154EB7 /* Accura Scan-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Accura Scan-Bridging-Header.h"; sourceTree = "<group>"; };
+		5C67D9802111E40A00154EB7 /* default_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user.png; sourceTree = "<group>"; };
+		5C7D02512143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrivingPDFstringTableViewCell.swift; sourceTree = "<group>"; };
+		5C7D02522143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DrivingPDFstringTableViewCell.xib; sourceTree = "<group>"; };
+		5C94E01D211ACA8200428686 /* Aller_Std.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std.ttf; sourceTree = "<group>"; };
+		5C94E01E211ACA8200428686 /* Aller_Std_BdIt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std_BdIt.ttf; sourceTree = "<group>"; };
+		5C94E01F211ACA8200428686 /* Aller_Std_It.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std_It.ttf; sourceTree = "<group>"; };
+		5C94E020211ACA8200428686 /* Aller_Std_Lt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std_Lt.ttf; sourceTree = "<group>"; };
+		5C94E021211ACA8200428686 /* Aller_Std_LtIt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std_LtIt.ttf; sourceTree = "<group>"; };
+		5C94E022211ACA8200428686 /* Aller_Std_Rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Aller_Std_Rg.ttf; sourceTree = "<group>"; };
+		5C94E023211ACA8200428686 /* AllerDisplay_Std_Rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AllerDisplay_Std_Rg.ttf; sourceTree = "<group>"; };
+		5C9AF4F32119995800700EDF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = ../../../../../../../../usr/lib/libsqlite3.dylib; sourceTree = "<group>"; };
+		5C9AF4F52119996D00700EDF /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
+		5C9AF4F72119997700700EDF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		5C9AF4F92119998300700EDF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		5C9AF4FB2119998E00700EDF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		5C9AF4FF211999B300700EDF /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		5C9AF501211999BC00700EDF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		5C9AF503211999C600700EDF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		5C9AF505211999E400700EDF /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		5C9AF507211999F100700EDF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		5C9AF509211999FD00700EDF /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		5C9AF50B21199A0A00700EDF /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		5C9AF50D21199A1300700EDF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		5C9AF50F21199A1E00700EDF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5C9AF51121199A2700700EDF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		5FBB638E472173D5FD37A4D7 /* Pods-CodeScan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodeScan.release.xcconfig"; path = "Pods/Target Support Files/Pods-CodeScan/Pods-CodeScan.release.xcconfig"; sourceTree = "<group>"; };
+		6104CC7620BB4E6D00AC428E /* Accura SDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Accura SDK.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6104CC7920BB4E6D00AC428E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6104CC8320BB4E6E00AC428E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6104CC8820BB4E6E00AC428E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6104CC9220BB515E00AC428E /* CodeScanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeScanVC.swift; sourceTree = "<group>"; };
+		617EB0E020BB705D00BCBFD9 /* NSObjectExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
+		617EB0E220BB78B300BCBFD9 /* MainV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainV.swift; sourceTree = "<group>"; };
+		8432A2862135132A006BA16A /* DrivingPDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrivingPDF.swift; sourceTree = "<group>"; };
+		8432A28C213517A8006BA16A /* DrivingPDF.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DrivingPDF.xib; sourceTree = "<group>"; };
+		8432A29121352D87006BA16A /* DrivePDFTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrivePDFTableViewCell.swift; sourceTree = "<group>"; };
+		8432A29221352D87006BA16A /* DrivePDFTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DrivePDFTableViewCell.xib; sourceTree = "<group>"; };
+		84560227213691E900A844B6 /* Resultpdf417ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resultpdf417ViewController.swift; sourceTree = "<group>"; };
+		9CECF16C6E84083F97DABCB3 /* Pods_Accura_Scan.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Accura_Scan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A30ABDA92487B29D0091362E /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A324C4222476EC4F0002AE35 /* ShowResultVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowResultVC.swift; sourceTree = "<group>"; };
+		A324C4242476ECD10002AE35 /* FaceMatchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceMatchResultTableViewCell.swift; sourceTree = "<group>"; };
+		A324C4252476ECD10002AE35 /* FaceMatchResultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaceMatchResultTableViewCell.xib; sourceTree = "<group>"; };
+		A324C4282476ECE50002AE35 /* ResultTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResultTableCell.xib; sourceTree = "<group>"; };
+		A324C4292476ECE50002AE35 /* ResultTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTableCell.swift; sourceTree = "<group>"; };
+		A324C42C2476ED020002AE35 /* UserImgTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImgTableCell.swift; sourceTree = "<group>"; };
+		A324C42D2476ED020002AE35 /* DocumentTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocumentTableCell.xib; sourceTree = "<group>"; };
+		A324C42E2476ED020002AE35 /* UserImgTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserImgTableCell.xib; sourceTree = "<group>"; };
+		A324C42F2476ED020002AE35 /* DocumentTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTableCell.swift; sourceTree = "<group>"; };
+		A324C4342476ED2E0002AE35 /* DocumantVarifyCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocumantVarifyCell.xib; sourceTree = "<group>"; };
+		A324C4352476ED2E0002AE35 /* DocumantVarifyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumantVarifyCell.swift; sourceTree = "<group>"; };
+		A3268520247F649B0028BCA5 /* FirstTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FirstTableViewCell.xib; sourceTree = "<group>"; };
+		A3268521247F649B0028BCA5 /* FirstTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstTableViewCell.swift; sourceTree = "<group>"; };
+		A3268525247F95F70028BCA5 /* CustomAFNetWorking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAFNetWorking.m; sourceTree = "<group>"; };
+		A3268526247F95F70028BCA5 /* CustomAFNetWorking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAFNetWorking.h; sourceTree = "<group>"; };
+		A33E204423E2AA78004FED85 /* ListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableCell.xib; sourceTree = "<group>"; };
+		A33E204723E2AA78004FED85 /* CountryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListCell.swift; sourceTree = "<group>"; };
+		A33E204923E2AA78004FED85 /* ListTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableCell.swift; sourceTree = "<group>"; };
+		A33E205623E2B439004FED85 /* CountryNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryNameViewController.swift; sourceTree = "<group>"; };
+		A341D728230E9AE400FDF946 /* ZoomAuthenticationHybrid.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZoomAuthenticationHybrid.framework; sourceTree = "<group>"; };
+		A341D735230EA44F00FDF946 /* ZoomHybrid.pub */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ZoomHybrid.pub; sourceTree = "<group>"; };
+		A36D91BD230C57D900B01801 /* FaceMatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceMatchViewController.swift; sourceTree = "<group>"; };
+		A382E697230AA94700C56EAE /* FirstViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewVC.swift; sourceTree = "<group>"; };
+		A384903D24A5EB4F00ECB42D /* FaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceView.swift; sourceTree = "<group>"; };
+		A384903F24A602E600ECB42D /* AccuraOCRSDKApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccuraOCRSDKApp.swift; sourceTree = "<group>"; };
+		A384904624A61EC700ECB42D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		A3BD2BF48CC8B09BF1D1065E /* Pods-Accura Scan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accura Scan.release.xcconfig"; path = "Pods/Target Support Files/Pods-Accura Scan/Pods-Accura Scan.release.xcconfig"; sourceTree = "<group>"; };
+		A3E3D55B24A5BB710034A3EA /* key.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = key.license; sourceTree = "<group>"; };
+		A3E9E1C524A5C1C200D0B9FA /* accuraface.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = accuraface.license; sourceTree = "<group>"; };
+		A3F172C1242250F30050FB25 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		A3F172C524225BF60050FB25 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
+		A681A200B0E9D89F47FBE4CA /* Pods-AccuraSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AccuraSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		B4512A7270DA0EFB6B68CCA9 /* Pods-Accura Scan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accura Scan.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Accura Scan/Pods-Accura Scan.debug.xcconfig"; sourceTree = "<group>"; };
+		C6BA3033FD2E5069D720261F /* Pods-CodeScan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CodeScan.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CodeScan/Pods-CodeScan.debug.xcconfig"; sourceTree = "<group>"; };
+		DC75E60120BF36FB0096BC5A /* CodeInfoV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeInfoV.swift; sourceTree = "<group>"; };
+		DC75E60320BF370A0096BC5A /* CodeInfoV.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeInfoV.xib; sourceTree = "<group>"; };
+		E75351033E4DFDE894420E05 /* Pods-Accura Lines.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accura Lines.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Accura Lines/Pods-Accura Lines.debug.xcconfig"; sourceTree = "<group>"; };
+		F85F0F8BB32711C50BF2591F /* Pods-Accura Lines.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accura Lines.release.xcconfig"; path = "Pods/Target Support Files/Pods-Accura Lines/Pods-Accura Lines.release.xcconfig"; sourceTree = "<group>"; };
+		FAD8829523DDE04E007247EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CodeScanVC.storyboard; sourceTree = "<group>"; };
+		FAD8829623DDE04E007247EC /* MainStoryboard_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6104CC7320BB4E6D00AC428E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C9AF51021199A1E00700EDF /* Foundation.framework in Frameworks */,
+				A3CE784F24877CF500B8D3F2 /* ZoomAuthenticationHybrid.framework in Frameworks */,
+				5C9AF51221199A2800700EDF /* CoreGraphics.framework in Frameworks */,
+				5C9AF50E21199A1300700EDF /* UIKit.framework in Frameworks */,
+				A3704729248DF45900A65D98 /* Pods_AccuraSDK.framework in Frameworks */,
+				5C9AF50C21199A0A00700EDF /* Accelerate.framework in Frameworks */,
+				5C9AF50A211999FE00700EDF /* CoreVideo.framework in Frameworks */,
+				5C9AF508211999F200700EDF /* CoreMedia.framework in Frameworks */,
+				5C9AF506211999E500700EDF /* CoreImage.framework in Frameworks */,
+				5C9AF504211999C600700EDF /* QuartzCore.framework in Frameworks */,
+				5C9AF502211999BD00700EDF /* AudioToolbox.framework in Frameworks */,
+				5C9AF500211999B300700EDF /* libsqlite3.tbd in Frameworks */,
+				5C9AF4FC2119998E00700EDF /* MessageUI.framework in Frameworks */,
+				5C9AF4FA2119998300700EDF /* CoreData.framework in Frameworks */,
+				5C9AF4F82119997700700EDF /* SystemConfiguration.framework in Frameworks */,
+				5C9AF4F62119996D00700EDF /* libz.1.dylib in Frameworks */,
+				5C9AF4F42119995800700EDF /* libsqlite3.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3EA25990B673F8362DC1D155 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C6BA3033FD2E5069D720261F /* Pods-CodeScan.debug.xcconfig */,
+				5FBB638E472173D5FD37A4D7 /* Pods-CodeScan.release.xcconfig */,
+				E75351033E4DFDE894420E05 /* Pods-Accura Lines.debug.xcconfig */,
+				F85F0F8BB32711C50BF2591F /* Pods-Accura Lines.release.xcconfig */,
+				A681A200B0E9D89F47FBE4CA /* Pods-AccuraSDK.debug.xcconfig */,
+				0540F6CC908839F9619257A0 /* Pods-AccuraSDK.release.xcconfig */,
+				B4512A7270DA0EFB6B68CCA9 /* Pods-Accura Scan.debug.xcconfig */,
+				A3BD2BF48CC8B09BF1D1065E /* Pods-Accura Scan.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		5C67D96A2111E02100154EB7 /* AccuraScan */ = {
+			isa = PBXGroup;
+			children = (
+				A3268524247F95F70028BCA5 /* CustomAfnetwork */,
+				A38570ED2318020200FF7209 /* External */,
+				A38570EC231801AD00FF7209 /* Framework */,
+				A38570EB2318018500FF7209 /* License */,
+				5C94E01C211ACA8200428686 /* Font */,
+				A33E204323E2AA32004FED85 /* Custom Table Cell */,
+				5C67D96B2111E03500154EB7 /* Accura Scan-Bridging-Header.h */,
+			);
+			path = AccuraScan;
+			sourceTree = "<group>";
+		};
+		5C94E01C211ACA8200428686 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				5C94E01D211ACA8200428686 /* Aller_Std.ttf */,
+				5C94E01E211ACA8200428686 /* Aller_Std_BdIt.ttf */,
+				5C94E01F211ACA8200428686 /* Aller_Std_It.ttf */,
+				5C94E020211ACA8200428686 /* Aller_Std_Lt.ttf */,
+				5C94E021211ACA8200428686 /* Aller_Std_LtIt.ttf */,
+				5C94E022211ACA8200428686 /* Aller_Std_Rg.ttf */,
+				5C94E023211ACA8200428686 /* AllerDisplay_Std_Rg.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		6104CC6D20BB4E6D00AC428E = {
+			isa = PBXGroup;
+			children = (
+				6104CC7820BB4E6D00AC428E /* CodeScan */,
+				6104CC7720BB4E6D00AC428E /* Products */,
+				3EA25990B673F8362DC1D155 /* Pods */,
+				934DB65DAB247E2C5F8233CE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6104CC7720BB4E6D00AC428E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6104CC7620BB4E6D00AC428E /* Accura SDK.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6104CC7820BB4E6D00AC428E /* CodeScan */ = {
+			isa = PBXGroup;
+			children = (
+				5C67D96A2111E02100154EB7 /* AccuraScan */,
+				FAD8829323DDE04E007247EC /* Storyboards */,
+				A3F172C1242250F30050FB25 /* Launch Screen.storyboard */,
+				617EB0C720BB53AE00BCBFD9 /* Utils */,
+				617EB0C520BB539700BCBFD9 /* Controllers */,
+				6104CC7920BB4E6D00AC428E /* AppDelegate.swift */,
+				6104CC8320BB4E6E00AC428E /* Assets.xcassets */,
+				6104CC8820BB4E6E00AC428E /* Info.plist */,
+				A384904624A61EC700ECB42D /* README.md */,
+			);
+			path = CodeScan;
+			sourceTree = "<group>";
+		};
+		617EB0C520BB539700BCBFD9 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				617EB0C620BB539E00BCBFD9 /* UIViewControllers */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		617EB0C620BB539E00BCBFD9 /* UIViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A3F172C524225BF60050FB25 /* LaunchScreenViewController.swift */,
+				A382E697230AA94700C56EAE /* FirstViewVC.swift */,
+				A36D91BD230C57D900B01801 /* FaceMatchViewController.swift */,
+				A33E205623E2B439004FED85 /* CountryNameViewController.swift */,
+				A30ABDA92487B29D0091362E /* ViewController.swift */,
+				0021908D22ACE78400E08B01 /* ListViewVC.swift */,
+				A324C4222476EC4F0002AE35 /* ShowResultVC.swift */,
+				6104CC9220BB515E00AC428E /* CodeScanVC.swift */,
+				84560227213691E900A844B6 /* Resultpdf417ViewController.swift */,
+			);
+			path = UIViewControllers;
+			sourceTree = "<group>";
+		};
+		617EB0C720BB53AE00BCBFD9 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				617EB0C820BB53B300BCBFD9 /* Extensions */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		617EB0C820BB53B300BCBFD9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				617EB0DF20BB704E00BCBFD9 /* Foundation */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		617EB0DF20BB704E00BCBFD9 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				617EB0E020BB705D00BCBFD9 /* NSObjectExtensions.swift */,
+			);
+			name = Foundation;
+			sourceTree = "<group>";
+		};
+		934DB65DAB247E2C5F8233CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5C9AF51121199A2700700EDF /* CoreGraphics.framework */,
+				5C9AF50F21199A1E00700EDF /* Foundation.framework */,
+				5C9AF50D21199A1300700EDF /* UIKit.framework */,
+				5C9AF50B21199A0A00700EDF /* Accelerate.framework */,
+				5C9AF509211999FD00700EDF /* CoreVideo.framework */,
+				5C9AF507211999F100700EDF /* CoreMedia.framework */,
+				5C9AF505211999E400700EDF /* CoreImage.framework */,
+				5C9AF503211999C600700EDF /* QuartzCore.framework */,
+				5C9AF501211999BC00700EDF /* AudioToolbox.framework */,
+				5C9AF4FF211999B300700EDF /* libsqlite3.tbd */,
+				5C9AF4FB2119998E00700EDF /* MessageUI.framework */,
+				5C9AF4F92119998300700EDF /* CoreData.framework */,
+				5C9AF4F72119997700700EDF /* SystemConfiguration.framework */,
+				5C9AF4F52119996D00700EDF /* libz.1.dylib */,
+				5C9AF4F32119995800700EDF /* libsqlite3.dylib */,
+				081FC0F82D5D0D87B50F5A7D /* Pods_Accura_Lines.framework */,
+				1B1E5ACBB7521B13715541C2 /* Pods_AccuraSDK.framework */,
+				9CECF16C6E84083F97DABCB3 /* Pods_Accura_Scan.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A3268524247F95F70028BCA5 /* CustomAfnetwork */ = {
+			isa = PBXGroup;
+			children = (
+				A3268525247F95F70028BCA5 /* CustomAFNetWorking.m */,
+				A3268526247F95F70028BCA5 /* CustomAFNetWorking.h */,
+			);
+			path = CustomAfnetwork;
+			sourceTree = "<group>";
+		};
+		A33E204323E2AA32004FED85 /* Custom Table Cell */ = {
+			isa = PBXGroup;
+			children = (
+				617EB0E220BB78B300BCBFD9 /* MainV.swift */,
+				A33E204723E2AA78004FED85 /* CountryListCell.swift */,
+				A324C42F2476ED020002AE35 /* DocumentTableCell.swift */,
+				A324C42D2476ED020002AE35 /* DocumentTableCell.xib */,
+				A3268521247F649B0028BCA5 /* FirstTableViewCell.swift */,
+				A3268520247F649B0028BCA5 /* FirstTableViewCell.xib */,
+				A324C42C2476ED020002AE35 /* UserImgTableCell.swift */,
+				A324C42E2476ED020002AE35 /* UserImgTableCell.xib */,
+				A324C4352476ED2E0002AE35 /* DocumantVarifyCell.swift */,
+				A324C4342476ED2E0002AE35 /* DocumantVarifyCell.xib */,
+				A33E204923E2AA78004FED85 /* ListTableCell.swift */,
+				A33E204423E2AA78004FED85 /* ListTableCell.xib */,
+				A324C4292476ECE50002AE35 /* ResultTableCell.swift */,
+				A324C4282476ECE50002AE35 /* ResultTableCell.xib */,
+				A324C4242476ECD10002AE35 /* FaceMatchResultTableViewCell.swift */,
+				A324C4252476ECD10002AE35 /* FaceMatchResultTableViewCell.xib */,
+				8432A29121352D87006BA16A /* DrivePDFTableViewCell.swift */,
+				8432A29221352D87006BA16A /* DrivePDFTableViewCell.xib */,
+				8432A2862135132A006BA16A /* DrivingPDF.swift */,
+				8432A28C213517A8006BA16A /* DrivingPDF.xib */,
+				5C7D02512143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift */,
+				5C7D02522143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib */,
+				DC75E60120BF36FB0096BC5A /* CodeInfoV.swift */,
+				DC75E60320BF370A0096BC5A /* CodeInfoV.xib */,
+			);
+			path = "Custom Table Cell";
+			sourceTree = "<group>";
+		};
+		A38570EB2318018500FF7209 /* License */ = {
+			isa = PBXGroup;
+			children = (
+				A3E3D55B24A5BB710034A3EA /* key.license */,
+				A3E9E1C524A5C1C200D0B9FA /* accuraface.license */,
+			);
+			path = License;
+			sourceTree = "<group>";
+		};
+		A38570EC231801AD00FF7209 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				A341D728230E9AE400FDF946 /* ZoomAuthenticationHybrid.framework */,
+			);
+			path = Framework;
+			sourceTree = "<group>";
+		};
+		A38570ED2318020200FF7209 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				A384903D24A5EB4F00ECB42D /* FaceView.swift */,
+				A341D735230EA44F00FDF946 /* ZoomHybrid.pub */,
+				5C67D9802111E40A00154EB7 /* default_user.png */,
+				A384903F24A602E600ECB42D /* AccuraOCRSDKApp.swift */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
+		FAD8829323DDE04E007247EC /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				FAD8829423DDE04E007247EC /* CodeScanVC.storyboard */,
+				FAD8829623DDE04E007247EC /* MainStoryboard_iPhone.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6104CC7520BB4E6D00AC428E /* AccuraSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6104CC8B20BB4E6E00AC428E /* Build configuration list for PBXNativeTarget "AccuraSDK" */;
+			buildPhases = (
+				BA25CFB995303AC70CB1A46E /* [CP] Check Pods Manifest.lock */,
+				6104CC7220BB4E6D00AC428E /* Sources */,
+				6104CC7320BB4E6D00AC428E /* Frameworks */,
+				6104CC7420BB4E6D00AC428E /* Resources */,
+				FA30D04B23DEE96300BA0DC0 /* ShellScript */,
+				A3CE785124877CF500B8D3F2 /* Embed Frameworks */,
+				4493101AD4EC06708A061156 /* [CP] Embed Pods Frameworks */,
+				2C8442448A252C79F0A0F1F8 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AccuraSDK;
+			productName = CodeScan;
+			productReference = 6104CC7620BB4E6D00AC428E /* Accura SDK.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6104CC6E20BB4E6D00AC428E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0930;
+				LastUpgradeCheck = 0930;
+				ORGANIZATIONNAME = "Elite Development LLC";
+				TargetAttributes = {
+					6104CC7520BB4E6D00AC428E = {
+						CreatedOnToolsVersion = 9.3.1;
+						LastSwiftMigration = 1020;
+					};
+				};
+			};
+			buildConfigurationList = 6104CC7120BB4E6D00AC428E /* Build configuration list for PBXProject "AccuraSDK" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6104CC6D20BB4E6D00AC428E;
+			productRefGroup = 6104CC7720BB4E6D00AC428E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6104CC7520BB4E6D00AC428E /* AccuraSDK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6104CC7420BB4E6D00AC428E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAD8829923DDE04E007247EC /* MainStoryboard_iPhone.storyboard in Resources */,
+				A324C42A2476ECE50002AE35 /* ResultTableCell.xib in Resources */,
+				5C94E024211ACA8200428686 /* Aller_Std.ttf in Resources */,
+				5C67D9812111E40B00154EB7 /* default_user.png in Resources */,
+				6104CC8420BB4E6E00AC428E /* Assets.xcassets in Resources */,
+				5C94E027211ACA8200428686 /* Aller_Std_Lt.ttf in Resources */,
+				A324C4322476ED020002AE35 /* UserImgTableCell.xib in Resources */,
+				A324C4272476ECD10002AE35 /* FaceMatchResultTableViewCell.xib in Resources */,
+				FAD8829823DDE04E007247EC /* CodeScanVC.storyboard in Resources */,
+				5C7D02542143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib in Resources */,
+				5C94E026211ACA8200428686 /* Aller_Std_It.ttf in Resources */,
+				A3F172C2242250F30050FB25 /* Launch Screen.storyboard in Resources */,
+				DC75E60420BF370A0096BC5A /* CodeInfoV.xib in Resources */,
+				A3268522247F649B0028BCA5 /* FirstTableViewCell.xib in Resources */,
+				A324C4362476ED2E0002AE35 /* DocumantVarifyCell.xib in Resources */,
+				A384904724A61EC700ECB42D /* README.md in Resources */,
+				5C94E02A211ACA8200428686 /* AllerDisplay_Std_Rg.ttf in Resources */,
+				8432A28D213517A8006BA16A /* DrivingPDF.xib in Resources */,
+				A33E204B23E2AA78004FED85 /* ListTableCell.xib in Resources */,
+				5C94E028211ACA8200428686 /* Aller_Std_LtIt.ttf in Resources */,
+				A33ED5C7230EA6EB00005B85 /* ZoomHybrid.pub in Resources */,
+				A324C4312476ED020002AE35 /* DocumentTableCell.xib in Resources */,
+				5C94E025211ACA8200428686 /* Aller_Std_BdIt.ttf in Resources */,
+				A3E3D55C24A5BB710034A3EA /* key.license in Resources */,
+				5C94E029211ACA8200428686 /* Aller_Std_Rg.ttf in Resources */,
+				A3E9E1C624A5C1C200D0B9FA /* accuraface.license in Resources */,
+				8432A29421352D87006BA16A /* DrivePDFTableViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2C8442448A252C79F0A0F1F8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4493101AD4EC06708A061156 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA25CFB995303AC70CB1A46E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AccuraSDK-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FA30D04B23DEE96300BA0DC0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\nFRAMEWORK_TMP_PATH=\"$FRAMEWORK_EXECUTABLE_PATH-tmp\"\n\ncase \"${TARGET_BUILD_DIR}\" in\n*\"iphonesimulator\")\n    echo \"No need to remove archs\"\n    ;;\n*)\n    if $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"i386\") ; then\n    lipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"i386\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    echo \"i386 architecture removed\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    fi\n    if $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"x86_64\") ; then\n    lipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"x86_64\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    echo \"x86_64 architecture removed\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    fi\n    ;;\nesac\n\necho \"Completed for executable $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\ndone\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6104CC7220BB4E6D00AC428E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A36D91BE230C57D900B01801 /* FaceMatchViewController.swift in Sources */,
+				A324C4262476ECD10002AE35 /* FaceMatchResultTableViewCell.swift in Sources */,
+				5C7D02532143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift in Sources */,
+				A3268523247F649B0028BCA5 /* FirstTableViewCell.swift in Sources */,
+				617EB0E320BB78B300BCBFD9 /* MainV.swift in Sources */,
+				617EB0E120BB705D00BCBFD9 /* NSObjectExtensions.swift in Sources */,
+				A324C4302476ED020002AE35 /* UserImgTableCell.swift in Sources */,
+				DC75E60220BF36FB0096BC5A /* CodeInfoV.swift in Sources */,
+				8432A29321352D87006BA16A /* DrivePDFTableViewCell.swift in Sources */,
+				A382E69A230AA94800C56EAE /* FirstViewVC.swift in Sources */,
+				84560228213691E900A844B6 /* Resultpdf417ViewController.swift in Sources */,
+				A324C4232476EC500002AE35 /* ShowResultVC.swift in Sources */,
+				5CC9862421180B9000A0E290 /* AppDelegate.swift in Sources */,
+				A33E204E23E2AA78004FED85 /* CountryListCell.swift in Sources */,
+				A3F172C624225BF60050FB25 /* LaunchScreenViewController.swift in Sources */,
+				8432A2872135132A006BA16A /* DrivingPDF.swift in Sources */,
+				A30ABDAA2487B29D0091362E /* ViewController.swift in Sources */,
+				6104CC9320BB515E00AC428E /* CodeScanVC.swift in Sources */,
+				A33E205723E2B439004FED85 /* CountryNameViewController.swift in Sources */,
+				A33E205023E2AA78004FED85 /* ListTableCell.swift in Sources */,
+				A384903E24A5EB4F00ECB42D /* FaceView.swift in Sources */,
+				A324C42B2476ECE50002AE35 /* ResultTableCell.swift in Sources */,
+				A3268527247F95F70028BCA5 /* CustomAFNetWorking.m in Sources */,
+				A324C4372476ED2E0002AE35 /* DocumantVarifyCell.swift in Sources */,
+				A324C4332476ED020002AE35 /* DocumentTableCell.swift in Sources */,
+				A384904024A602E600ECB42D /* AccuraOCRSDKApp.swift in Sources */,
+				0021908E22ACE78400E08B01 /* ListViewVC.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FAD8829423DDE04E007247EC /* CodeScanVC.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FAD8829523DDE04E007247EC /* Base */,
+			);
+			name = CodeScanVC.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6104CC8920BB4E6E00AC428E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VALID_ARCHS = "arm64e armv7 armv7s arm64";
+			};
+			name = Debug;
+		};
+		6104CC8A20BB4E6E00AC428E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64e armv7 armv7s arm64";
+			};
+			name = Release;
+		};
+		6104CC8C20BB4E6E00AC428E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A681A200B0E9D89F47FBE4CA /* Pods-AccuraSDK.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.4;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JA79VPTEAU;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SRCROOT)/..\"",
+					"$(inherited)",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan/FrameWork",
+					"$(PROJECT_DIR)/CodeScan",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan/Framework",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan/External",
+				);
+				INFOPLIST_FILE = CodeScan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan",
+					"$(PROJECT_DIR)/CodeScan",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan/Framework",
+					"$(PROJECT_DIR)\\ 2/CodeScan/AccuraScan/Framework",
+				);
+				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = and.test.accura;
+				PRODUCT_NAME = "Accura SDK";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "CodeScan/AccuraScan/Accura Scan-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
+				SWIFT_REFLECTION_METADATA_LEVEL = all;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
+			};
+			name = Debug;
+		};
+		6104CC8D20BB4E6E00AC428E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0540F6CC908839F9619257A0 /* Pods-AccuraSDK.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.4;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JA79VPTEAU;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/..\"",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan/FrameWork",
+					"$(PROJECT_DIR)/CodeScan",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan/Framework",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan/External",
+				);
+				INFOPLIST_FILE = CodeScan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan",
+					"$(PROJECT_DIR)/CodeScan",
+					"$(PROJECT_DIR)/CodeScan/AccuraScan/Framework",
+					"$(PROJECT_DIR)\\ 2/CodeScan/AccuraScan/Framework",
+				);
+				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = and.test.accura;
+				PRODUCT_NAME = "Accura SDK";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "CodeScan/AccuraScan/Accura Scan-Bridging-Header.h";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
+				SWIFT_REFLECTION_METADATA_LEVEL = all;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6104CC7120BB4E6D00AC428E /* Build configuration list for PBXProject "AccuraSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6104CC8920BB4E6E00AC428E /* Debug */,
+				6104CC8A20BB4E6E00AC428E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6104CC8B20BB4E6E00AC428E /* Build configuration list for PBXNativeTarget "AccuraSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6104CC8C20BB4E6E00AC428E /* Debug */,
+				6104CC8D20BB4E6E00AC428E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6104CC6E20BB4E6D00AC428E /* Project object */;
+}

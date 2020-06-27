@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "C_Users_baps_AppData_Local_Packages_Microsoft.SkypeApp_kzf8qxf38zg5c_LocalState_5daf69ed-aed3-4e43-be7b-238ed42b52aa-2.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "C_Users_baps_AppData_Local_Packages_Microsoft.SkypeApp_kzf8qxf38zg5c_LocalState_5daf69ed-aed3-4e43-be7b-238ed42b52aa-1.png",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "C_Users_baps_AppData_Local_Packages_Microsoft.SkypeApp_kzf8qxf38zg5c_LocalState_5daf69ed-aed3-4e43-be7b-238ed42b52aa.png",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

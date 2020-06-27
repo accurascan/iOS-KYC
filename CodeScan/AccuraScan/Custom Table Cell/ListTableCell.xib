@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Aller_Std.ttf">
+            <string>Aller-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="60" id="IXr-gm-mFi" customClass="ListTableCell" customModule="Accura_KYC" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IXr-gm-mFi" id="5kw-sw-mRq">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KCc-7p-TKt">
+                        <rect key="frame" x="8" y="5" width="304" height="53"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a39-vh-tbW">
+                                <rect key="frame" x="8" y="8" width="0.0" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" id="ARj-ZR-IxX"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azd-Hk-I2P">
+                                <rect key="frame" x="8" y="16" width="296" height="21"/>
+                                <fontDescription key="fontDescription" name="Aller-Bold" family="Aller" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="a39-vh-tbW" firstAttribute="top" secondItem="KCc-7p-TKt" secondAttribute="top" constant="8" id="0LU-N0-t1u"/>
+                            <constraint firstAttribute="bottom" secondItem="a39-vh-tbW" secondAttribute="bottom" constant="8" id="NKa-vw-ocT"/>
+                            <constraint firstItem="azd-Hk-I2P" firstAttribute="leading" secondItem="a39-vh-tbW" secondAttribute="trailing" id="dSJ-df-qjM"/>
+                            <constraint firstItem="a39-vh-tbW" firstAttribute="leading" secondItem="KCc-7p-TKt" secondAttribute="leading" constant="8" id="jeM-iV-agA"/>
+                            <constraint firstItem="azd-Hk-I2P" firstAttribute="centerY" secondItem="KCc-7p-TKt" secondAttribute="centerY" id="kyE-PB-m5i"/>
+                            <constraint firstAttribute="trailing" secondItem="azd-Hk-I2P" secondAttribute="trailing" id="sCp-7v-8pR"/>
+                            <constraint firstItem="a39-vh-tbW" firstAttribute="centerY" secondItem="KCc-7p-TKt" secondAttribute="centerY" id="sq5-jQ-8uY"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="KCc-7p-TKt" firstAttribute="top" secondItem="5kw-sw-mRq" secondAttribute="top" constant="5" id="W3B-XQ-CmA"/>
+                    <constraint firstAttribute="bottom" secondItem="KCc-7p-TKt" secondAttribute="bottom" constant="5" id="Wvg-WB-xOs"/>
+                    <constraint firstItem="KCc-7p-TKt" firstAttribute="leading" secondItem="5kw-sw-mRq" secondAttribute="leading" constant="8" id="fwX-ul-5Vp"/>
+                    <constraint firstAttribute="trailing" secondItem="KCc-7p-TKt" secondAttribute="trailing" constant="8" id="yAD-5x-Zut"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="img" destination="a39-vh-tbW" id="mrw-2E-Yk0"/>
+                <outlet property="lbl_list_title" destination="azd-Hk-I2P" id="lIC-7Z-Nxk"/>
+                <outlet property="vw" destination="KCc-7p-TKt" id="eOq-YM-G7x"/>
+            </connections>
+            <point key="canvasLocation" x="32" y="103.5"/>
+        </tableViewCell>
+    </objects>
+</document>

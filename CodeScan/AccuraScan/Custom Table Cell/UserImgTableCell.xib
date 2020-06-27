@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="140" id="VIz-6b-8gw" customClass="UserImgTableCell" customModule="Accura_KYC" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="359" height="140"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VIz-6b-8gw" id="SLt-xP-Qgp">
+                <rect key="frame" x="0.0" y="0.0" width="359" height="140"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="vVo-lB-ImH">
+                        <rect key="frame" x="119.5" y="10" width="120" height="120"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="095-e6-Kyu">
+                                <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hyU-WK-Psi">
+                                        <rect key="frame" x="2" y="2" width="116" height="116"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.94501525163650513" green="0.94515103101730347" blue="0.94498568773269653" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="1tm-zg-04z"/>
+                                    <constraint firstItem="hyU-WK-Psi" firstAttribute="top" secondItem="095-e6-Kyu" secondAttribute="top" constant="2" id="IPL-a3-oRg"/>
+                                    <constraint firstItem="hyU-WK-Psi" firstAttribute="leading" secondItem="095-e6-Kyu" secondAttribute="leading" constant="2" id="SzS-qG-M2q"/>
+                                    <constraint firstAttribute="bottom" secondItem="hyU-WK-Psi" secondAttribute="bottom" constant="2" id="XDU-ck-fsy"/>
+                                    <constraint firstAttribute="height" constant="120" id="vi7-R4-Nm3"/>
+                                    <constraint firstAttribute="trailing" secondItem="hyU-WK-Psi" secondAttribute="trailing" constant="2" id="wUg-Um-jsO"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g69-AH-8UK">
+                                <rect key="frame" x="120" y="0.0" width="120" height="120"/>
+                                <subviews>
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ew2-cx-6Ik">
+                                        <rect key="frame" x="2" y="2" width="116" height="116"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.94501525163650513" green="0.94515103101730347" blue="0.94498568773269653" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="UZY-GJ-nbI"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ew2-cx-6Ik" secondAttribute="bottom" constant="2" id="X4M-Hp-hKJ"/>
+                                    <constraint firstAttribute="width" constant="120" id="f0k-fF-vC5"/>
+                                    <constraint firstItem="Ew2-cx-6Ik" firstAttribute="top" secondItem="g69-AH-8UK" secondAttribute="top" constant="2" id="kG2-lh-d1Z"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ew2-cx-6Ik" secondAttribute="trailing" constant="2" id="nZO-ph-BnN"/>
+                                    <constraint firstItem="Ew2-cx-6Ik" firstAttribute="leading" secondItem="g69-AH-8UK" secondAttribute="leading" constant="2" id="u6z-Rs-inG"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="vVo-lB-ImH" firstAttribute="centerX" secondItem="SLt-xP-Qgp" secondAttribute="centerX" id="JXZ-4r-AI8"/>
+                    <constraint firstItem="vVo-lB-ImH" firstAttribute="top" secondItem="SLt-xP-Qgp" secondAttribute="top" constant="10" id="Nbj-za-rlC"/>
+                    <constraint firstAttribute="bottom" secondItem="vVo-lB-ImH" secondAttribute="bottom" constant="10" id="RC9-yG-7xy"/>
+                    <constraint firstItem="vVo-lB-ImH" firstAttribute="centerY" secondItem="SLt-xP-Qgp" secondAttribute="centerY" id="l8h-5Z-c5K"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="User_img2" destination="Ew2-cx-6Ik" id="d0I-0m-pLW"/>
+                <outlet property="user_img" destination="hyU-WK-Psi" id="72S-AL-8jK"/>
+                <outlet property="view2" destination="g69-AH-8UK" id="LpS-GO-QHY"/>
+            </connections>
+            <point key="canvasLocation" x="133" y="94"/>
+        </tableViewCell>
+    </objects>
+</document>

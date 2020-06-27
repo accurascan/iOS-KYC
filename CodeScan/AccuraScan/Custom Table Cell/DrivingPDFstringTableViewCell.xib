@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Stringcell" rowHeight="65" id="KGk-i7-Jjw" customClass="DrivingPDFstringTableViewCell" customModule="Accura_KYC" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="PDF417" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azX-aD-jhK">
+                        <rect key="frame" x="15" y="17.5" width="128" height="30"/>
+                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="14"/>
+                        <color key="textColor" red="0.86274509799999999" green="0.1215686275" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="50a-wf-h6B">
+                        <rect key="frame" x="148" y="15" width="157" height="34.5"/>
+                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="14"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NUP-Ue-e1A">
+                        <rect key="frame" x="0.0" y="64.5" width="320" height="0.5"/>
+                        <color key="backgroundColor" red="0.81568627449999997" green="0.81568627449999997" blue="0.81568627449999997" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="I29-yd-pIN"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="NUP-Ue-e1A" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="1CN-6G-f7r"/>
+                    <constraint firstAttribute="bottom" secondItem="NUP-Ue-e1A" secondAttribute="bottom" id="Edl-9C-SAm"/>
+                    <constraint firstItem="50a-wf-h6B" firstAttribute="leading" secondItem="azX-aD-jhK" secondAttribute="trailing" constant="5" id="FUM-vh-cLq"/>
+                    <constraint firstItem="azX-aD-jhK" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="RKE-lJ-8ba"/>
+                    <constraint firstItem="azX-aD-jhK" firstAttribute="height" secondItem="50a-wf-h6B" secondAttribute="height" multiplier="0.864078" id="Rjt-Iv-foS"/>
+                    <constraint firstItem="azX-aD-jhK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="WUu-dG-Pyb"/>
+                    <constraint firstItem="NUP-Ue-e1A" firstAttribute="top" secondItem="50a-wf-h6B" secondAttribute="bottom" constant="15" id="Zgl-A0-BnI"/>
+                    <constraint firstAttribute="trailing" secondItem="NUP-Ue-e1A" secondAttribute="trailing" id="aWe-Iq-7Gc"/>
+                    <constraint firstAttribute="trailing" secondItem="50a-wf-h6B" secondAttribute="trailing" constant="15" id="maE-8s-qau"/>
+                    <constraint firstItem="azX-aD-jhK" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.4:1" id="pE1-vX-LXc"/>
+                    <constraint firstItem="50a-wf-h6B" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="pL5-UF-Wqa"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="lblWholerstr" destination="50a-wf-h6B" id="Zcn-iu-sQY"/>
+            </connections>
+            <point key="canvasLocation" x="133" y="123"/>
+        </tableViewCell>
+    </objects>
+</document>
