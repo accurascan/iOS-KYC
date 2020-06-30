@@ -36,7 +36,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
     var arrCountryList = NSMutableArray()
     var isMRZCell = false
     var isPDFCell = false
-    var videoCameraWrapper: VideoCameraWrapper? = nil
+    var accuraCameraWrapper: AccuraCameraWrapper? = nil
     
     //MARK:- View Controller Method
     override func viewDidLoad() {
@@ -46,9 +46,9 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
         lablelDataNotFound.isHidden = true
         viewStatusBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
-        videoCameraWrapper = VideoCameraWrapper.init()
+        accuraCameraWrapper = AccuraCameraWrapper.init()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let sdkModel = self.videoCameraWrapper?.loadEngine(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String)
+            let sdkModel = self.accuraCameraWrapper?.loadEngine(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String)
             if(sdkModel != nil)
             {
                 if(sdkModel!.isMRZEnable)
@@ -74,7 +74,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             {
                 self.arrCountryList.add("Barcode")
             }
-            let countryListStr = self.videoCameraWrapper?.getOCRList()
+            let countryListStr = self.accuraCameraWrapper?.getOCRList()
             if(countryListStr != nil)
             {
                 for i in countryListStr!{
@@ -87,12 +87,12 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             
              if(sdkModel != nil){
              if sdkModel!.i > 0{
-                 self.videoCameraWrapper?.setFaceBlurPercentage(80)
-                 self.videoCameraWrapper?.setHologramDetection(true)
-                 self.videoCameraWrapper?.setLowLightTolerance(10)
-                 self.videoCameraWrapper?.setMotionThreshold(4, stMassage: "")
-                 self.videoCameraWrapper?.setGlarePercentage(6, intMax: 99)
-                 self.videoCameraWrapper?.setCheckPhotoCopy(false)
+                 self.accuraCameraWrapper?.setFaceBlurPercentage(80)
+                 self.accuraCameraWrapper?.setHologramDetection(true)
+                 self.accuraCameraWrapper?.setLowLightTolerance(10)
+                 self.accuraCameraWrapper?.setMotionThreshold(4, stMassage: "")
+                 self.accuraCameraWrapper?.setGlarePercentage(6, intMax: 99)
+                 self.accuraCameraWrapper?.setCheckPhotoCopy(false)
              }
             }
             

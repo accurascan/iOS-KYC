@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var viewStatusBar: UIView!
     @IBOutlet weak var viewNavigationBar: UIView!
     
-    var videoCameraWrapper: VideoCameraWrapper? = nil
+    var accuraCameraWrapper: AccuraCameraWrapper? = nil
     
     var shareScanningListing: NSMutableDictionary = [:]
     
@@ -137,10 +137,10 @@ class ViewController: UIViewController {
                         self.setOCRData()
                         if(self.isCheckScanOCR)
                         {
-                            self._imageView.frame = CGRect(x: 80, y: 0, width: self._imageView.frame.size.width + (UIScreen.main.bounds.width / 4), height: self._imageView.frame.size.height + (UIScreen.main.bounds.height / 4))
+//                            self._imageView.frame = CGRect(x: 80, y: 0, width: self._imageView.frame.size.width + (UIScreen.main.bounds.width / 4), height: self._imageView.frame.size.height + (UIScreen.main.bounds.height / 4))
                         }
                         self.ChangedOrientation()
-                        self.videoCameraWrapper?.startCamera()
+                        self.accuraCameraWrapper?.startCamera()
                     }
                     let shortTap = UITapGestureRecognizer(target: self, action: #selector(self.handleTapToFocus(_:)))
                     shortTap.numberOfTapsRequired = 1
@@ -167,16 +167,16 @@ class ViewController: UIViewController {
         isBackSide = false
         isCheckMRZData = false
          self.ChangedOrientation()
-        if self.videoCameraWrapper == nil {
+        if self.accuraCameraWrapper == nil {
                 setOCRData()
         }
 
         if isFirstTimeStartCamara!{
             if(isCheckScanOCR)
             {
-                self._imageView.frame = CGRect(x: 80, y: 0, width: self._imageView.frame.size.width + (UIScreen.main.bounds.width / 4), height: self._imageView.frame.size.height + (UIScreen.main.bounds.height / 4))
+//                self._imageView.frame = CGRect(x: 80, y: 0, width: self._imageView.frame.size.width + (UIScreen.main.bounds.width / 4), height: self._imageView.frame.size.height + (UIScreen.main.bounds.height / 4))
             }
-          videoCameraWrapper?.startCamera()
+          accuraCameraWrapper?.startCamera()
         }
     }
     
@@ -185,10 +185,10 @@ class ViewController: UIViewController {
         if !isFirstTimeStartCamara! && isCheckFirstTime!{
             if(isCheckScanOCR)
             {
-                self._imageView.frame = CGRect(x: 80, y: 0, width: self._imageView.frame.size.width + (UIScreen.main.bounds.width / 4), height: self._imageView.frame.size.height + (UIScreen.main.bounds.height / 4))
+//                self._imageView.frame = CGRect(x: 80, y: 0, width: self._imageView.frame.size.width + (UIScreen.main.bounds.width / 4), height: self._imageView.frame.size.height + (UIScreen.main.bounds.height / 4))
             }
           isFirstTimeStartCamara = true
-          videoCameraWrapper?.startCamera()
+          accuraCameraWrapper?.startCamera()
         }
         
     }
@@ -198,14 +198,14 @@ class ViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        videoCameraWrapper?.stopCamera()
-        videoCameraWrapper = nil
+        accuraCameraWrapper?.stopCamera()
+        accuraCameraWrapper = nil
         _imageView.image = nil
         super.viewWillDisappear(animated)
     }
     
     @IBAction func backAction(_ sender: Any) {
-        videoCameraWrapper?.stopCamera()
+        accuraCameraWrapper?.stopCamera()
         arrFrontResultKey.removeAll()
         arrBackResultKey.removeAll()
         arrFrontResultValue.removeAll()
@@ -237,7 +237,7 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             self._lblTitle.text = "Scan Front Side of Document"
         }
-        videoCameraWrapper = VideoCameraWrapper.init(delegate: self, andImageView: _imageView, andLabelMsg: lblOCRMsg, andurl: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: Int32(cardid!), countryID: Int32(countryid!), isScanOCR: isCheckScanOCR, andLabelMsgTop: _lblTitle, andcardName: docName)
+        accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: _imageView, andLabelMsg: lblOCRMsg, andurl: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: Int32(cardid!), countryID: Int32(countryid!), isScanOCR: isCheckScanOCR, andLabelMsgTop: _lblTitle, andcardName: docName)
     }
     
     @objc private func ChangedOrientation() {
@@ -326,7 +326,7 @@ extension ViewController: VideoCameraWrapperDelegate {
                         
                     }
                     self.imageRotation(rotation: "BackImg")
-                    self.videoCameraWrapper?.stopCamera()
+                    self.accuraCameraWrapper?.stopCamera()
                     self._imageView.image = nil
             
                     AudioServicesPlaySystemSound(1315)
@@ -412,7 +412,7 @@ extension ViewController: VideoCameraWrapperDelegate {
             }
             if isFrontDataComplate! && isBackDataComplate!{
                 if !self.isCheckCardBackFrint{
-                    videoCameraWrapper?.stopCamera()
+                    accuraCameraWrapper?.stopCamera()
                     self.isCheckCardBackFrint = true
                     _imageView.image = nil
                     AudioServicesPlaySystemSound(SystemSoundID(1315))
@@ -427,13 +427,13 @@ extension ViewController: VideoCameraWrapperDelegate {
                         self.isBack = true
                         _imageView.image = nil
                         lblOCRMsg.text = "Keep Document In Frame"
-                        self.videoCameraWrapper?.process(withBack1: "Backside", andisCheckBack: true)
+                        self.accuraCameraWrapper?.process(withBack1: "Backside", andisCheckBack: true)
                     }else{
                         self.isFront = true
                         self.isBack = false
                         _imageView.image = nil
                         lblOCRMsg.text = "Keep Document In Frame"
-                        self.videoCameraWrapper?.process(withBack1: "Frontside", andisCheckBack: false)
+                        self.accuraCameraWrapper?.process(withBack1: "Frontside", andisCheckBack: false)
                     }
                     return
                 }else{
@@ -444,7 +444,7 @@ extension ViewController: VideoCameraWrapperDelegate {
         else{
             if isCheckMRZData!{
                 if !self.isCheckCard{
-                    videoCameraWrapper?.stopCamera()
+                    accuraCameraWrapper?.stopCamera()
                     self.isCheckCard = true
                     _imageView.image = nil
                     self.arrFrontResultKey = setDataFrontKey as! [String]
@@ -456,7 +456,7 @@ extension ViewController: VideoCameraWrapperDelegate {
                 }
             }else{
                 if !self.isCheckCard{
-                    videoCameraWrapper?.stopCamera()
+                    accuraCameraWrapper?.stopCamera()
                     self.isCheckCard = true
                     _imageView.image = nil
                     self.arrFrontResultKey = setDataFrontKey as! [String]

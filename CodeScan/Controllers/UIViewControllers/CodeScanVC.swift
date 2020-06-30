@@ -45,7 +45,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     var photoImage1: UIImage? = nil
     var imgViewFront : UIImage? = nil
     var imgViewBack : UIImage? = nil
-    var videoCameraWrapper: VideoCameraWrapper? = nil
+    var accuraCameraWrapper: AccuraCameraWrapper? = nil
     var cardid : Int? = 0
     var countryid : Int? = 0
     var stillImageOutput : AVCaptureStillImageOutput!
@@ -81,7 +81,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         self.imageViewFilp.isHidden = true
         
         if status == .authorized {
-            videoCameraWrapper = VideoCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
+            accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
             let shortTap = UITapGestureRecognizer(target: self, action: #selector(handleTapToFocus(_:)))
             shortTap.numberOfTapsRequired = 1
             shortTap.numberOfTouchesRequired = 1
@@ -104,9 +104,9 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
         
-                    self.videoCameraWrapper = VideoCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
+                    self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
         
-                    self.videoCameraWrapper?.startCamera()
+                    self.accuraCameraWrapper?.startCamera()
                     
                     let shortTap = UITapGestureRecognizer(target: self, action: #selector(self.handleTapToFocus(_:)))
                     shortTap.numberOfTapsRequired = 1
@@ -122,12 +122,12 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         super.viewWillAppear(animated)
             self.ChangedOrientation()
             isResultShow = false
-            if self.videoCameraWrapper == nil {
+            if self.accuraCameraWrapper == nil {
                 imageView.isHidden = false
                 barCodeScannerView.isHidden = true
-                videoCameraWrapper = VideoCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
+                accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
             }
-            videoCameraWrapper?.startCamera()
+            accuraCameraWrapper?.startCamera()
            if(isBarcodeEnabled){
                labelMsg.text = ""
            }
@@ -137,8 +137,8 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        videoCameraWrapper?.stopCamera()
-        videoCameraWrapper = nil
+        accuraCameraWrapper?.stopCamera()
+        accuraCameraWrapper = nil
         imageView.image = nil
         if (captureSession?.isRunning == true) {
             captureSession.stopRunning() // Stop Camera Scanning
@@ -197,7 +197,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             }
         
     
-        videoCameraWrapper?.changedOrintation(width, height: height)
+        accuraCameraWrapper?.changedOrintation(width, height: height)
         
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
             self.view.layoutIfNeeded()
@@ -225,7 +225,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     
     @IBAction func backAction(_ sender: Any)
     {
-        self.videoCameraWrapper?.stopCamera()
+        self.accuraCameraWrapper?.stopCamera()
         mainV.removeAlert()
         navigationController?.popViewController(animated: true)
     }
@@ -1688,7 +1688,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         {
             isResultShow = true
             mainV.removeAlert()
-            self.videoCameraWrapper?.stopCamera()
+            self.accuraCameraWrapper?.stopCamera()
             AudioServicesPlaySystemSound(1315)
             let codeStory = UIStoryboard(name: "CodeScanVC", bundle: nil)
             let placeVC = codeStory.instantiateViewController(withIdentifier: "Resultpdf417ViewController") as? Resultpdf417ViewController
@@ -1702,13 +1702,13 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         else{
             let alert = UIAlertController(title: "Barcode Result", message: message, preferredStyle: .alert)
             let retryButton = UIAlertAction(title: "RETRY", style: .default) { _ in
-                self.videoCameraWrapper?.stopCamera()
-                self.videoCameraWrapper = VideoCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
-                self.videoCameraWrapper?.startCamera()
+                self.accuraCameraWrapper?.stopCamera()
+                self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
+                self.accuraCameraWrapper?.startCamera()
             }
             alert.addAction(retryButton)
         let okButton = UIAlertAction(title: "OK", style: .default) { _ in
-            self.videoCameraWrapper?.stopCamera()
+            self.accuraCameraWrapper?.stopCamera()
             self.navigationController?.popViewController(animated: true)
         }
         alert.addAction(okButton)
@@ -1721,7 +1721,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             {
                 isResultShow = true
                 mainV.removeAlert()
-                self.videoCameraWrapper?.stopCamera()
+                self.accuraCameraWrapper?.stopCamera()
                 AudioServicesPlaySystemSound(1315)
                 let codeStory = UIStoryboard(name: "CodeScanVC", bundle: nil)
                 let placeVC = codeStory.instantiateViewController(withIdentifier: "Resultpdf417ViewController") as? Resultpdf417ViewController

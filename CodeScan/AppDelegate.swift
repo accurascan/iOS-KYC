@@ -2,8 +2,6 @@
 import UIKit
 import CoreData
 import Firebase
-import AccuraOCR
-
 //list of Page Type
 public enum NAV_PAGETYPE: Int {
     case Default
@@ -29,20 +27,16 @@ let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     var window: UIWindow?
     var selectedScanType: NAV_SCANTYPE = .Default
-    var videoCameraWrapper: VideoCameraWrapper? = nil
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         Thread.sleep(forTimeInterval: 0.0)
+        
         UIApplication.shared.statusBarStyle = .lightContent
-        videoCameraWrapper = VideoCameraWrapper.init()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.videoCameraWrapper?.accuraSDk()
-        }
-//        FirebaseApp.configure()
-        AccuraOCRSDKApp.configure()
+        
+        AccuraOCRSDK.configure()
+        
         return true
     }
-    
 
     
     func applicationWillResignActive(_ application: UIApplication) {

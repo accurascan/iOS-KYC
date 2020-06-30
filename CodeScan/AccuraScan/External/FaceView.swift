@@ -1,7 +1,7 @@
 //
 
 import UIKit
-import AccuraOCR
+import Pods_AccuraSDK
 import FaceMatchSDK
 
 class FaceView: UIView {

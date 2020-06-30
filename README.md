@@ -11,49 +11,51 @@ Below steps to setup Accura SDK's to your project.
 ## 1. Setup Accura OCR
 
 Step 1: install the AccuraOCR pod <br />
-         pod 'accuraocrSDK', '1.0.3'
+         pod 'AccuraOCRSDK', '1.0.5'
 
 Step 2: Add licence file in to your project. <br />        
             - key.licence // for Accura OCR <br />
             Generate your Accura licence from https://accurascan.com/developer/sdk-license<br />
+            
+Step 3: Add AccuraOCRSDK.swift file in your projrct.<br /> 
 
-Step 3: Appdelegate.swift file in add<br />
+Step 4:  Run the Simulator in App.  ( Optional ) <br /> 
+      Download and extract the AccuraOCR.framework.(can download From
+             https://accurascan.com/iOSSDK/AccuraOCR.framework.zip) <br/>
 
-     import AccuraOCR
-     
-     var videoCameraWrapper: VideoCameraWrapper? = nil
-     
+Step 5: Appdelegate.swift file in add<br />
+
       func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        videoCameraWrapper = VideoCameraWrapper.init()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.videoCameraWrapper?.accuraSDk()
-        }
-        FirebaseApp.configure()
+      
+        AccuraOCRSDK.configure()
+        
         return true
     }
  
-
-Step 4 : To initialize sdk on app start:
+Step 6 : To initialize sdk on app start:
 
     import AccuraOCR
 
-    var videoCameraWrapper: VideoCameraWrapper? = nil
-
-    let sdkModel = videoCameraWrapper.loadEngine(your PathForDirectories);
+    var accuraCameraWrapper: AccuraCameraWrapper? = nil
     var arrCountryList = NSMutableArray()
-
-    if (sdkModel.i > 0) {
-        // if sdkModel.isOCREnable then get card data
-        if (sdkModel.isOCREnable) let countryListStr = self.videoCameraWrapper?.getOCRList();
-        
-        if (countryListStr != null) {
-          for i in countryListStr!{
-            self.arrCountryList.add(i)
-        }
-        }
-    }
     
-    arrCountryList to get value(forKey: "cards") // get card Name
+     accuraCameraWrapper = AccuraCameraWrapper.init()
+     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+     let sdkModel = accuraCameraWrapper.loadEngine(your PathForDirectories)
+      if (sdkModel.i > 0) {
+          // if sdkModel.isOCREnable then get card data
+          if (sdkModel.isOCREnable) let countryListStr = self.videoCameraWrapper?.getOCRList();
+          
+          if (countryListStr != null) {
+            for i in countryListStr!{
+              self.arrCountryList.add(i)
+          }
+          }
+      }
+     
+     }
+
+    arrCountryList to get value(forKey: "card_name") // get card Name
     arrCountryList to get value(forKey: "country_id") // get country id
     arrCountryList to get value(forKey: "card_id") // get card id
 
@@ -66,7 +68,7 @@ Step 4 : To initialize sdk on app start:
      * @param blurPercentage is 0 to 100, 0 - clean document and 100 - Blurry document
      * @return 1 if success else 0
      */
-     videoCameraWrapper?.setFaceBlurPercentage(int /*blurPercentage*/60);
+     accuraCameraWrapper?.setFaceBlurPercentage(int /*blurPercentage*/60);
          
     /**
      * Set Blur Face Percentage to allow blur on detected Face
@@ -74,14 +76,14 @@ Step 4 : To initialize sdk on app start:
      * @param faceBlurPercentage is 0 to 100, 0 - clean face and 100 - Blurry face
      * @return 1 if success else 0
      */
-     videoCameraWrapper?.setFaceBlurPercentage(int /*faceBlurPercentage*/80);
+     accuraCameraWrapper?.setFaceBlurPercentage(int /*faceBlurPercentage*/80);
     
     /**
      * @param minPercentage Min value
      * @param maxPercentage Max value
      * @return 1 if success else 0
      */
-     videoCameraWrapper?.setGlarePercentage(int /*minPercentage*/6, int /*maxPercentage*/98);
+     accuraCameraWrapper?.setGlarePercentage(int /*minPercentage*/6, int /*maxPercentage*/98);
     
     /**
      * Set CheckPhotoCopy to allow photocopy document or not
@@ -89,7 +91,7 @@ Step 4 : To initialize sdk on app start:
      * @param isCheckPhotoCopy if true then reject photo copy document else vice versa
      * @return 1 if success else 0
      */
-     ideoCameraWrapper?.setCheckPhotoCopy(bool /*isCheckPhotoCopy*/false);
+     accuraCameraWrapper?.setCheckPhotoCopy(bool /*isCheckPhotoCopy*/false);
     
     /**
      * set Hologram detection to allow hologram on face or not
@@ -97,7 +99,7 @@ Step 4 : To initialize sdk on app start:
      * @param isDetectHologram if true then reject face if hologram in face else it is allow .
      * @return 1 if success else 0
      */
-     videoCameraWrapper?.setHologramDetection(boolean /*isDetectHologram*/true);
+     accuraCameraWrapper?.setHologramDetection(boolean /*isDetectHologram*/true);
      
      /**
       * Set Low Light Tolerance to allow lighting to detect documant
@@ -105,31 +107,32 @@ Step 4 : To initialize sdk on app start:
       * @param setLowLightTolerance is 0 to 100, 100 - clean light and 0 -  no light to detect
       * @return 1 if success else 0
       */
-      videoCameraWrapper?.setLowLightTolerance(int /*lowlighttolerance*/10);
+      accuraCameraWrapper?.setLowLightTolerance(int /*lowlighttolerance*/10);
       
       /**
-        * Set Moation Threshold to allow frame motion
+        * Set Motion Threshold to allow frame motion
         *
-        * @param setMoationThreshold is 0 to 100, 100 - motion Work and 0 - no motion work
-        * @param setMoationThreshold is set message to display
+        * @param setMotionThreshold is 0 to 100, 100 - motion Work and 0 - no motion work
+        * @param setMotionThreshold is set message to display
         * @return 1 if success else 0
         */
-        videoCameraWrapper?.setMotionThreshold(int /*setMoationThreshold*/4 string /*message*/ "Keep Document Steady");
+        accuraCameraWrapper?.setMotionThreshold(int /*setMotionThreshold*/4 string /*message*/ "Keep Document Steady");
      
-Step 5 : Set CameraView
+Step 7 : Set CameraView
 
     Important Grant Camera and storage Permission.
     
     import AccuraOCR
+    import AVFoundation
     
-    var videoCameraWrapper: VideoCameraWrapper? = nil
+    var accuraCameraWrapper: AccuraCameraWrapper? = nil
 
     override func viewDidLoad() {
     super.viewDidLoad()
     let status = AVCaptureDevice.authorizationStatus(for: .video)
     
     if status == .authorized {
-         videoCameraWrapper = VideoCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName)
+         accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName)
     } else if status == .denied {
         let alert = UIAlertController(title: "AccuraSdk", message: "It looks like your privacy settings are preventing us from accessing your camera.", preferredStyle: .alert)
         let yesButton = UIAlertAction(title: "OK", style: .default) { _ in
@@ -145,7 +148,7 @@ Step 5 : Set CameraView
     } else if status == .notDetermined  {
      AVCaptureDevice.requestAccess(for: .video) { granted in
     if granted {
-        videoCameraWrapper = VideoCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName)
+        accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName)
     } else {
     // print("Not granted access")
     }
@@ -155,12 +158,12 @@ Step 5 : Set CameraView
     
     override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)
-          videoCameraWrapper?.startCamera()
+          accuraCameraWrapper?.startCamera()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        videoCameraWrapper?.stopCamera()
-        videoCameraWrapper = nil
+        accuraCameraWrapper?.stopCamera()
+        accuraCameraWrapper = nil
         super.viewWillDisappear(animated)
     }
     
@@ -170,14 +173,17 @@ Step 5 : Set CameraView
     
     }
     
+    //  it calls continues when scan cards
     func processedImage(_ image: UIImage!) {
     image:- image is a get camara image.
     }
     
+    // it call when license key wrong otherwise didnt get key
     func recognizeFailed(_ message: String!) {
     message:- message is a set alert message.
     }
     
+    // it calls when get MRZ data
     func recognizeSucceed(_ scanedInfo: NSMutableDictionary!, recType: RecType, bRecDone: Bool, bFaceReplace: Bool, bMrzFirst: Bool, photoImage: UIImage, docFrontImage: UIImage!, docbackImage: UIImage!) {
     scanedInfo :- scanedInfo is a NSMutableDictionary in get MRZ data.
     photoImage:- photoImage in get a document face Image.
@@ -185,11 +191,13 @@ Step 5 : Set CameraView
     docbackImage:- docbackImage is adocumant frontside image.
     }
     
+    //   it calls when get front or back side image
     func matchedItem(_ image: UIImage!, isCardSide1 cs: Bool, isBack b: Bool, isFront f: Bool, imagePhoto imgp: UIImage!, imageResult: UIImage!) {
     if f == true to set frontside document Image.
     if f == false to set backside document Image.
     }
     
+    //  it calls when get OCR data
     func matchedItem(_ setDataFrontKey: NSMutableArray!, andsetDataFrontvalue setDataFrontvalue: NSMutableArray!, andmrzDatasacn mrzDataSacn: NSMutableDictionary!, setDataBackKey: NSMutableArray!, setDataBackValue: NSMutableArray!, setFaceData: NSMutableDictionary!, setSecurityData: NSMutableDictionary!, setFaceBackData: NSMutableDictionary!, setPhotoImage: UIImage!) {
     setDataFrontKey  :-  setDataFrontKey is a NSMutableArray to get frontside data key.
     setDataFrontvalue:- setDataFrontvalue is a NSMutableArray to get frontside data                        value.
@@ -202,7 +210,7 @@ Step 5 : Set CameraView
 ## 2. Setup Accura Face Match
 
 Step 1: install the AccuraFaceMatch pod <br />
-            pod 'AccuraFaceMatchSDK', '1.0.4'
+            pod 'AccuraFaceMatchSDK', '1.0.5'
             
 Step 2: Add licence file in to your project.<br />
             - accuraface.license // for Accura Face Match <br />
@@ -385,7 +393,9 @@ Step 4: Implement face match code manually to your activity.
     Integration steps :<br/>
     1. Download and extract the Zoom iOS SDK.(can download From
         https://dev.zoomlogin.com/zoomsdk/#/downloads) <br/>
-        2. Copy 'ZoomAuthenticationHybrid.framework' to app/libs/ <br/>
+        
+    2. Copy 'ZoomAuthenticationHybrid.framework' to your project <br/>
+    
     3. Zoom initialization <br/>
         a. Zoom must be initialized with a valid Device SDK License before it will function. <br/>
         
