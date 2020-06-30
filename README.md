@@ -19,7 +19,7 @@ Step 2: Add licence file in to your project. <br />
             
 Step 3: Add AccuraOCRSDK.swift file in your projrct.<br /> 
 
-Step 4:  Run the Simulator in App.  ( Optional ) <br /> 
+Step 4:  Run the App in Simulator.  ( Optional ) <br /> 
       Download and extract the AccuraOCR.framework.(can download From
              https://accurascan.com/iOSSDK/AccuraOCR.framework.zip) <br/>
 
