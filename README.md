@@ -15,7 +15,7 @@ Step 1: install the AccuraOCR pod <br />
 
 Step 2: Add licence file in to your project. <br />        
             - key.licence // for Accura OCR <br />
-            Generate your Accura licence from https://accurascan.com/developer/sdk-license<br />
+            Generate your Accura licence from https://accurascan.com/developer/dashboard <br />
             
 Step 3: Add AccuraOCRSDK.swift file in your projrct.<br /> 
 
