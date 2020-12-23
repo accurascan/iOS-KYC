@@ -11,7 +11,7 @@ Below steps to setup Accura SDK's in your project.
 ## 1. Setup Accura OCR
 
 Step 1: install the AccuraOCR pod <br />
-         pod 'AccuraOCRSDK', '1.0.5'
+         pod 'AccuraOCRSDK', '1.1.0'
 
 Step 2: Add licence file in to your project. <br />        
             - key.licence // for Accura OCR <br />
