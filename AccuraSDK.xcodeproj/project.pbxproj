@@ -59,8 +59,6 @@
 		A3268522247F649B0028BCA5 /* FirstTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3268520247F649B0028BCA5 /* FirstTableViewCell.xib */; };
 		A3268523247F649B0028BCA5 /* FirstTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3268521247F649B0028BCA5 /* FirstTableViewCell.swift */; };
 		A3268527247F95F70028BCA5 /* CustomAFNetWorking.m in Sources */ = {isa = PBXBuildFile; fileRef = A3268525247F95F70028BCA5 /* CustomAFNetWorking.m */; };
-		A329C133256E52E9007C4404 /* ZoomAuthenticationHybrid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A329C131256E51CE007C4404 /* ZoomAuthenticationHybrid.framework */; };
-		A329C134256E52E9007C4404 /* ZoomAuthenticationHybrid.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A329C131256E51CE007C4404 /* ZoomAuthenticationHybrid.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A33412F724AB63A500CECDCB /* AccuraOCRSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */; };
 		A33E204B23E2AA78004FED85 /* ListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A33E204423E2AA78004FED85 /* ListTableCell.xib */; };
 		A33E204E23E2AA78004FED85 /* CountryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E204723E2AA78004FED85 /* CountryListCell.swift */; };
@@ -105,7 +103,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A329C134256E52E9007C4404 /* ZoomAuthenticationHybrid.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,7 +228,6 @@
 		A3268521247F649B0028BCA5 /* FirstTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstTableViewCell.swift; sourceTree = "<group>"; };
 		A3268525247F95F70028BCA5 /* CustomAFNetWorking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAFNetWorking.m; sourceTree = "<group>"; };
 		A3268526247F95F70028BCA5 /* CustomAFNetWorking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAFNetWorking.h; sourceTree = "<group>"; };
-		A329C131256E51CE007C4404 /* ZoomAuthenticationHybrid.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZoomAuthenticationHybrid.framework; sourceTree = "<group>"; };
 		A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccuraOCRSDK.swift; sourceTree = "<group>"; };
 		A33E204423E2AA78004FED85 /* ListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableCell.xib; sourceTree = "<group>"; };
 		A33E204723E2AA78004FED85 /* CountryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListCell.swift; sourceTree = "<group>"; };
@@ -269,7 +265,6 @@
 				5C9AF500211999B300700EDF /* libsqlite3.tbd in Frameworks */,
 				5C9AF4FC2119998E00700EDF /* MessageUI.framework in Frameworks */,
 				5C9AF4FA2119998300700EDF /* CoreData.framework in Frameworks */,
-				A329C133256E52E9007C4404 /* ZoomAuthenticationHybrid.framework in Frameworks */,
 				5C9AF4F82119997700700EDF /* SystemConfiguration.framework in Frameworks */,
 				5C9AF4F62119996D00700EDF /* libz.1.dylib in Frameworks */,
 				5C9AF4F42119995800700EDF /* libsqlite3.dylib in Frameworks */,
@@ -631,7 +626,6 @@
 		A38570ED2318020200FF7209 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				A329C131256E51CE007C4404 /* ZoomAuthenticationHybrid.framework */,
 				A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */,
 				A384903D24A5EB4F00ECB42D /* FaceView.swift */,
 				A341D735230EA44F00FDF946 /* ZoomHybrid.pub */,
