@@ -468,7 +468,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
        @objc func buttonClickedLiveness(sender:UIButton)
         {
             isCheckLiveNess = true
-            faceScoreData = nil
+            faceScoreData = ""
             uniqStr = ProcessInfo.processInfo.globallyUniqueString
             if pageType == .Default{
                 self.launchZoomToVerifyLivenessAndRetrieveFacemap() //lunchZoom setup
@@ -654,10 +654,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                          */
                         let face2 : NSFaceRegion? = EngineWrapper.detectTargetFaces(chosenImage, feature1: self.faceRegion?.feature as Data?)   //identify face in back image which found in front image
                         
-                        let data = face2?.bound
                         
-                        
-                        let image = self.resizeImage(image: chosenImage, targetSize: data!)
                        
                         // print(image)
 
@@ -669,7 +666,8 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                          */
                         let fm_Score = EngineWrapper.identify(self.faceRegion?.feature, featurebuff2: face2?.feature)
                         if(fm_Score != 0.0){
-                            
+                            let data = face2?.bound
+                            let image = self.resizeImage(image: chosenImage, targetSize: data!)
                             self.removeOldValue1("0 %")
                             var isFindImg: Bool = false
                             for (index,var dict) in self.arrDocumentData.enumerated(){

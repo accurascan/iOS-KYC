@@ -81,7 +81,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         self.imageViewFilp.isHidden = true
         
         if status == .authorized {
-            accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
+            accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!), setBarcodeType: ".pdf417")//init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
             let shortTap = UITapGestureRecognizer(target: self, action: #selector(handleTapToFocus(_:)))
             shortTap.numberOfTapsRequired = 1
             shortTap.numberOfTouchesRequired = 1
@@ -104,7 +104,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
         
-                    self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
+                    self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!), setBarcodeType: ".pdf417")//.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
         
                     self.accuraCameraWrapper?.startCamera()
                     
@@ -125,7 +125,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             if self.accuraCameraWrapper == nil {
                 imageView.isHidden = false
                 barCodeScannerView.isHidden = true
-                accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
+                accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(self.countryid!), setBarcodeType: ".pdf417")//init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
             }
             accuraCameraWrapper?.startCamera()
            if(isBarcodeEnabled){
@@ -1703,7 +1703,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             let alert = UIAlertController(title: "Barcode Result", message: message, preferredStyle: .alert)
             let retryButton = UIAlertAction(title: "RETRY", style: .default) { _ in
                 self.accuraCameraWrapper?.stopCamera()
-                self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
+                self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!), setBarcodeType: ".pdf417")//init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
                 self.accuraCameraWrapper?.startCamera()
             }
             alert.addAction(retryButton)
@@ -1768,6 +1768,16 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     func matchedItem(_ setDataFrontKey: NSMutableArray!, andsetDataFrontvalue setDataFrontvalue: NSMutableArray!, andmrzDatasacn mrzDataSacn: NSMutableDictionary!, setDataBackKey: NSMutableArray!, setDataBackValue: NSMutableArray!, setFaceData: NSMutableDictionary!, setSecurityData: NSMutableDictionary!, setFaceBackData: NSMutableDictionary!, setPhotoImage: UIImage!) {
          // print("Success")
     }
+    func resultData(_ resultmodel: ResultModel!) {
+        
+    }
+    func dlPlateNumber(_ plateNumber: String!, andImageNumberPlate imageNumberPlate: UIImage!) {
+        print(plateNumber)
+    }
+    
+    func screenSound() {
+        
+    }
     
     func capture() {
         let stillImageConnection = stillImageOutput.connection(with: AVMediaType.video)
@@ -1790,6 +1800,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
                             }
                         })
     }
+    
     
     func compressimage(with image: UIImage?, convertTo size: CGSize) -> UIImage? {
         UIGraphicsBeginImageContext(size)
@@ -1830,6 +1841,9 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         let imageRef: CGImage = contextImage.cgImage!.cropping(to: rect)!
         let image1: UIImage = UIImage(cgImage: imageRef)
         return image1
+    }
+    func reco_msg(_ message: String!) {
+        
     }
     
 }

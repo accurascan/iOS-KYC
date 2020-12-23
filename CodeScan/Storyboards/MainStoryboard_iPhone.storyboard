@@ -293,9 +293,20 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="byU-qB-Pa0">
+                                        <rect key="frame" x="331.66666666666669" y="13.333333333333336" width="33.333333333333314" height="33.333333333333336"/>
+                                        <state key="normal" image="icn_flip">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="buttonFlipAction:" destination="5jZ-Zl-H6b" eventType="touchUpInside" id="28Y-9w-SkS"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.87450980389999999" green="0.28627450980000002" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="byU-qB-Pa0" firstAttribute="centerY" secondItem="4Xp-ZJ-diK" secondAttribute="centerY" id="2Md-ba-sxD"/>
+                                    <constraint firstAttribute="trailing" secondItem="byU-qB-Pa0" secondAttribute="trailing" constant="10" id="2bZ-NP-nDK"/>
                                     <constraint firstItem="KvH-IU-FZJ" firstAttribute="bottom" secondItem="gTB-4i-B1g" secondAttribute="bottom" id="R9A-Mx-ieN"/>
                                     <constraint firstItem="gTB-4i-B1g" firstAttribute="centerY" secondItem="4Xp-ZJ-diK" secondAttribute="centerY" id="WVx-EP-bIR"/>
                                     <constraint firstItem="KvH-IU-FZJ" firstAttribute="top" secondItem="gTB-4i-B1g" secondAttribute="top" id="XhA-55-Y0Y"/>
@@ -450,7 +461,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="accuraScanLogo" translatesAutoresizingMaskIntoConstraints="NO" id="b91-IH-yAI" userLabel="accuraScanLogo">
-                                                    <rect key="frame" x="87.666666666666686" y="0.0" width="200" height="148"/>
+                                                    <rect key="frame" x="-12.666666666666657" y="0.0" width="400.33333333333326" height="148"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -932,6 +943,7 @@
         <image name="camera" width="21.333333969116211" height="19"/>
         <image name="flip" width="256" height="256"/>
         <image name="gallery" width="25.333333969116211" height="22"/>
+        <image name="icn_flip" width="33.333332061767578" height="33.333332061767578"/>
         <image name="placeholder_face" width="315" height="156.66667175292969"/>
         <image name="upload" width="19" height="19"/>
     </resources>

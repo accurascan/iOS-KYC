@@ -47,6 +47,9 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
         viewStatusBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         accuraCameraWrapper = AccuraCameraWrapper.init()
+//        accuraCameraWrapper?.andCardSide(.BACK_CARD_SCAN)
+//        accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
+//        accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let sdkModel = self.accuraCameraWrapper?.loadEngine(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String)
             if(sdkModel != nil)
@@ -68,7 +71,10 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             }
             if(self.isMRZCell)
             {
-                self.arrCountryList.add("Passport & ID MRZ")
+                self.arrCountryList.add("Passport MRZ")
+                self.arrCountryList.add("ID card MRZ")
+                self.arrCountryList.add("VISA MRZ")
+                self.arrCountryList.add("Other MRZ")
             }
             if(self.isPDFCell)
             {
@@ -87,12 +93,14 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             
              if(sdkModel != nil){
              if sdkModel!.i > 0{
-                 self.accuraCameraWrapper?.setFaceBlurPercentage(80)
-                 self.accuraCameraWrapper?.setHologramDetection(true)
-                 self.accuraCameraWrapper?.setLowLightTolerance(10)
-                 self.accuraCameraWrapper?.setMotionThreshold(4, stMassage: "")
-                 self.accuraCameraWrapper?.setGlarePercentage(6, intMax: 99)
-                 self.accuraCameraWrapper?.setCheckPhotoCopy(false)
+                self.accuraCameraWrapper?.setFaceBlurPercentage(90, stFaceBlurMessage: "")
+                self.accuraCameraWrapper?.setHologramDetection(true, sthologramMessage: "")
+                self.accuraCameraWrapper?.setLowLightTolerance(10, stLowLightMessage: "")
+                 self.accuraCameraWrapper?.setMotionThreshold(25, stMassage: "")
+                self.accuraCameraWrapper?.setGlarePercentage(6, intMax: 99, stGlareMessage: "")
+                self.accuraCameraWrapper?.setBlurPercentage(0)
+                self.accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
+//                self.accuraCameraWrapper?.setCheckPhotoCopy(false, stCheckPhotoMessage: "")
              }
             }
             
@@ -159,6 +167,15 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             }
             else{
                 let vc: ViewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+                if(stringCell == "Passport MRZ") {
+                    vc.MRZDocType = 1
+                } else if(stringCell == "ID card MRZ") {
+                    vc.MRZDocType = 2
+                } else if(stringCell == "VISA MRZ") {
+                    vc.MRZDocType = 3
+                } else {
+                    vc.MRZDocType = 0
+                }
                 vc.isCheckScanOCR = false
                 self.navigationController?.pushViewController(vc, animated: true)
             }

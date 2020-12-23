@@ -10,6 +10,7 @@ public enum NAV_PAGETYPE: Int {
     case ScanPan
     case ScanAadhar
     case ScanOCR
+    case DLPlate
 }
 
 //list of Scan Type

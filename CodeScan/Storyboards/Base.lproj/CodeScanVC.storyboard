@@ -155,12 +155,18 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wGO-3s-meO">
+                                        <rect key="frame" x="374" y="15" width="30" height="30"/>
+                                        <state key="normal" title="Flip"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.87450980389999999" green="0.28627450980000002" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="MK6-ad-HMA" firstAttribute="top" secondItem="OgS-7G-7KI" secondAttribute="top" id="4tT-zm-Tcl"/>
                                     <constraint firstItem="OgS-7G-7KI" firstAttribute="centerY" secondItem="vZ1-p2-fju" secondAttribute="centerY" id="6vv-qK-Ago"/>
+                                    <constraint firstAttribute="trailing" secondItem="wGO-3s-meO" secondAttribute="trailing" constant="10" id="7hl-Lh-9ZC"/>
                                     <constraint firstItem="MK6-ad-HMA" firstAttribute="bottom" secondItem="OgS-7G-7KI" secondAttribute="bottom" id="JSO-3l-Beu"/>
+                                    <constraint firstItem="wGO-3s-meO" firstAttribute="centerY" secondItem="vZ1-p2-fju" secondAttribute="centerY" id="dpJ-88-h2w"/>
                                     <constraint firstAttribute="height" constant="60" id="ePM-1b-MJr"/>
                                     <constraint firstItem="MK6-ad-HMA" firstAttribute="leading" secondItem="OgS-7G-7KI" secondAttribute="trailing" constant="15" id="xT8-44-53t"/>
                                     <constraint firstItem="OgS-7G-7KI" firstAttribute="leading" secondItem="vZ1-p2-fju" secondAttribute="leading" constant="8" id="zeM-JS-dot"/>

@@ -63,16 +63,21 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var givenNames = ""
     var passportNumber = ""
     var passportNumberChecksum = ""
+    var correctPassportChecksum = ""
     var nationality = ""
     var birth = ""
     var birthChecksum = ""
+    var correctBirthChecksum = ""
     var sex = ""
     var expirationDate = ""
     var otherID = ""
     var expirationDateChecksum = ""
+    var correctExpirationChecksum = ""
     var personalNumber = ""
     var personalNumberChecksum = ""
+    var correctPersonalChecksum = ""
     var secondRowChecksum = ""
+    var correctSecondrowChecksum = ""
     var placeOfBirth = ""
     var placeOfIssue = ""
     var issuedate = ""
@@ -131,6 +136,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var arrDataBackValue: [String] = []
     var arrDataForntValue1: [String] = []
     var arrDataBackValue1: [String] = []
+    var plateNumber: String?
+    var DLPlateImage: UIImage?
     //MARK:- UIViewContoller Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -321,6 +328,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if let strpassportNumberChecksum: String = dictScanningData["passportNumberChecksum"] as? String {
             self.passportNumberChecksum = strpassportNumberChecksum
         }
+        if let stcorrectPassportChecksum: String = dictScanningData["correctPassportChecksum"] as? String{
+            self.correctPassportChecksum = stcorrectPassportChecksum
+        }
         if let strnationality: String =  dictScanningData["nationality"] as? String  {
             self.nationality = strnationality
         }
@@ -329,6 +339,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         if let strbirthChecksum: String = dictScanningData["BirthChecksum"] as? String{
             self.birthChecksum = strbirthChecksum
+        }
+        if let stcorrectBirthChecksum: String = dictScanningData["correctBirthChecksum"] as? String{
+            self.correctBirthChecksum = stcorrectBirthChecksum
         }
         if let strsex: String =  dictScanningData["sex"] as? String {
             self.sex = strsex
@@ -340,14 +353,23 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if let strexpirationDateChecksum: String = dictScanningData["expirationDateChecksum"] as? String  {
             self.expirationDateChecksum = strexpirationDateChecksum
         }
+        if let stcorrectExpirationChecksum: String = dictScanningData["correctExpirationChecksum"] as? String{
+            self.correctExpirationChecksum = stcorrectExpirationChecksum
+        }
         if let strpersonalNumber: String = dictScanningData["personalNumber"] as? String{
             self.personalNumber = strpersonalNumber
         }
         if let strpersonalNumberChecksum: String = dictScanningData["personalNumberChecksum"] as? String {
             self.personalNumberChecksum = strpersonalNumberChecksum
         }
+        if let stcorrectPersonalChecksum: String = dictScanningData["correctPersonalChecksum"] as? String{
+            self.correctPersonalChecksum = stcorrectPersonalChecksum
+        }
         if let strsecondRowChecksum: String = dictScanningData["secondRowChecksum"] as? String {
             self.secondRowChecksum = strsecondRowChecksum
+        }
+        if let stcorrectSecondrowChecksum: String = dictScanningData["correctSecondrowChecksum"] as? String{
+            self.correctSecondrowChecksum = stcorrectSecondrowChecksum
         }
         if let strplaceOfBirth: String = dictScanningData["placeOfBirth"] as? String{
             self.placeOfBirth = strplaceOfBirth
@@ -366,7 +388,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func setOnlyMRZData(){
-        for index in 0..<18{
+        for index in 0..<23{
             var dict: [String:AnyObject] = [String:AnyObject]()
             switch index {
             case 0:
@@ -417,17 +439,21 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 dict = [KEY_VALUE: passportNumberChecksum,KEY_TITLE:"Document Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-                
             case 6:
+                dict = [KEY_VALUE: correctPassportChecksum,KEY_TITLE:"Correct Document Check No."] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
+                
+            case 7:
                     dict = [KEY_VALUE: country,KEY_TITLE:"Country"] as [String : AnyObject]
                     arrDocumentData.append(dict)
                     break
-            case 7:
+            case 8:
                 dict = [KEY_VALUE: nationality,KEY_TITLE:"Nationality"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
                 
-              case 8:
+            case 9:
                 var stSex: String = ""
                 if sex == "F" {
                     stSex = "FEMALE";
@@ -439,43 +465,59 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 arrDocumentData.append(dict)
                 break
                 
-            case 9:
+            case 10:
                 dict = [KEY_VALUE: date(toFormatedDate: birth),KEY_TITLE:"Date of Birth"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 10:
+            case 11:
                 dict = [KEY_VALUE: birthChecksum,KEY_TITLE:"Birth Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
+            case 12:
+                dict = [KEY_VALUE: correctBirthChecksum,KEY_TITLE:"Correct Birth Check No."] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
             
-            case 11:
+            case 13:
                 dict = [KEY_VALUE: date(toFormatedDate: expirationDate),KEY_TITLE:"Date of Expiry"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 12:
+            case 14:
                 dict = [KEY_VALUE: expirationDateChecksum,KEY_TITLE:"Expiration Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 13:
+            case 15:
+                dict = [KEY_VALUE: correctExpirationChecksum,KEY_TITLE:"Correct Expiration Check No."] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
+            case 16:
                 dict = [KEY_VALUE: personalNumber,KEY_TITLE:"Other ID"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 14:
+            case 17:
                 dict = [KEY_VALUE: personalNumberChecksum,KEY_TITLE:"Other ID Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 15:
+            case 18:
+                dict = [KEY_VALUE: correctPersonalChecksum,KEY_TITLE:"Correct Other ID Check No."] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
+            case 19:
                 dict = [KEY_VALUE: secondRowChecksum,KEY_TITLE:"Second Row Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
+            case 20:
+                dict = [KEY_VALUE: correctSecondrowChecksum,KEY_TITLE:"Correct Second Row Check No."] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
                 
-            case 16:
+            case 21:
                 if issuedate != ""{
                 dict = [KEY_VALUE: issuedate,KEY_TITLE:"Issue Date"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 }
                 break
-            case 17:
+            case 22:
                if departmentNumber != ""{
                 dict = [KEY_VALUE: departmentNumber,KEY_TITLE:"Department No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
@@ -495,7 +537,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
      */
     func setData(){
         //Set tableView Data
-        for index in 0..<20 + appDocumentImage.count{
+        for index in 0..<26 + appDocumentImage.count{
             var dict: [String:AnyObject] = [String:AnyObject]()
             switch index {
             case 0:
@@ -558,14 +600,18 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 arrDocumentData.append(dict)
                 break
             case 8:
-                dict = [KEY_VALUE: country,KEY_TITLE:"Country"] as [String : AnyObject]
+                dict = [KEY_VALUE: correctPassportChecksum,KEY_TITLE:"Correct Document Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
             case 9:
-                dict = [KEY_VALUE: nationality,KEY_TITLE:"Nationality"] as [String : AnyObject]
+                dict = [KEY_VALUE: country,KEY_TITLE:"Country"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
             case 10:
+                dict = [KEY_VALUE: nationality,KEY_TITLE:"Nationality"] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
+            case 11:
                 var stSex: String = ""
                 if sex == "F" {
                     stSex = "FEMALE";
@@ -576,51 +622,67 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 dict = [KEY_VALUE: stSex,KEY_TITLE:"Sex"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 11:
+            case 12:
                 dict = [KEY_VALUE: date(toFormatedDate: birth),KEY_TITLE:"Date of Birth"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 12:
+            case 13:
                 dict = [KEY_VALUE: birthChecksum,KEY_TITLE:"Birth Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 13:
-                dict = [KEY_VALUE: date(toFormatedDate: expirationDate),KEY_TITLE:"Date of Expiry"] as [String : AnyObject]
-                arrDocumentData.append(dict)
-                break
             case 14:
-                dict = [KEY_VALUE: expirationDateChecksum,KEY_TITLE:"Expiration Check No."] as [String : AnyObject]
+                dict = [KEY_VALUE: correctBirthChecksum,KEY_TITLE:"Correct Birth Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
             case 15:
-                dict = [KEY_VALUE: personalNumber,KEY_TITLE:"Other ID"] as [String : AnyObject]
+                dict = [KEY_VALUE: date(toFormatedDate: expirationDate),KEY_TITLE:"Date of Expiry"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
             case 16:
-                dict = [KEY_VALUE: personalNumberChecksum,KEY_TITLE:"Other ID Check No."] as [String : AnyObject]
+                dict = [KEY_VALUE: expirationDateChecksum,KEY_TITLE:"Expiration Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
             case 17:
-                dict = [KEY_VALUE: secondRowChecksum,KEY_TITLE:"Second Row Check No."] as [String : AnyObject]
+                dict = [KEY_VALUE: correctExpirationChecksum,KEY_TITLE:"Correct Expiration Check No."] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
             case 18:
+                dict = [KEY_VALUE: personalNumber,KEY_TITLE:"Other ID"] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
+            case 19:
+                dict = [KEY_VALUE: personalNumberChecksum,KEY_TITLE:"Other ID Check No."] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
+            case 20:
+                dict = [KEY_VALUE: correctPersonalChecksum,KEY_TITLE:"Correct Other ID Check No."] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
+            case 21:
+                dict = [KEY_VALUE: secondRowChecksum,KEY_TITLE:"Second Row Check No."] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
+            case 22:
+                dict = [KEY_VALUE: correctSecondrowChecksum,KEY_TITLE:"Correct Second Row Check No."] as [String : AnyObject]
+                arrDocumentData.append(dict)
+                break
+            case 23:
                 if issuedate != ""{
                     dict = [KEY_VALUE: issuedate,KEY_TITLE:"Issue Date"] as [String : AnyObject]
                     arrDocumentData.append(dict)
                 }
                 break
-            case 19:
+            case 24:
                 if departmentNumber != ""{
                     dict = [KEY_VALUE: departmentNumber,KEY_TITLE:"Department No."] as [String : AnyObject]
                     arrDocumentData.append(dict)
                 }
                 break
-            case 20:
+            case 25:
                 dict = [KEY_DOC1_IMAGE: !appDocumentImage.isEmpty ? appDocumentImage[0] : nil] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 21:
+            case 26:
                 dict = [KEY_DOC2_IMAGE: appDocumentImage.count == 2 ? appDocumentImage[1] : nil] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
@@ -641,7 +703,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         var reason: String = ""
         let status:ZoomSDKStatus = Zoom.sdk.getStatus()
         switch(status) {
-        case .neverInitialized:                   
+        case .neverInitialized:
             reason = "Initialize was never attempted";
             break;
         case .initialized:
@@ -865,7 +927,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         if pageType == .ScanOCR{
             return 7
-        }else{
+        }else if pageType == .DLPlate {
+            return 2
+        } else{
             return 1
         }
         
@@ -900,6 +964,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             default:
                 return 0
             }
+        }else if(pageType == .DLPlate){
+            return 1
         }else{
             return  self.arrDocumentData.count
         }
@@ -981,13 +1047,18 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     let objDataValue = arrDataForntValue[indexPath.row]
                     cell.lblName.text = objDataKey
                     cell.lblValue.text = objDataValue
+                    cell.imageViewSignHeight.constant = 0
                     if objDataKey.contains("Sign") || objDataKey.contains("SIGN"){
-                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters) {
+                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters)
+                        {
                             let image = UIImage(data: decodedData)
-                            let attachment = NSTextAttachment()
-                            attachment.image = image
-                            let attachmentString = NSAttributedString(attachment: attachment)
-                            cell.lblValue.attributedText = attachmentString
+                            cell.imageViewSignHeight.constant = 51
+                            cell.imageViewSign.image = image
+                            cell.lblValue.text = ""
+//                            let attachment = NSTextAttachment()
+//                           attachment.image = image
+//                           let attachmentString = NSAttributedString(attachment: attachment)
+//                            cell.lblValue.attributedText = attachmentString
                         }
                         
                     }
@@ -997,28 +1068,32 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             else if indexPath.section == 4{
                 let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
                 cell.selectionStyle = .none
+                cell.imageViewSignHeight.constant = 0
                 if !arrDataBackKey.isEmpty{
                     let objDatakey = arrDataBackKey[indexPath.row]
                     let objDataValue = arrDataBackValue[indexPath.row]
                     cell.lblName.text = objDatakey
                     cell.lblValue.text = objDataValue
+                    
+                    
                     if objDatakey.contains("Sign") || objDatakey.contains("SIGN"){
                         if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters) {
                             let image = UIImage(data: decodedData)
-                            let attachment = NSTextAttachment()
-                            attachment.image = image
-                            let attachmentString = NSAttributedString(attachment: attachment)
-                            cell.lblValue.attributedText = attachmentString
+                            cell.imageViewSignHeight.constant = 51
+                            cell.imageViewSign.image = image
+                            cell.lblValue.text = ""
                         }
                     }
+                    
                 }
+//                cell.imageViewSign.isHidden = true
                 return cell
             }else if indexPath.section == 5{
                 let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
                 if !arrDocumentData.isEmpty{
                     
                     let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
-                    
+                    cell.imageViewSignHeight.constant = 0
                     if indexPath.row == 0{
                         cell.lblName.text = "MRZ"
                         cell.lblValue.text = dictResultData[KEY_VALUE] as? String ?? ""
@@ -1050,9 +1125,36 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 
                 return cell
             }
-        }
-        else{
+        }else if pageType == .DLPlate {
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
+//
+//            cell.selectionStyle = .none
+//            cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
+            if indexPath.section == 0{
+                let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
+                cell.SignImageBG.tag = indexPath.section
+                if(cell.SignImageBG.tag == indexPath.section) {
+                    cell.imageViewSign.isHidden = true
+                }
+                cell.lblName.text = "Number Plate :"
+                cell.lblValue.text = plateNumber
+                return cell
+            }else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
+                
+                cell.selectionStyle = .none
+                cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
+                cell.lblDocName.text = "FRONT SIDE"
+                if DLPlateImage != nil{
+                    cell.imgDocument.image = DLPlateImage!
+                }
+                return cell
+            }
+            
+            
+        } else{
             let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
+            let index = indexPath.row
             // print(dictResultData)
             if dictResultData[KEY_FACE_IMAGE] != nil{
                 //Set User Image
@@ -1141,11 +1243,13 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                         cell.lblDocName.text = ""
                         cell.constraintLblHeight.constant = 0
                     }else{
-                        cell.lblDocName.text = "Front Side"
+//                        cell.lblDocName.text = "Front Side"
                         cell.constraintLblHeight.constant = 25
                     }
                     if let imageDoc1: UIImage =  dictResultData[KEY_DOC1_IMAGE]  as? UIImage{
                         cell.imgDocument.image = imageDoc1
+                        cell.lblDocName.text = "Front Side"
+//                        cell.constraintLblHeight.constant = 25
                     }
                 }
                 
@@ -1159,6 +1263,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                         cell.constraintLblHeight.constant = 25
                     }
                     if let imageDoc2: UIImage =  dictResultData[KEY_DOC2_IMAGE]  as? UIImage{
+//                        cell.lblDocName.text = "Back Side"
+                        
+//                        cell.constraintLblHeight.constant = 25
                         cell.imgDocument.image = imageDoc2
                     }
                 }
@@ -1197,6 +1304,13 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             else{
                 return 310.0
             }
+        }else if pageType == .DLPlate{
+            if indexPath.section == 0 {
+                return 120
+            } else {
+                return 310.0
+            }
+            
         }else{
             let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
             if dictResultData[KEY_FACE_IMAGE] != nil{
@@ -1213,9 +1327,11 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             else if dictResultData[KEY_TITLE] != nil || dictResultData[KEY_VALUE] != nil{
                 return UITableView.automaticDimension
             }
-            else if dictResultData[KEY_DOC1_IMAGE] != nil || dictResultData[KEY_DOC2_IMAGE] != nil{
+            else if dictResultData[KEY_DOC1_IMAGE] != nil {
                 return 310.0
-            }else{
+            }else if let _ = dictResultData[KEY_DOC2_IMAGE] as? UIImage{
+                return 310.0
+            } else {
                 return 0.0
             }
         }
@@ -1262,7 +1378,11 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }else if section == 2{
             return 2
         }else if section == 3{
-            return 60
+            if !arrDataForntKey.isEmpty {
+                return 60
+            } else {
+                return CGFloat.leastNonzeroMagnitude
+            }
         }else if section == 4{
             if !arrDataBackKey.isEmpty{
                 return 60
@@ -1284,17 +1404,23 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         if section == 3{
-            let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))
-            headerView.backgroundColor = UIColor.init(red: 237.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1.0)
-            let label = UILabel()
-            label.frame = CGRect.init(x: 15, y: 0, width: headerView.frame.width - 16, height: headerView.frame.height)
-            label.backgroundColor = .clear
-            label.text = "OCR FRONT"
-            label.font = UIFont.init(name: "Aller-Bold", size: 16)
-            label.textAlignment = .left
-            label.textColor = UIColor(red: 47.0 / 255.0, green: 50.0 / 255.0, blue: 58.0 / 255.0, alpha: 1) // my custom colour
-            headerView.addSubview(label)
-            return headerView
+            if !arrDataForntKey.isEmpty {
+                let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))
+                            headerView.backgroundColor = UIColor.init(red: 237.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+                            let label = UILabel()
+                            label.frame = CGRect.init(x: 15, y: 0, width: headerView.frame.width - 16, height: headerView.frame.height)
+                            label.backgroundColor = .clear
+                            label.text = "OCR FRONT"
+                            label.font = UIFont.init(name: "Aller-Bold", size: 16)
+                            label.textAlignment = .left
+                            label.textColor = UIColor(red: 47.0 / 255.0, green: 50.0 / 255.0, blue: 58.0 / 255.0, alpha: 1) // my custom colour
+                            headerView.addSubview(label)
+                            return headerView
+            } else {
+                let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
+                    return headerView
+            }
+            
         }else if section == 4{
             if !arrDataBackKey.isEmpty{
                 let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))

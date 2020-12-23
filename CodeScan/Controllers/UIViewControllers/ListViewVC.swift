@@ -24,6 +24,7 @@ class ListViewVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var screenList = NSMutableArray()
     var arrResponse : [[String:AnyObject]] = [[String:AnyObject]]()
     var countryId : Int? = 0
+    var cardtype: Int? = 0
     
     //MARK:- ViewController
     override func viewDidLoad() {
@@ -88,6 +89,9 @@ class ListViewVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             vc.docName = (cellDict.value(forKey: "card_name") as? String)!
             vc.countryid = countryId
             vc.isCheckScanOCR = true
+            
+            vc.cardType = cellDict.value(forKey: "card_type") as? Int//cardtype
+            
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
