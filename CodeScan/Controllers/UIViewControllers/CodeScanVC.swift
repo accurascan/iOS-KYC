@@ -19,6 +19,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     
     @IBOutlet weak var constrintViweBorderHeight: NSLayoutConstraint!
     
+    @IBOutlet weak var viewNavigationBar: UIView!
     @IBOutlet weak var constrintVIewBorderWidth: NSLayoutConstraint!
     
     
@@ -50,6 +51,10 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     var countryid : Int? = 0
     var stillImageOutput : AVCaptureStillImageOutput!
     var isResultShow = false
+    var statusBarRect = CGRect()
+    var bottomPadding:CGFloat = 0.0
+    var topPadding: CGFloat = 0.0
+    
     //MARK:- UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,9 +65,17 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         else{
             self.labelMsg.text = "Scan front Side of Document"
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(ChangedOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
-        
+        statusBarRect = UIApplication.shared.statusBarFrame
+        let window = UIApplication.shared.windows.first
+       
+        if #available(iOS 11.0, *) {
+            bottomPadding = window!.safeAreaInsets.bottom
+            topPadding = window!.safeAreaInsets.top
+        } else {
+            // Fallback on earlier versions
+        }
+//        NotificationCenter.default.addObserver(self, selector: #selector(ChangedOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
+        ChangedOrientation()
         var width : CGFloat = 0
         var height : CGFloat = 0
         
@@ -179,25 +192,40 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         var width: CGFloat = 0.0
         var height: CGFloat = 0.0
     
-            if UIDevice.current.orientation == .landscapeLeft {
-                height = UIScreen.main.bounds.size.width * 0.85
-                width = UIScreen.main.bounds.size.height * 0.75
-                constrintViweBorderHeight.constant = height
-                constrintVIewBorderWidth.constant = width
-            } else if UIDevice.current.orientation == .landscapeRight {
-                width = UIScreen.main.bounds.size.height * 0.75
-                height = UIScreen.main.bounds.size.width * 0.85
-                constrintViweBorderHeight.constant = height
-                constrintVIewBorderWidth.constant = width
-            } else if UIDevice.current.orientation == .portrait {
-                width = UIScreen.main.bounds.size.width * 0.95
-                height = UIScreen.main.bounds.size.height * 0.35
-                constrintVIewBorderWidth.constant = width
-                constrintViweBorderHeight.constant = height
-            }
+//            if UIDevice.current.orientation == .landscapeLeft {
+//                height = UIScreen.main.bounds.size.width * 0.85
+//                width = UIScreen.main.bounds.size.height * 0.75
+//                constrintViweBorderHeight.constant = height
+//                constrintVIewBorderWidth.constant = width
+//            } else if UIDevice.current.orientation == .landscapeRight {
+//                width = UIScreen.main.bounds.size.height * 0.75
+//                height = UIScreen.main.bounds.size.width * 0.85
+//                constrintViweBorderHeight.constant = height
+//                constrintVIewBorderWidth.constant = width
+//            } else if UIDevice.current.orientation == .portrait {
+//                width = UIScreen.main.bounds.size.width * 0.95
+//                height = UIScreen.main.bounds.size.height * 0.35
+//                constrintVIewBorderWidth.constant = width
+//                constrintViweBorderHeight.constant = height
+//            }
+        let orientastion = UIApplication.shared.statusBarOrientation
+        if(orientastion ==  UIInterfaceOrientation.portrait) {
+            width = UIScreen.main.bounds.size.width * 0.95
+            height  = (UIScreen.main.bounds.size.height - (self.bottomPadding + self.topPadding + self.statusBarRect.height)) * 0.35
+            viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
+//            self.viewNavigationBar.backgroundColor = #colorLiteral(red: 0.8352941176, green: 0.1960784314, blue: 0.2470588235, alpha: 1)
+        } else {
+//            height = UIScreen.main.bounds.size.height - ( viewNavigationBar.frame.height + 80)
+////            print(self.bottomPadding + self.topPadding + self.statusBarRect.height + viewNavigationBar.frame.height)
+//            width  = height / 0.69
+            self.viewNavigationBar.backgroundColor = .clear
+            height = UIScreen.main.bounds.size.height * 0.62
+            width = UIScreen.main.bounds.size.width * 0.51
+        }
         
-    
-        accuraCameraWrapper?.changedOrintation(width, height: height)
+        constrintVIewBorderWidth.constant = width
+        constrintViweBorderHeight.constant = height
+//        accuraCameraWrapper?.changedOrintation(width, height: height)
         
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
             self.view.layoutIfNeeded()

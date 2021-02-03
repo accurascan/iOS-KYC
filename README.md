@@ -1,8 +1,8 @@
-# Accura KYC iOS SDK - OCR, Face Match & Liveness Check
-iOS KYC SDK - OCR &amp; Face Match <br/><br/>
-Accura OCR is used for Optical character recognition.<br/><br/>
-Accura Face Match is used for Matching 2 Faces. Source and Target. It matches the User Image from a Selfie vs User Image in document.<br/><br/>
-Accura Authentication is used for your customer verification and authentication.Unlock the True Identity of Your Users with 3D Selfie Technology<br/><br/>
+﻿# Accura KYC iOS SDK - OCR, Face Match & Liveness Check
+iOS KYC SDK - OCR &amp; Face Match <br/>
+Accura OCR is used for Optical character recognition.<br/>
+Accura Face Match is used for Matching 2 Faces. Source and Target. It matches the User Image from a Selfie vs User Image in document.<br/>
+Accura Authentication is used for your customer verification and authentication.Unlock the True Identity of Your Users with 3D Selfie Technology
 
 
 Below steps to setup Accura SDK's in your project.
@@ -10,62 +10,69 @@ Below steps to setup Accura SDK's in your project.
 
 ## 1. Setup Accura OCR
 
-Step 1: install the AccuraOCR pod(xcode compatible version 12.3) <br />
-         pod 'AccuraOCRSDK', '1.1.0'
-
-Step 2: Add licence file in to your project. <br />        
-            - key.licence // for Accura OCR <br />
-            Generate your Accura licence from https://accurascan.com/developer/dashboard <br />
+#### Step 1: install the AccuraOCR pod(xcode compatible version 12.3)
+	`pod 'AccuraOCRSDK', '1.1.1'`
+         
+#### Step 2: Add license file in to your project.    
+```
+- key.license
+```
+   
+Generate your Accura license from https://accurascan.com/developer/dashboard <br/>
             
-Step 3: Add AccuraOCRSDK.swift file in your projrct.<br /> 
+#### Step 3: Add `AccuraOCRSDK.swift` file in your projrct
 
-Step 4:  Run the App in Simulator.  ( Optional ) <br /> 
-      Download and extract the AccuraOCR.framework.(can download From
-             https://accurascan.com/iOSSDK/AccuraOCR.framework.zip) <br/>
+#### Step 4:  Run the App in Simulator.  ( Optional )
+Download and extract the AccuraOCR.framework.(can download From https://accurascan.com/iOSSDK/AccuraOCR.framework.zip)
 
-Step 5: Appdelegate.swift file in add<br />
+#### Step 5: Appdelegate.swift file in add<br />
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         AccuraOCRSDK.configure()
         return true
     }
  
-Step 6 : To initialize sdk on app start:
+#### Step 6 : To initialize sdk on app start:
 
     import AccuraOCR
 
     var accuraCameraWrapper: AccuraCameraWrapper? = nil
     var arrCountryList = NSMutableArray()
+    accuraCameraWrapper = AccuraCameraWrapper.init()
     
-     accuraCameraWrapper = AccuraCameraWrapper.init()
-     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-     let sdkModel = accuraCameraWrapper.loadEngine(your PathForDirectories)
-     if (sdkModel.i > 0) {
-          // if sdkModel.isOCREnable then get card data
-      	if (sdkModel.isOCREnable) let countryListStr = self.videoCameraWrapper?.getOCRList();
-        	if (countryListStr != null) {
-            	for i in countryListStr!{
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+    
+	    let sdkModel = accuraCameraWrapper.loadEngine(your PathForDirectories)
+		if (sdkModel.i > 0) {
+			if(sdkModel!.isBankCardEnable) {
+				self.arrCountryList.add("Bank Card")
+			}
+			if(sdkModel!.isMRZEnable) {
+				self.arrCountryList.add("All MRZ")
+				// ID MRZ
+				// Visa MRZ
+				// Passport MRZ
+				// Other MRZ
+				
+			}
+		    // if sdkModel.isOCREnable then get card data
+			if (sdkModel.isOCREnable) let countryListStr = self.videoCameraWrapper?.getOCRList();
+	        if (countryListStr != null) {
+	            for i in countryListStr!{
               		self.arrCountryList.add(i)
           		}
           	}
+          	
       	}
-     }
+      	
+	}
 
     arrCountryList to get value(forKey: "card_name") //get card Name
     arrCountryList to get value(forKey: "country_id") //get country id
     arrCountryList to get value(forKey: "card_id") //get card id
 
-   Some customized function below. Call this function after initialize sdk
-	
-   * Sets camera Facing front or back camera
-     ```
-     accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
-     ```
-     
-   * Flip camera
-     ```
-     accuraCameraWrapper?.switchCamera()
-     ```
+##### Update filters config like below.
+  Call this function after initialize sdk if license is valid(sdkModel.i > 0)
    
    * Set Blur Percentage to allow blur on document
      ```
@@ -109,10 +116,27 @@ Step 6 : To initialize sdk on app start:
      accuraCameraWrapper?.setMotionThreshold(int /*setMotionThreshold*/4 string /*message*/ "Keep Document Steady")
      ```
      
-Step 7 : Set CameraView
+   * Sets camera Facing front or back camera
+     ```
+     accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
+     ```
+     
+   * Flip camera
+     ```
+     accuraCameraWrapper?.switchCamera()
+     ```
+   * Set Font/Back Side Scan
+	 ```
+	 accuraCameraWrapper?.andCardSide(.FRONT_CARD_SCAN)
+	 ```  
 
-   Important Grant Camera and storage Permission.
-    
+
+     
+#### Step 7 : Set CameraView
+
+   Important Grant Camera and storage Permission.</br>
+   supports Landscape Camera
+```1    
     import AccuraOCR
     import AVFoundation
     
@@ -122,8 +146,9 @@ Step 7 : Set CameraView
     	super.viewDidLoad()
     	let status = AVCaptureDevice.authorizationStatus(for: .video)
     
+    
     	if status == .authorized {
-         	accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName, andcardType: Int32(cardType!), andMRZDocType: /*SetMRZDocumentType*/ Int32(MRZDocType!))
+         	accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName, andcardType: Int32(cardType/*2 = DLPlate And 3 = bankCard*/), andMRZDocType: /*SetMRZDocumentType*/ Int32(MRZDocType!/*0 = OtherMRZ, 1 = PassportMRZ, 2 = IDMRZ, 3 = VisaMRZ*/))
     	} else if status == .denied {
         	let alert = UIAlertController(title: "AccuraSdk", message: "It looks like your privacy settings are preventing us from accessing your camera.", preferredStyle: .alert)
         	let yesButton = UIAlertAction(title: "OK", style: .default) { _ in
@@ -158,7 +183,6 @@ Step 7 : Set CameraView
         accuraCameraWrapper = nil
         super.viewWillDisappear(animated)
     }
-    
     
     extension ViewController: VideoCameraWrapperDelegate{
     	func recognizeSucceedBarcode(_ message: String!) {
@@ -197,13 +221,20 @@ Step 7 : Set CameraView
         //  it calls when detect vehicle numberplate
         func dlPlateNumber(_ plateNumber: String!, andImageNumberPlate imageNumberPlate: UIImage!) {
         	plateNumber:- get data of numberplate
-            imageNumberPlate:- get image of numberplate
-            
+            imageNumberPlate:- get image of numberplate  
         }
+
+		//it calls when get Bank Card data
+		func recognizSuccessBankCard(cardDetail: NSMutableDictionary!, andBankCardImage bankCardImage: UIImage!) {
+				cardDetail["card_type"] :- get bank card type
+				cardDetail["card_number"] :- get bank card number
+				cardDetail["expiration_month"] :- get bank card expiry month
+				cardDetail["expiration_year"] :- get bank card expiry year 
+		}
         
-        //  it calls when recieve error message
-        func reco_msg(_ messageCode: String!) {
-   			var message = String()
+	    // it calls when recieve error message
+	    func reco_msg(_ messageCode: String!) {
+			var message = String()
     		if messageCode == ACCURA_ERROR_CODE_MOTION {
         		message = "Keep Document Steady"
     		} else if messageCode == ACCURA_ERROR_CODE_DOCUMENT_IN_FRAME {
@@ -237,11 +268,45 @@ Step 7 : Set CameraView
        		} else if(message == ACCURA_ERROR_CODE_VISA_MRZ) {
             	message = "Visa MRZ not detected"
         	}else {
-           	 	message = ""
+           	 	message = messageCode
         	}
     		print(message)
 		}
  	}
+```
+
+## 2. Setup Accura liveness
+
+Contact to  [connect@accurascan.com](mailto:connect@accurascan.com)  to get Url for liveness
+
+Step 1: Open camera for liveness Detectcion.
+
+```
+//set liveness url
+Liveness.setLivenessURL(livenessURL: "/*Your URL*/")
+    
+// To customize your screen theme and feed back messages
+Liveness.setBackGroundColor(backGroundColor: "#C4C4C5")	
+Liveness.setCloseIconColor(closeIconColor: "#000000")
+Liveness.setFeedbackBackGroundColor(feedbackBackGroundColor: "#C4C4C5")	
+Liveness.setFeedbackTextColor(feedbackTextColor: "#000000")	
+Liveness.setFeedbackTextSize(feedbackTextSize: 18)	
+Liveness.setFeedBackframeMessage(feedBackframeMessage: "Frame Your Face")
+Liveness.setFeedBackAwayMessage(feedBackAwayMessage: "Move Phone Away")	
+Liveness.setFeedBackOpenEyesMessage(feedBackOpenEyesMessage: "Keep Your Eyes Open")
+Liveness.setFeedBackCloserMessage(feedBackCloserMessage: "Move Phone Closer")
+Liveness.setFeedBackCenterMessage(feedBackCenterMessage: "Center Your Face")	Liveness.setFeedbackMultipleFaceMessage(feedBackMultipleFaceMessage: "Multiple face detected")	
+Liveness.setFeedBackFaceSteadymessage(feedBackFaceSteadymessage: "Keep Your Head Straight")
+Liveness.setFeedBackBlurFaceMessage(feedBackBlurFaceMessage: "Blur detected over face")
+Liveness.setFeedBackGlareFaceMessage(feedBackGlareFaceMessage: "Glare 	detected")
+Liveness.setLivenessAndFacematch(livenessView: /*yourviewcontroller*/, ischeckLiveness: true)
+```
+
+Step 2: Handle Accura liveness Result
+
+```
+func LivenessData(stLivenessValue: String, livenessImage: UIImage, status: Bool)
+```
 
 
 ## 2. Setup Accura Face Match
@@ -253,13 +318,39 @@ Step 2: Add licence file in to your project.<br />
             - `accuraface.license` for Accura Face Match <br />
             Generate your Accura licence from <https://accurascan.com/developer/sdk-license>
             
-Step 3: Add `FaceView.swift` file in your project.            
+Step 3: Add `FaceView.swift` file in your project.     
+Step 4: Open auto capture camera
+``` 
+	// To customize your screen theme and feed back messages
+	Liveness.setBackGroundColor(backGroundColor: "#C4C4C5")
+	Liveness.setCloseIconColor(closeIconColor: "#000000")
+	Liveness.setFeedbackBackGroundColor(feedbackBackGroundColor: "#C4C4C5")
+	Liveness.setFeedbackTextColor(feedbackTextColor: "#000000")
+	Liveness.setFeedbackTextSize(feedbackTextSize: 18)
+	Liveness.setFeedBackframeMessage(feedBackframeMessage: "Frame Your Face")
+	Liveness.setFeedBackAwayMessage(feedBackAwayMessage: "Move Phone Away")
+	Liveness.setFeedBackOpenEyesMessage(feedBackOpenEyesMessage: "Keep Your Eyes Open")
+	Liveness.setFeedBackCloserMessage(feedBackCloserMessage: "Move Phone Closer")
+	Liveness.setFeedBackCenterMessage(feedBackCenterMessage: "Center Your Face")
+	Liveness.setFeedbackMultipleFaceMessage(feedBackMultipleFaceMessage: "Multiple face detected")
+	Liveness.setFeedBackFaceSteadymessage(feedBackFaceSteadymessage: "Keep Your Head Straight")
+	Liveness.setFeedBackBlurFaceMessage(feedBackBlurFaceMessage: "Blur detected over face")
+	Liveness.setFeedBackGlareFaceMessage(feedBackGlareFaceMessage: "Glare detected")
+	Liveness.setLivenessAndFacematch(livenessView: /*yourviewcontroller*/, ischeckLiveness: false)
 
-Step 4: Implement face match code manually to your activity.
+```
+Step 5: Detect face image
+```
+	func LivenessData(stLivenessValue: String, livenessImage: UIImage, status: Bool) {
+		func setFaceRegion(livenessImage) 
+	}
+```       
+
+Step 6: Implement face match code manually to your activity.
 
    Important Grant Camera and storage Permission.
-    
-   	override func viewDidLoad() {
+
+	override func viewDidLoad() {
         super.viewDidLoad()
     	/*
          * FaceMatch SDK method to check if engine is initiated or not
@@ -274,26 +365,26 @@ Step 4: Implement face match code manually to your activity.
     	}
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-    	super.viewDidAppear(animated)
-      	/*
-      	 * Facematch SDK method to get SDK engine status after initialization
-      	 * Return: -20 = Face Match license key not found, -15 = Face Match license is invalid.
-       	 */
-      	let fmValue = EngineWrapper.getEngineInitValue() //get engineWrapper load status
-      	if fmValue == -20{
-      		GlobalMethods.showAlertView("key not found", with: self)
-      	}else if fmValue == -15{
-      	GlobalMethods.showAlertView("License Invalid", with: self)
-    	}
-    }
+	   override func viewDidAppear(_ animated: Bool) {
+	    	super.viewDidAppear(animated)
+	      	/*
+	      	 * Facematch SDK method to get SDK engine status after initialization
+	      	 * Return: -20 = Face Match license key not found, -15 = Face Match license is invalid.
+	       	 */
+	      	let fmValue = EngineWrapper.getEngineInitValue() //get engineWrapper load status
+	      	if fmValue == -20{
+	      		// key not found
+	      	}else if fmValue == -15{
+		      	// License Invalid
+	    	}
+	    }
     
-    /**
-      * This method use calculate faceMatch score
-      * Parameters to Pass: selected uiimage
-      *
-      */
-    func setFaceRegion(_ image: UIImage) {
+	    /**
+	      * This method use calculate faceMatch score
+	      * Parameters to Pass: selected uiimage
+	      *
+	      */
+	func setFaceRegion(_ image: UIImage) {
     	var faceRegion : NSFaceRegion?
         if(selectFirstImage){
             /*
@@ -323,22 +414,12 @@ Step 4: Implement face match code manually to your activity.
         
         if (selectFirstImage){
             if (faceRegion != nil){
-                image1.isHidden = true
+                
                 /*
                  * SDK method call to draw square face around
                  * @Params: BackImage, Front Image faceRegion Data
                  */
                 faceView1.setFaceRegion(faceRegion)
-                
-                /*
-                 * SDK method call to draw square face around
-                 * @Params: BackImage, Front faceRegion Image
-                 */
-                faceView1.setImage(faceRegion?.image)
-                faceView1.setNeedsDisplay()
-                faceView1.isHidden = false
-                imgUpload.isHidden = true
-                txtUpload.isHidden = true
             }
             
             let face2 : NSFaceRegion? = faceView2.getFaceRegion(); // Get image data
@@ -362,7 +443,6 @@ Step 4: Implement face match code manually to your activity.
                 }
                 
                 if(faceRegion2 != nil){
-                    image2.isHidden = true
                     /*
                      * SDK method call to draw square face around
                      * @Params: BackImage, Front Image faceRegion Data
@@ -372,18 +452,10 @@ Step 4: Implement face match code manually to your activity.
                      * SDK method call to draw square face around
                      * @Params: BackImage, Front faceRegion Image
                      */
-                    faceView2.setImage(faceRegion2?.image)
-                    
-                    faceView2.setNeedsDisplay()
-                    imgUpload2.isHidden = true
-                    txtUpload2.isHidden = true
                 }
-                
             }
         } else if(faceRegion != nil){
-            image1.isHidden = true
-            image2.isHidden = true
-            
+     
             /*
              * SDK method call to draw square face around
              * @Params: BackImage, Front Image faceRegion Data
@@ -392,11 +464,7 @@ Step 4: Implement face match code manually to your activity.
             /*
              * SDK method call to draw square face around
              * @Params: BackImage, Front faceRegion Image
-             */
-            faceView2.setImage(faceRegion?.image)
-            faceView2.setNeedsDisplay()
-            imgUpload2.isHidden = true
-            txtUpload2.isHidden = true
+             *
         }
         let face1:NSFaceRegion? = faceView1.getFaceRegion() // Get image data
         let face2:NSFaceRegion? = faceView2.getFaceRegion() // Get image data
@@ -405,21 +473,13 @@ Step 4: Implement face match code manually to your activity.
             lableMatchRate.text = "Match Score : 0.0 %";
             return
         }
-        arrDocument.removeAll()
-        arrDocument.append(face1?.image ?? UIImage())
-        arrDocument.append(face2?.image ?? UIImage())
         
         /*
          * FaceMatch SDK method call to get FaceMatch Score
          * @Params: FrontImage Face, BackImage Face
-         * @Return: Match Score
-         
+         * @Return: Match Score 
          */
         let fmSore = EngineWrapper.identify(face1?.feature, featurebuff2: face2?.feature)
         let twoDecimalPlaces = String(format: "%.2f", fmSore*100) //Match score Convert Float Value
         lableMatchRate.text = "Match Score : \(twoDecimalPlaces) %"
-    }
-
-Step 5. Liveness Check
-
-Contact AccuraScan at <contact@accurascan.com> for Liveness SDK or API 
+	}

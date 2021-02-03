@@ -28,6 +28,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var viewNavigationBar: UIView!
     
+    @IBOutlet weak var buttonOrtientation: UIButton!
     @IBOutlet weak var viewStatusBar: UIView!
     @IBOutlet weak var lablelDataNotFound: UILabel!
     
@@ -43,6 +44,13 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
     //MARK:- View Controller Method
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let orientastion = UIApplication.shared.statusBarOrientation
+        if(orientastion ==  UIInterfaceOrientation.portrait) {
+            buttonOrtientation.isSelected = false
+        } else {
+            buttonOrtientation.isSelected = true
+        }
 
         SVProgressHUD.show(withStatus: "Loading...")
         lablelDataNotFound.isHidden = true
@@ -131,7 +139,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
         } else {
             sender.isSelected = true
-            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
         }
         
     }

@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var _constant_height: NSLayoutConstraint!
     @IBOutlet weak var _constant_width: NSLayoutConstraint!
     
+    @IBOutlet weak var AspectRatio: NSLayoutConstraint!
     @IBOutlet weak var lblOCRMsg: UILabel!
     @IBOutlet weak var lblTitleCountryName: UILabel!
     
@@ -278,10 +279,13 @@ class ViewController: UIViewController {
         if(orientastion ==  UIInterfaceOrientation.portrait) {
             width = UIScreen.main.bounds.size.width * 0.95
             height  = (UIScreen.main.bounds.size.height - (self.bottomPadding + self.topPadding + self.statusBarRect.height)) * 0.35
+            viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
+//            self.viewNavigationBar.backgroundColor = #colorLiteral(red: 0.8352941176, green: 0.1960784314, blue: 0.2470588235, alpha: 1)
         } else {
 //            height = UIScreen.main.bounds.size.height - ( viewNavigationBar.frame.height + 80)
 ////            print(self.bottomPadding + self.topPadding + self.statusBarRect.height + viewNavigationBar.frame.height)
 //            width  = height / 0.69
+            self.viewNavigationBar.backgroundColor = .clear
             height = UIScreen.main.bounds.size.height * 0.62
             width = UIScreen.main.bounds.size.width * 0.51
         }
