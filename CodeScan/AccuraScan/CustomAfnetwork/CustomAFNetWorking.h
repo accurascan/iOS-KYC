@@ -2,6 +2,7 @@
 //  CustomAFNetWorking.h
 
 #define LivenessTag 6
+#define WS_liveness               @"https://api.zoomauth.com/api/v1/biometrics/liveness"
 
 #import <Foundation/Foundation.h>
 #import <SDWebImage/UIImageView+WebCache.h>

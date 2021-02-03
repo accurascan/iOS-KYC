@@ -12,9 +12,6 @@ class ResultTableCell: UITableViewCell {
     @IBOutlet weak var viewHeader: UIView!
     @IBOutlet weak var viewData: UIView!
     
-    @IBOutlet weak var imageViewSignHeight: NSLayoutConstraint!
-    @IBOutlet weak var imageViewSign: UIImageView!
-    @IBOutlet weak var SignImageBG: UIView!
     
     var isCheckCell: Bool?
        var pageType: NAV_PAGETYPE = .Default
