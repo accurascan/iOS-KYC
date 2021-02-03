@@ -6,7 +6,7 @@ target 'AccuraSDK' do
   use_frameworks!
   
   # Pods for CodeScan
-   pod 'AccuraFaceMatchSDK', '1.0.5'
+   pod 'AccuraFaceMatchSDK', '1.1.1'
 #   pod 'AccuraOCRSDK'#, '1.1.0'
   pod 'Firebase/MLVision'
   pod 'Firebase/MLVisionTextModel'
