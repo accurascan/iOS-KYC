@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>977093574035-23c0osqem052kk61bf2ciijj1kp832dl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.977093574035-23c0osqem052kk61bf2ciijj1kp832dl</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>977093574035-8jjhio15d5vsm9pi6qm6f54itlrisgop.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCYICN12dtoi19ATKGAEAfYGSZPDBGkm4A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>977093574035</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.demo.AccuraOCRSDK</string>
+	<key>PROJECT_ID</key>
+	<string>accura-261808</string>
+	<key>STORAGE_BUCKET</key>
+	<string>accura-261808.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:977093574035:ios:1dd4fd3363ac4686a63c66</string>
+	<key>DATABASE_URL</key>
+	<string>https://accura-261808.firebaseio.com</string>
+	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+	<false/>
+</dict>
+</plist>

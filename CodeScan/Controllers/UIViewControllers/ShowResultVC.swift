@@ -1,6 +1,5 @@
 
 import UIKit
-import ZoomAuthenticationHybrid
 import SVProgressHUD
 import Alamofire
 import AccuraOCR
@@ -17,7 +16,6 @@ let KEY_TITLE_FACE_MATCH           =  "KEY_TITLE_FACE_MATCH"
 let KEY_VALUE_FACE_MATCH           =  "KEY_VALUE_FACE_MATCH"
 let KEY_TITLE_FACE_MATCH1          =  "KEY_TITLE_FACE_MATCH1"
 let KEY_VALUE_FACE_MATCH1          =  "KEY_VALUE_FACE_MATCH1"
-var MY_ZOOM_DEVELOPER_APP_TOKEN1: String  = "dUfNhktz2Tcl32pGgbPTZ57QujOQBluh"
 
 struct Objects {
     var name : String!
@@ -30,7 +28,7 @@ struct Objects {
     
 }
 
-class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate,ZoomVerificationDelegate,CustomAFNetWorkingDelegate {
+class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, LivenessData {
     //MARK:- Outlet
     @IBOutlet weak var img_height: NSLayoutConstraint!
     @IBOutlet weak var lblLinestitle: UILabel!
@@ -63,16 +61,21 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var givenNames = ""
     var passportNumber = ""
     var passportNumberChecksum = ""
+    var correctPassportChecksum = ""
     var nationality = ""
     var birth = ""
     var birthChecksum = ""
+    var correctBirthChecksum = ""
     var sex = ""
     var expirationDate = ""
     var otherID = ""
     var expirationDateChecksum = ""
+    var correctExpirationChecksum = ""
     var personalNumber = ""
     var personalNumberChecksum = ""
+    var correctPersonalChecksum = ""
     var secondRowChecksum = ""
+    var correctSecondrowChecksum = ""
     var placeOfBirth = ""
     var placeOfIssue = ""
     var issuedate = ""
@@ -92,6 +95,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     var matchImage: UIImage?
     var liveImage: UIImage?
+    var bankCardImage: UIImage?
     
     let picker: UIImagePickerController = UIImagePickerController()
     var stLivenessResult: String = ""
@@ -131,6 +135,13 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var arrDataBackValue: [String] = []
     var arrDataForntValue1: [String] = []
     var arrDataBackValue1: [String] = []
+    var plateNumber: String?
+    var DLPlateImage: UIImage?
+    var ischekLivess: Bool = false
+    var livenessValue: String = ""
+    var intID: Int?
+    var orientation: UIInterfaceOrientationMask?
+    
     //MARK:- UIViewContoller Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,7 +151,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         isFirstTime = true
         
-         self.initializeZoom()
+        
+//        AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
         /*
          FaceMatch SDK method to check if engine is initiated or not
          Return: true or false
@@ -214,13 +226,41 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     arrDataForntValue.append(value as! String)
                     }
                 }
+                for(key,value) in dictFaceBackData{
+                  if key as? String != "Face"{
+                    arrDataBackKey.append(key as! String)
+                    arrDataBackValue.append(value as! String)
+                    }
+                }
+                
                 for(key,value) in dictSecurityData{
                     let ansData = Objects.init(sName: key as? String ?? "", sObjects: value as? String ?? "")
                     arrSecurity.append(ansData.objects)
                 }
                 scanMRZData()
             }
-        }else{
+        } else if pageType == .BankCard{
+            dictScanningData = NSDictionary(dictionary: scannedData)
+            var dict: [String:AnyObject] = [String:AnyObject]()
+            if let cardType = dictScanningData["card_type"] {
+                dict = [KEY_VALUE: cardType,KEY_TITLE:"Card Type"] as [String : AnyObject]
+                arrDocumentData.append(dict)
+            }
+            if let cardNumber = dictScanningData["card_number"] {
+                dict = [KEY_VALUE: cardNumber,KEY_TITLE:"Number"] as [String : AnyObject]
+                arrDocumentData.append(dict)
+            }
+            if let ExpiryMonth = dictScanningData["expiration_month"] {
+                dict = [KEY_VALUE: ExpiryMonth,KEY_TITLE:"Expiry Month"] as [String : AnyObject]
+                arrDocumentData.append(dict)
+            }
+            if let expiryYear = dictScanningData["expiration_year"] {
+                dict = [KEY_VALUE: expiryYear,KEY_TITLE:"Expiry Year"] as [String : AnyObject]
+                arrDocumentData.append(dict)
+            }
+          
+            
+        } else{
 //                // print(dictScanningData)
                 dictScanningData = NSDictionary(dictionary: scannedData)
 
@@ -265,16 +305,34 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        Liveness.setLivenessURL(livenessURL: "Your URL")
+        Liveness.setBackGroundColor(backGroundColor: "#C4C4C5")
+        Liveness.setCloseIconColor(closeIconColor: "#000000")
+        Liveness.setFeedbackBackGroundColor(feedbackBackGroundColor: "#C4C4C5")
+        Liveness.setFeedbackTextColor(feedbackTextColor: "#000000")
+        Liveness.setFeedbackTextSize(feedbackTextSize: 18)
+        Liveness.setFeedBackframeMessage(feedBackframeMessage: "Frame Your Face")
+        Liveness.setFeedBackAwayMessage(feedBackAwayMessage: "Move Phone Away")
+        Liveness.setFeedBackOpenEyesMessage(feedBackOpenEyesMessage: "Keep Open Your Eyes")
+        Liveness.setFeedBackCloserMessage(feedBackCloserMessage: "Move Phone Closer")
+        Liveness.setFeedBackCenterMessage(feedBackCenterMessage: "Center Your Face")
+        Liveness.setFeedbackMultipleFaceMessage(feedBackMultipleFaceMessage: "Multiple face detected")
+        Liveness.setFeedBackFaceSteadymessage(feedBackFaceSteadymessage: "Keep Your Head Straight")
+        Liveness.setFeedBackLowLightMessage(feedBackLowLightMessage: "Low light detected")
+        Liveness.setFeedBackBlurFaceMessage(feedBackBlurFaceMessage: "Blur detected over face")
+        Liveness.setFeedBackGlareFaceMessage(feedBackGlareFaceMessage: "Glare detected")
         
         //Set TableView Height
         self.tblResult.estimatedRowHeight = 60.0
         self.tblResult.rowHeight = UITableView.automaticDimension
-        if pageType != .ScanOCR{
+        if pageType == .BankCard {
+           
+        } else if pageType != .ScanOCR {
             if isFirstTime{
                 isFirstTime = false
                 self.setData() // this function Called set data in tableView
             }
-        }else{
+        } else{
             if isFirstTime{
                 isFirstTime = false
                 if dictScanningData.count != 0{
@@ -287,10 +345,14 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     
-        // ZoomScanning SDK Reset
-        Zoom.sdk.preload()
     }
-    
+    override func viewDidDisappear(_ animated: Bool) {
+//        let orientastion = UIApplication.shared.statusBarOrientation
+       
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+       
+    }
     //MARK:- Custom Methods
     func scanMRZData(){
         if let strline: String =  dictScanningData["lines"] as? String {
@@ -321,6 +383,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if let strpassportNumberChecksum: String = dictScanningData["passportNumberChecksum"] as? String {
             self.passportNumberChecksum = strpassportNumberChecksum
         }
+        if let stcorrectPassportChecksum: String = dictScanningData["correctPassportChecksum"] as? String{
+            self.correctPassportChecksum = stcorrectPassportChecksum
+        }
         if let strnationality: String =  dictScanningData["nationality"] as? String  {
             self.nationality = strnationality
         }
@@ -329,6 +394,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         if let strbirthChecksum: String = dictScanningData["BirthChecksum"] as? String{
             self.birthChecksum = strbirthChecksum
+        }
+        if let stcorrectBirthChecksum: String = dictScanningData["correctBirthChecksum"] as? String{
+            self.correctBirthChecksum = stcorrectBirthChecksum
         }
         if let strsex: String =  dictScanningData["sex"] as? String {
             self.sex = strsex
@@ -340,14 +408,23 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if let strexpirationDateChecksum: String = dictScanningData["expirationDateChecksum"] as? String  {
             self.expirationDateChecksum = strexpirationDateChecksum
         }
+        if let stcorrectExpirationChecksum: String = dictScanningData["correctExpirationChecksum"] as? String{
+            self.correctExpirationChecksum = stcorrectExpirationChecksum
+        }
         if let strpersonalNumber: String = dictScanningData["personalNumber"] as? String{
             self.personalNumber = strpersonalNumber
         }
         if let strpersonalNumberChecksum: String = dictScanningData["personalNumberChecksum"] as? String {
             self.personalNumberChecksum = strpersonalNumberChecksum
         }
+        if let stcorrectPersonalChecksum: String = dictScanningData["correctPersonalChecksum"] as? String{
+            self.correctPersonalChecksum = stcorrectPersonalChecksum
+        }
         if let strsecondRowChecksum: String = dictScanningData["secondRowChecksum"] as? String {
             self.secondRowChecksum = strsecondRowChecksum
+        }
+        if let stcorrectSecondrowChecksum: String = dictScanningData["correctSecondrowChecksum"] as? String{
+            self.correctSecondrowChecksum = stcorrectSecondrowChecksum
         }
         if let strplaceOfBirth: String = dictScanningData["placeOfBirth"] as? String{
             self.placeOfBirth = strplaceOfBirth
@@ -366,7 +443,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func setOnlyMRZData(){
-        for index in 0..<18{
+        for index in 0..<22{
             var dict: [String:AnyObject] = [String:AnyObject]()
             switch index {
             case 0:
@@ -402,83 +479,154 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 arrDocumentData.append(dict)
                 break
             case 2:
-                dict = [KEY_VALUE: surName,KEY_TITLE:"Last Name"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if surName != ""{
+                    dict = [KEY_VALUE: surName,KEY_TITLE:"Last Name"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                    
+                }
                 break
             case 3:
-                dict = [KEY_VALUE: givenNames,KEY_TITLE:"First Name"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if givenNames != ""{
+                    dict = [KEY_VALUE: givenNames,KEY_TITLE:"First Name"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 4:
-                let stringWithoutSpaces = passportNumber.replacingOccurrences(of: "<", with: "")
-                dict = [KEY_VALUE: stringWithoutSpaces,KEY_TITLE:"Document No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if passportNumber != ""{
+                    let stringWithoutSpaces = passportNumber.replacingOccurrences(of: "<", with: "")
+                    dict = [KEY_VALUE: stringWithoutSpaces,KEY_TITLE:"Document No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
             case 5:
-                dict = [KEY_VALUE: passportNumberChecksum,KEY_TITLE:"Document Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if passportNumberChecksum != ""{
+                    dict = [KEY_VALUE: passportNumberChecksum,KEY_TITLE:"Document Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 6:
+                if correctPassportChecksum != ""{
+                    dict = [KEY_VALUE: correctPassportChecksum,KEY_TITLE:"Correct Document Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
                 
-            case 6:
+            case 7:
+                if country != ""{
                     dict = [KEY_VALUE: country,KEY_TITLE:"Country"] as [String : AnyObject]
                     arrDocumentData.append(dict)
-                    break
-            case 7:
-                dict = [KEY_VALUE: nationality,KEY_TITLE:"Nationality"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                }
+                break
+            case 8:
+                if nationality != ""{
+                    dict = [KEY_VALUE: nationality,KEY_TITLE:"Nationality"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
                 
-              case 8:
+            case 9:
                 var stSex: String = ""
                 if sex == "F" {
                     stSex = "FEMALE";
-                }
-                if sex == "M" {
+                }else if sex == "M" {
                     stSex = "MALE";
+                } else {
+                    stSex = sex
                 }
                 dict = [KEY_VALUE: stSex,KEY_TITLE:"Sex"] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
                 
-            case 9:
-                dict = [KEY_VALUE: date(toFormatedDate: birth),KEY_TITLE:"Date of Birth"] as [String : AnyObject]
-                arrDocumentData.append(dict)
-                break
             case 10:
-                dict = [KEY_VALUE: birthChecksum,KEY_TITLE:"Birth Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if birth != "" {
+                    let birthDate = date(toFormatedDate: birth)
+                    if birthDate != "" && birthDate != nil{
+                        
+                        dict = [KEY_VALUE: birthDate,KEY_TITLE:"Date of Birth"] as [String : AnyObject]
+                        arrDocumentData.append(dict)
+                    }
+                }
                 break
-            
             case 11:
-                dict = [KEY_VALUE: date(toFormatedDate: expirationDate),KEY_TITLE:"Date of Expiry"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if birthChecksum != ""{
+                    dict = [KEY_VALUE: birthChecksum,KEY_TITLE:"Birth Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 12:
-                dict = [KEY_VALUE: expirationDateChecksum,KEY_TITLE:"Expiration Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
-                break
-            case 13:
-                dict = [KEY_VALUE: personalNumber,KEY_TITLE:"Other ID"] as [String : AnyObject]
-                arrDocumentData.append(dict)
-                break
-            case 14:
-                dict = [KEY_VALUE: personalNumberChecksum,KEY_TITLE:"Other ID Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
-                break
-            case 15:
-                dict = [KEY_VALUE: secondRowChecksum,KEY_TITLE:"Second Row Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if correctBirthChecksum != ""{
+                    dict = [KEY_VALUE: correctBirthChecksum,KEY_TITLE:"Correct Birth Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
                 
+            case 13:
+                if expirationDate != "" {
+                    let expiryDate = date(toFormatedDate: expirationDate)
+                    
+                    if expiryDate != "" && expiryDate != nil{
+                        
+                        dict = [KEY_VALUE: expiryDate,KEY_TITLE:"Date of Expiry"] as [String : AnyObject]
+                        arrDocumentData.append(dict)
+                    }
+                }
+                break
+            case 14:
+                if expirationDateChecksum != ""{
+                    dict = [KEY_VALUE: expirationDateChecksum,KEY_TITLE:"Expiration Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 15:
+                if correctExpirationChecksum != ""{
+                    dict = [KEY_VALUE: correctExpirationChecksum,KEY_TITLE:"Correct Expiration Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
             case 16:
-                if issuedate != ""{
-                dict = [KEY_VALUE: issuedate,KEY_TITLE:"Issue Date"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if personalNumber != ""{
+                    dict = [KEY_VALUE: personalNumber,KEY_TITLE:"Other ID"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
                 }
                 break
             case 17:
-               if departmentNumber != ""{
-                dict = [KEY_VALUE: departmentNumber,KEY_TITLE:"Department No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if personalNumberChecksum != ""{
+                    dict = [KEY_VALUE: personalNumberChecksum,KEY_TITLE:"Other ID Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+//            case 18:
+//                if correctPersonalChecksum != ""{
+//                    dict = [KEY_VALUE: correctPersonalChecksum,KEY_TITLE:"Correct Other ID Check No."] as [String : AnyObject]
+//                    arrDocumentData.append(dict)
+//                }
+//                break
+            case 18:
+                if secondRowChecksum != ""{
+                    dict = [KEY_VALUE: secondRowChecksum,KEY_TITLE:"Second Row Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 19:
+                if correctSecondrowChecksum != ""{
+                    dict = [KEY_VALUE: correctSecondrowChecksum,KEY_TITLE:"Correct Second Row Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+                
+            case 20:
+                if issuedate != "" {
+                    let issueDate = date(toFormatedDate: issuedate)
+                    if issueDate != "" && issueDate != nil{
+                        dict = [KEY_VALUE: issueDate,KEY_TITLE:"Issue Date"] as [String : AnyObject]
+                        arrDocumentData.append(dict)
+                    }
+                }
+               
+                break
+            case 21:
+                if departmentNumber != ""{
+                    dict = [KEY_VALUE: departmentNumber,KEY_TITLE:"Department No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
                 }
                 break
             default:
@@ -495,23 +643,31 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
      */
     func setData(){
         //Set tableView Data
-        for index in 0..<20 + appDocumentImage.count{
+        for index in 0..<25 + appDocumentImage.count{
             var dict: [String:AnyObject] = [String:AnyObject]()
             switch index {
             case 0:
-                dict = [KEY_FACE_IMAGE: photoImage] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(photoImage != nil) {
+                    dict = [KEY_FACE_IMAGE: photoImage] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                
                 break
             case 1:
-                dict = [KEY_VALUE_FACE_MATCH: "0 %",KEY_TITLE_FACE_MATCH:"0 %"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(photoImage != nil) {
+                    dict = [KEY_VALUE_FACE_MATCH: "0 %",KEY_TITLE_FACE_MATCH:"0 %"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
                 
             case 2:
-                dict = [KEY_VALUE: lines] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(lines != "") {
+                    dict = [KEY_VALUE: lines] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 3:
+                
                 var firstLetter: String = ""
                 var strFstLetter: String = ""
                 let strPassportType = passportType.lowercased()
@@ -538,89 +694,165 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                         dType = "ID"
                     }
                 }
-                dict = [KEY_VALUE: dType,KEY_TITLE:"Document"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(dType != "") {
+                    dict = [KEY_VALUE: dType,KEY_TITLE:"Document"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 4:
-                dict = [KEY_VALUE: surName,KEY_TITLE:"Last Name"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(surName != "") {
+                    dict = [KEY_VALUE: surName,KEY_TITLE:"Last Name"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 5:
-                dict = [KEY_VALUE: givenNames,KEY_TITLE:"First Name"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(givenNames != "") {
+                    dict = [KEY_VALUE: givenNames,KEY_TITLE:"First Name"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 6:
                 let stringWithoutSpaces = passportNumber.replacingOccurrences(of: "<", with: "")
-                dict = [KEY_VALUE: stringWithoutSpaces,KEY_TITLE:"Document No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(stringWithoutSpaces != "") {
+                    
+                    dict = [KEY_VALUE: stringWithoutSpaces,KEY_TITLE:"Document No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                
             case 7:
-                dict = [KEY_VALUE: passportNumberChecksum,KEY_TITLE:"Document Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(passportNumberChecksum != "") {
+                    dict = [KEY_VALUE: passportNumberChecksum,KEY_TITLE:"Document Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 8:
-                dict = [KEY_VALUE: country,KEY_TITLE:"Country"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(correctPassportChecksum != "") {
+                    dict = [KEY_VALUE: correctPassportChecksum,KEY_TITLE:"Correct Document Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                    
+                }
                 break
             case 9:
-                dict = [KEY_VALUE: nationality,KEY_TITLE:"Nationality"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(country != "") {
+                    dict = [KEY_VALUE: country,KEY_TITLE:"Country"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 10:
+                if(nationality != "") {
+                    dict = [KEY_VALUE: nationality,KEY_TITLE:"Nationality"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 11:
                 var stSex: String = ""
                 if sex == "F" {
                     stSex = "FEMALE";
-                }
-                if sex == "M" {
+                }else if sex == "M" {
                     stSex = "MALE";
+                } else {
+                    stSex = sex
                 }
-                dict = [KEY_VALUE: stSex,KEY_TITLE:"Sex"] as [String : AnyObject]
-                arrDocumentData.append(dict)
-                break
-            case 11:
-                dict = [KEY_VALUE: date(toFormatedDate: birth),KEY_TITLE:"Date of Birth"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(sex != "") {
+                    dict = [KEY_VALUE: stSex,KEY_TITLE:"Sex"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 12:
-                dict = [KEY_VALUE: birthChecksum,KEY_TITLE:"Birth Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if birth != "" {
+                    let birthDate = date(toFormatedDate: birth)
+                    if birthDate != "" && birthDate != nil{
+                        
+                        dict = [KEY_VALUE: birthDate,KEY_TITLE:"Date of Birth"] as [String : AnyObject]
+                        arrDocumentData.append(dict)
+                    }
+                }
                 break
             case 13:
-                dict = [KEY_VALUE: date(toFormatedDate: expirationDate),KEY_TITLE:"Date of Expiry"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(birthChecksum != "") {
+                    dict = [KEY_VALUE: birthChecksum,KEY_TITLE:"Birth Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 14:
-                dict = [KEY_VALUE: expirationDateChecksum,KEY_TITLE:"Expiration Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(correctBirthChecksum != "") {
+                    dict = [KEY_VALUE: correctBirthChecksum,KEY_TITLE:"Correct Birth Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 15:
-                dict = [KEY_VALUE: personalNumber,KEY_TITLE:"Other ID"] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if expirationDate != "" {
+                    let expiryDate = date(toFormatedDate: expirationDate)
+                    
+                    if expiryDate != "" && expiryDate != nil{
+                        
+                        dict = [KEY_VALUE: expiryDate,KEY_TITLE:"Date of Expiry"] as [String : AnyObject]
+                        arrDocumentData.append(dict)
+                    }
+                }
                 break
             case 16:
-                dict = [KEY_VALUE: personalNumberChecksum,KEY_TITLE:"Other ID Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(expirationDateChecksum != "") {
+                    dict = [KEY_VALUE: expirationDateChecksum,KEY_TITLE:"Expiration Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 17:
-                dict = [KEY_VALUE: secondRowChecksum,KEY_TITLE:"Second Row Check No."] as [String : AnyObject]
-                arrDocumentData.append(dict)
+                if(correctExpirationChecksum != "") {
+                    dict = [KEY_VALUE: correctExpirationChecksum,KEY_TITLE:"Correct Expiration Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             case 18:
-                if issuedate != ""{
-                    dict = [KEY_VALUE: issuedate,KEY_TITLE:"Issue Date"] as [String : AnyObject]
+                if(personalNumber != "") {
+                    dict = [KEY_VALUE: personalNumber,KEY_TITLE:"Other ID"] as [String : AnyObject]
                     arrDocumentData.append(dict)
                 }
                 break
             case 19:
+                if(personalNumberChecksum != "") {
+                    dict = [KEY_VALUE: personalNumberChecksum,KEY_TITLE:"Other ID Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+//            case 20:
+//                if(correctPersonalChecksum != "") {
+//                    dict = [KEY_VALUE: correctPersonalChecksum,KEY_TITLE:"Correct Other ID Check No."] as [String : AnyObject]
+//                    arrDocumentData.append(dict)
+//                }
+//                break
+            case 20:
+                if(secondRowChecksum != "") {
+                    dict = [KEY_VALUE: secondRowChecksum,KEY_TITLE:"Second Row Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 21:
+                if(correctSecondrowChecksum != "") {
+                    dict = [KEY_VALUE: correctSecondrowChecksum,KEY_TITLE:"Correct Second Row Check No."] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 22:
+                if issuedate != "" {
+                    let issueDate = date(toFormatedDate: issuedate)
+                    if issueDate != "" && issueDate != nil{
+                        dict = [KEY_VALUE: issueDate,KEY_TITLE:"Issue Date"] as [String : AnyObject]
+                        arrDocumentData.append(dict)
+                    }
+                }
+                break
+            case 23:
                 if departmentNumber != ""{
                     dict = [KEY_VALUE: departmentNumber,KEY_TITLE:"Department No."] as [String : AnyObject]
                     arrDocumentData.append(dict)
                 }
                 break
-            case 20:
+            case 24:
                 dict = [KEY_DOC1_IMAGE: !appDocumentImage.isEmpty ? appDocumentImage[0] : nil] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 21:
+            case 25:
                 dict = [KEY_DOC2_IMAGE: appDocumentImage.count == 2 ? appDocumentImage[1] : nil] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
@@ -628,115 +860,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 break
             }
         }
-    }
-    
-    /**
-     * This method use lunchZoom setup
-     * Make sure initialization was successful before launcing ZoOm
-     *
-     */
-    
-    func launchZoomToVerifyLivenessAndRetrieveFacemap() {
-        // Make sure initialization was successful before launcing ZoOm
-        var reason: String = ""
-        let status:ZoomSDKStatus = Zoom.sdk.getStatus()
-        switch(status) {
-        case .neverInitialized:                   
-            reason = "Initialize was never attempted";
-            break;
-        case .initialized:
-            reason = "The app token provided was verified";
-            break;
-        case .networkIssues:
-            reason = "The app token could not be verified";
-            break;
-        case .invalidToken:
-            reason = "The app token provided was invalid";
-            break;
-        case .versionDeprecated:
-            reason = "The current version of the SDK is deprecated";
-            break;
-        case .offlineSessionsExceeded:
-            reason = "The app token needs to be verified again";
-            break;
-        case .unknownError:
-            reason = "An unknown error occurred";
-            break;
-        default:
-            break;
-        }
-        
-        if(status != .initialized) {
-            let alert = UIAlertController(title: "Get Ready To ZoOm.", message: "ZoOm is not ready to be launched. \nReason: \(reason)", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return;
-        }
-        
-        let vc = Zoom.sdk.createVerificationVC(delegate: self)//Zoom SDK set Delegate
-        
-        let colors: [AnyObject] = [UIColor(red: 0.04, green: 0.71, blue: 0.64, alpha: 1).cgColor,UIColor(red: 0.07, green: 0.57, blue: 0.76, alpha: 1).cgColor]
-        self.configureGradientBackground(arrcolors: colors, inLayer: vc.view.layer)
-        
-        // For proper modal presentation of ZoOm interface, modal presentation style must be set as .overFullScreen or .overCurrentContext.
-        // UIModalPresentationStyles.formsheet is not currently supported, as it impedes intended ZoOm functionality and user experience.
-        // Example of presenting ZoOm using cross dissolve effect
-        
-        vc.modalTransitionStyle = .crossDissolve
-        
-        // When presenting the ZoOm interface over your own application, you can keep your application showing in the background by using this presentation style
-        
-        vc.modalPresentationStyle =  .overCurrentContext
-        
-        // Refer to ZoomFrameCustomization for further presentation/interface customization.
-        self.present(vc, animated: true, completion: nil)
-    }
-    
-    func initializeZoom(){
-        //Initialize the ZoOm SDK using your app token
-        Zoom.sdk.initialize(appToken: MY_ZOOM_DEVELOPER_APP_TOKEN1) { (validationResult) in
-            if validationResult {
-                // print("AppToken validated successfully")
-            } else {
-                if Zoom.sdk.getStatus() != .initialized {
-                    self.showInitFailedDialog()
-                }
-            }
-        }
-        
-        // Configures the look and feel of Zoom
-        let currentCustomization = ZoomCustomization()
-        currentCustomization.showPreEnrollmentScreen = false; //show Pre-Enrollment screens
-        
-        // Sample UI Customization: vertically center the ZoOm frame within the device's display
-        centerZoomFrameCustomization(currentCustomization);
-        
-        // Apply the customization changes
-        Zoom.sdk.setCustomization(currentCustomization)
-        Zoom.sdk.auditTrailType = .height640 //Sets the type of audit trail images to be collected
-    }
-    
-    func showInitFailedDialog(){
-        let alert = UIAlertController(title: "Initialization Failed", message: "Please check that you have set your ZoOm app token to the MY_ZOOM_DEVELOPER_APP_TOKEN variable in this file.  To retrieve your app token, visit https://dev.zoomlogin.com/zoomsdk/#/account.", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    /**
-     * This method use set custom Frame lunchZoom
-     *
-     */
-    func centerZoomFrameCustomization(_ currentCustomization:ZoomCustomization){
-        let screenHeight = UIScreen.main.fixedCoordinateSpace.bounds.size.height
-        var frameHeight = CGFloat(screenHeight) * CGFloat(currentCustomization.frameCustomization.sizeRatio)
-        
-        // Detect iPhone X and iPad displays
-        if(UIScreen.main.fixedCoordinateSpace.bounds.size.height >= 812) {
-            frameHeight = UIScreen.main.fixedCoordinateSpace.bounds.size.width * (16.0/9.0) * CGFloat(currentCustomization.frameCustomization.sizeRatio);
-        }
-        
-        let topMarginToCenterFrame = (screenHeight - frameHeight)/2.0
-        currentCustomization.frameCustomization.topMargin = Double(topMarginToCenterFrame);
     }
     
     func configureGradientBackground(arrcolors:[AnyObject],inLayer:CALayer){
@@ -748,6 +871,10 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         inLayer.addSublayer(gradient)
     }
     
+    func convertImageToBase64(image: UIImage) -> String {
+        let imageData = image.jpeg(.medium)
+      return imageData!.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+    }
     //Remove Same Value
     func removeOldValue(_ removeKey: String){
         var removeIndex: String = ""
@@ -833,6 +960,11 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     //MARK: UIButton Method Action
     @IBAction func onCancelAction(_ sender: Any) {
+//        if orientation ==  .landscapeLeft {
+//            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+//        } else if orientation ==  .landscapeRight{
+//            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+//        }
         if pageType == .ScanOCR{
             removeAllData()
         }
@@ -865,7 +997,11 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         if pageType == .ScanOCR{
             return 7
-        }else{
+        }else if pageType == .DLPlate {
+            return 2
+        }else if pageType == .BankCard {
+            return 2
+        } else{
             return 1
         }
         
@@ -875,13 +1011,23 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if pageType == .ScanOCR{
             switch section {
             case 0:
-                return 1
-            case 1:
-                if arrFaceLivenessScor.isEmpty{
+                if faceImage != nil {
                     return 1
-                }else{
-                    return arrFaceLivenessScor.count
+                } else {
+                    return 0
                 }
+//                return 1
+            case 1:
+                if faceImage != nil {
+                    if arrFaceLivenessScor.isEmpty{
+                        return 1
+                    }else{
+                        return arrFaceLivenessScor.count
+                    }
+                }else {
+                    return 0
+                }
+                
                 
             case 2:
                 return 1
@@ -900,7 +1046,15 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             default:
                 return 0
             }
-        }else{
+        }else if(pageType == .DLPlate){
+            return 1
+        } else if pageType == .BankCard {
+            if section == 0 {
+                return arrDocumentData.count
+            } else {
+                return 1
+            }
+        } else{
             return  self.arrDocumentData.count
         }
     }
@@ -939,8 +1093,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     let  dictResultData = arrFaceLivenessScor[indexPath.row]
                     
                     if isCheckLiveNess!{
-                        isCheckLiveNess = false
-                        cell.lblValueLiveness.text = "\(dictResultData.objects!) %"
+//                        isCheckLiveNess = false
+                        cell.lblValueLiveness.text = "\(livenessValue)"
                         cell.lblValueFaceMatch.text = "\(String(describing: faceScoreData!)) %"
                     }else{
                         
@@ -981,13 +1135,18 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     let objDataValue = arrDataForntValue[indexPath.row]
                     cell.lblName.text = objDataKey
                     cell.lblValue.text = objDataValue
+                    cell.imageViewSignHeight.constant = 0
                     if objDataKey.contains("Sign") || objDataKey.contains("SIGN"){
-                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters) {
+                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters)
+                        {
                             let image = UIImage(data: decodedData)
-                            let attachment = NSTextAttachment()
-                            attachment.image = image
-                            let attachmentString = NSAttributedString(attachment: attachment)
-                            cell.lblValue.attributedText = attachmentString
+                            cell.imageViewSignHeight.constant = 51
+                            cell.imageViewSign.image = image
+                            cell.lblValue.text = ""
+//                            let attachment = NSTextAttachment()
+//                           attachment.image = image
+//                           let attachmentString = NSAttributedString(attachment: attachment)
+//                            cell.lblValue.attributedText = attachmentString
                         }
                         
                     }
@@ -997,28 +1156,32 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             else if indexPath.section == 4{
                 let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
                 cell.selectionStyle = .none
+                cell.imageViewSignHeight.constant = 0
                 if !arrDataBackKey.isEmpty{
                     let objDatakey = arrDataBackKey[indexPath.row]
                     let objDataValue = arrDataBackValue[indexPath.row]
                     cell.lblName.text = objDatakey
                     cell.lblValue.text = objDataValue
+                    
+                    
                     if objDatakey.contains("Sign") || objDatakey.contains("SIGN"){
                         if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters) {
                             let image = UIImage(data: decodedData)
-                            let attachment = NSTextAttachment()
-                            attachment.image = image
-                            let attachmentString = NSAttributedString(attachment: attachment)
-                            cell.lblValue.attributedText = attachmentString
+                            cell.imageViewSignHeight.constant = 51
+                            cell.imageViewSign.image = image
+                            cell.lblValue.text = ""
                         }
                     }
+                    
                 }
+//                cell.imageViewSign.isHidden = true
                 return cell
             }else if indexPath.section == 5{
                 let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
                 if !arrDocumentData.isEmpty{
                     
                     let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
-                    
+                    cell.imageViewSignHeight.constant = 0
                     if indexPath.row == 0{
                         cell.lblName.text = "MRZ"
                         cell.lblValue.text = dictResultData[KEY_VALUE] as? String ?? ""
@@ -1050,9 +1213,59 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 
                 return cell
             }
-        }
-        else{
+        }else if pageType == .DLPlate {
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
+//
+//            cell.selectionStyle = .none
+//            cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
+            if indexPath.section == 0{
+                let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
+                cell.SignImageBG.tag = indexPath.section
+                if(cell.SignImageBG.tag == indexPath.section) {
+                    cell.imageViewSign.isHidden = true
+                }
+                cell.lblName.text = "Number Plate :"
+                cell.lblValue.text = plateNumber
+                return cell
+            }else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
+                
+                cell.selectionStyle = .none
+                cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
+                cell.lblDocName.text = "FRONT SIDE"
+                if DLPlateImage != nil{
+                    cell.imgDocument.image = DLPlateImage!
+                }
+                return cell
+            }
+            
+            
+        }  else if pageType == .BankCard {
+            if indexPath.section == 0{
+                let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
+                let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
+                cell.SignImageBG.tag = indexPath.section
+                if(cell.SignImageBG.tag == indexPath.section) {
+                    cell.imageViewSign.isHidden = true
+                }
+                cell.lblName.text = dictResultData[KEY_TITLE] as! String
+                cell.lblValue.text = dictResultData[KEY_VALUE] as! String
+                return cell
+            }else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
+                
+                cell.selectionStyle = .none
+                cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
+                cell.lblDocName.text = "FRONT SIDE"
+                if bankCardImage != nil{
+                    cell.imgDocument.image = bankCardImage!
+                }
+                return cell
+            }
+            
+        } else{
             let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
+            let index = indexPath.row
             // print(dictResultData)
             if dictResultData[KEY_FACE_IMAGE] != nil{
                 //Set User Image
@@ -1061,19 +1274,18 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 if let imageFace: UIImage =  dictResultData[KEY_FACE_IMAGE]  as? UIImage{
                     cell.User_img2.isHidden = true
                     cell.view2.isHidden = true
-                    if (UIDevice.current.orientation == .landscapeRight) {
-                        cell.user_img.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi / 2))
-                    } else if (UIDevice.current.orientation == .landscapeLeft) {
-                        cell.user_img.transform = CGAffineTransform(rotationAngle: CGFloat(-(Double.pi / 2)))
-                    }
+//                    if (UIDevice.current.orientation == .landscapeRight) {
+//                        cell.user_img.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi / 2))
+//                    } else if (UIDevice.current.orientation == .landscapeLeft) {
+//                        cell.user_img.transform = CGAffineTransform(rotationAngle: CGFloat(-(Double.pi / 2)))
+//                    }
                     cell.user_img.image = imageFace
                 }
-                if dictResultData[KEY_FACE_IMAGE2] != nil{
+                if imgCamaraFace != nil{
                     cell.User_img2.isHidden = false
                     cell.view2.isHidden = false
-                    if let imageFace: UIImage =  dictResultData[KEY_FACE_IMAGE2]  as? UIImage{
-                        cell.User_img2.image = imageFace
-                    }
+                    cell.User_img2.image = imgCamaraFace
+                   
                 }
                 return cell
             }else if dictResultData[KEY_TITLE_FACE_MATCH] != nil || dictResultData[KEY_VALUE_FACE_MATCH] != nil{
@@ -1090,9 +1302,11 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 cell.btnLiveness.addTarget(self, action: #selector(buttonClickedLiveness(sender:)), for: .touchUpInside)
                 if(dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("FACEMATCH SCORE : ") ?? false || dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("LIVENESS SCORE : ") ?? false){
                     if isCheckLiveNess!{
-                        isCheckLiveNess = false
-                        cell.lblValueLiveness.text = "\(dictResultData[KEY_VALUE_FACE_MATCH] as? String ?? "") %"
-                        cell.lblValueFaceMatch.text = "\(String(describing: faceScoreData!)) %"
+//                        isCheckLiveNess = false
+                        cell.lblValueLiveness.text = "\(livenessValue)"
+                        if(faceScoreData != nil) {
+                            cell.lblValueFaceMatch.text = "\(String(describing: faceScoreData!)) %"
+                        }
                     }else{
                         
                         if ((dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("FACEMATCH SCORE : ")) ?? false){
@@ -1135,17 +1349,19 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 //Set Document Images
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
                 cell.selectionStyle = .none
-                cell.imgDocument.contentMode = .scaleToFill
+                cell.imgDocument.contentMode = .scaleAspectFit
                 if dictResultData[KEY_DOC1_IMAGE] != nil {
                     if pageType == .ScanAadhar || pageType == .ScanPan{
                         cell.lblDocName.text = ""
                         cell.constraintLblHeight.constant = 0
                     }else{
-                        cell.lblDocName.text = "Front Side"
+//                        cell.lblDocName.text = "Front Side"
                         cell.constraintLblHeight.constant = 25
                     }
                     if let imageDoc1: UIImage =  dictResultData[KEY_DOC1_IMAGE]  as? UIImage{
                         cell.imgDocument.image = imageDoc1
+                        cell.lblDocName.text = "Front Side"
+//                        cell.constraintLblHeight.constant = 25
                     }
                 }
                 
@@ -1159,6 +1375,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                         cell.constraintLblHeight.constant = 25
                     }
                     if let imageDoc2: UIImage =  dictResultData[KEY_DOC2_IMAGE]  as? UIImage{
+//                        cell.lblDocName.text = "Back Side"
+                        
+//                        cell.constraintLblHeight.constant = 25
                         cell.imgDocument.image = imageDoc2
                     }
                 }
@@ -1197,7 +1416,20 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             else{
                 return 310.0
             }
-        }else{
+        }else if pageType == .DLPlate{
+            if indexPath.section == 0 {
+                return 120
+            } else {
+                return 310.0
+            }
+            
+        } else if pageType == .BankCard {
+            if indexPath.section == 0 {
+                return UITableView.automaticDimension
+            } else {
+                return 310
+            }
+        } else{
             let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
             if dictResultData[KEY_FACE_IMAGE] != nil{
                 return UITableView.automaticDimension
@@ -1213,9 +1445,11 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             else if dictResultData[KEY_TITLE] != nil || dictResultData[KEY_VALUE] != nil{
                 return UITableView.automaticDimension
             }
-            else if dictResultData[KEY_DOC1_IMAGE] != nil || dictResultData[KEY_DOC2_IMAGE] != nil{
+            else if dictResultData[KEY_DOC1_IMAGE] != nil {
                 return 310.0
-            }else{
+            }else if let _ = dictResultData[KEY_DOC2_IMAGE] as? UIImage{
+                return 310.0
+            } else {
                 return 0.0
             }
         }
@@ -1256,13 +1490,20 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0{
+            if pageType == .BankCard {
+                return 60
+            }
             return CGFloat.leastNonzeroMagnitude
         }else if section == 1{
             return CGFloat.leastNonzeroMagnitude
         }else if section == 2{
             return 2
         }else if section == 3{
-            return 60
+            if !arrDataForntKey.isEmpty {
+                return 60
+            } else {
+                return CGFloat.leastNonzeroMagnitude
+            }
         }else if section == 4{
             if !arrDataBackKey.isEmpty{
                 return 60
@@ -1282,19 +1523,41 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        if section == 3{
-            let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))
-            headerView.backgroundColor = UIColor.init(red: 237.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1.0)
-            let label = UILabel()
-            label.frame = CGRect.init(x: 15, y: 0, width: headerView.frame.width - 16, height: headerView.frame.height)
-            label.backgroundColor = .clear
-            label.text = "OCR FRONT"
-            label.font = UIFont.init(name: "Aller-Bold", size: 16)
-            label.textAlignment = .left
-            label.textColor = UIColor(red: 47.0 / 255.0, green: 50.0 / 255.0, blue: 58.0 / 255.0, alpha: 1) // my custom colour
-            headerView.addSubview(label)
-            return headerView
+        if section == 0 {
+            if pageType == .BankCard {
+                let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))
+                headerView.backgroundColor = UIColor.init(red: 237.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+                let label = UILabel()
+                label.frame = CGRect.init(x: 15, y: 0, width: headerView.frame.width - 16, height: headerView.frame.height)
+                label.backgroundColor = .clear
+                label.text = "BANK CARD DATA"
+                label.font = UIFont.init(name: "Aller-Bold", size: 16)
+                label.textAlignment = .left
+                label.textColor = UIColor(red: 47.0 / 255.0, green: 50.0 / 255.0, blue: 58.0 / 255.0, alpha: 1) // my custom colour
+                headerView.addSubview(label)
+                return headerView
+            } else {
+                let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
+                return headerView
+            }
+        } else if section == 3{
+            if !arrDataForntKey.isEmpty {
+                let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))
+                headerView.backgroundColor = UIColor.init(red: 237.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+                let label = UILabel()
+                label.frame = CGRect.init(x: 15, y: 0, width: headerView.frame.width - 16, height: headerView.frame.height)
+                label.backgroundColor = .clear
+                label.text = "OCR FRONT"
+                label.font = UIFont.init(name: "Aller-Bold", size: 16)
+                label.textAlignment = .left
+                label.textColor = UIColor(red: 47.0 / 255.0, green: 50.0 / 255.0, blue: 58.0 / 255.0, alpha: 1) // my custom colour
+                headerView.addSubview(label)
+                return headerView
+            } else {
+                let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
+                    return headerView
+            }
+            
         }else if section == 4{
             if !arrDataBackKey.isEmpty{
                 let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))
@@ -1361,104 +1624,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         cell.lblValue.textColor = color
     }
 
-    //MARK:- ZoomVerification Methods
-    func onZoomVerificationResult(result: ZoomVerificationResult) {
-        if result.status == .failedBecauseEncryptionKeyInvalid{
-            let alert = UIAlertController(title: "Public Key Not Set.", message: "Retrieving facemaps requires that you generate a public/private key pair per the instructions at https://dev.zoomlogin.com/zoomsdk/#/zoom-server-guide", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }else if result.status == .userProcessedSuccessfully {
-            SVProgressHUD.show(withStatus: "Loading...")
-            self.handleVerificationSuccessResult(result: result)
-        }
-        else{
-            // Handle other error
-        }
-    }
-    
-    /**
-     * This method use to get liveness image and face match score
-     * Parameters to Pass: ZoomVerificationResult data
-     *
-     */
-    func handleVerificationSuccessResult(result:ZoomVerificationResult){
-        
-        let faceMetrics: ZoomFaceBiometricMetrics = result.faceMetrics!  // faceMetrics data is user scanning face
-        var faceImage2: UIImage? = nil
-        
-        if faceMetrics.auditTrail !=  nil &&  faceMetrics.auditTrail!.count > 0{
-            if pageType != .ScanOCR{
-                var isFindImg: Bool = false
-                for (index,var dict) in arrDocumentData.enumerated(){
-                    for st in dict.keys{
-                        if st == KEY_FACE_IMAGE{
-                            // faceMetrics.auditTrail![0] will return user face image from zoom liveness check for face match
-                            dict[KEY_FACE_IMAGE2] = faceMetrics.auditTrail![0]
-                            arrDocumentData[index] = dict
-                            isFindImg = true
-                            break
-                        }
-                        if isFindImg{ break }
-                    }
-                }
-            }else{
-                imgCamaraFace = faceMetrics.auditTrail![0]
-            }
-            // faceMetrics.auditTrail![0] will return user face image from zoom liveness check for face match
-            faceImage2 = faceMetrics.auditTrail?[0];
-            matchImage = faceImage2 ?? UIImage();
-            liveImage = faceImage2 ?? UIImage();
-            //Find Facematch score
-            if (faceRegion != nil)
-            {
-                /*
-                 FaceMatch SDK method call to detect Face in back image
-                 @Params: BackImage, Front Face Image faceRegion
-                 @Return: Face Image Frame
-                 */
-                
-                let face2 = EngineWrapper.detectTargetFaces(faceImage2, feature1: faceRegion?.feature)
-                /*
-                 FaceMatch SDK method call to get FaceMatch Score
-                 @Params: FrontImage Face, BackImage Face
-                 @Return: Match Score
-                 
-                 */
-                let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
-                let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
-                self.removeOldValue("FACEMATCH SCORE : ")
-                self.removeOldValue1("0 %")
-                if pageType != .ScanOCR{
-                        faceScoreData = twoDecimalPlaces
-                }else{
-                    faceScoreData = twoDecimalPlaces
-                }
-            }
-        }
-        self.handleResultFromFaceTecManagedRESTAPICall(_result: result)
-    }
-    
-    /**
-     * This method use to get liveness score
-     * Parameters to Pass: ZoomVerificationResult user scanning data
-     *
-     */
-    func handleResultFromFaceTecManagedRESTAPICall(_result:ZoomVerificationResult){
-        if(_result.faceMetrics != nil)
-        {
-            let zoomFacemap = _result.faceMetrics?.zoomFacemap //zoomFacemap is Biometric Facemap
-            let zoom = zoomFacemap?.base64EncodedString(options: [])
-            
-            //Call Liveness Api
-            let dictPara: NSMutableDictionary = NSMutableDictionary()
-            dictPara["sessionId"] = _result.sessionId
-            dictPara["facemap"] = zoom
-            
-            //Call liveness Api
-            let apiObject = CustomAFNetWorking(post: WS_liveness, withTag: LivenessTag, withParameter: dictPara)
-            apiObject?.delegate = self
-        }
-    }
     
     //MARK:- UIImagePickerController Delegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -1518,6 +1683,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     let fm_Score = EngineWrapper.identify(self.faceRegion?.feature, featurebuff2: face2?.feature)
                     if(fm_Score != 0.0){
                         let data = face2?.bound
+                        self.isCheckLiveNess = false
                         let image = self.resizeImage(image: chosenImage, targetSize: data!)
                         if self.pageType != .ScanOCR{
                             self.removeOldValue1("0 %")
@@ -1525,6 +1691,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                             for (index,var dict) in self.arrDocumentData.enumerated(){
                                 for st in dict.keys{
                                     if st == KEY_FACE_IMAGE{
+                                        self.imgCamaraFace = image
                                         dict[KEY_FACE_IMAGE2] = image
                                         self.arrDocumentData[index] = dict
                                         isFindImg = true
@@ -1602,7 +1769,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     let dict = [KEY_VALUE_FACE_MATCH: "\((twoDecimalPlaces))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
                     arrDocumentData.insert(dict, at: 1)
                 }else{
-                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(twoDecimalPlaces)")
+                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
                     self.arrFaceLivenessScor.insert(ansData, at: 0)
                 }
                 
@@ -1656,7 +1823,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         let dateFormat = DateFormatter()
         dateFormat.dateFormat = "yyMMdd"
         let date: Date? = dateFormat.date(from: dateStr ?? "")
-        dateFormat.dateFormat = "yyyy-MM-dd"
+        dateFormat.dateFormat = "yy-MM-dd"
         if let date = date {
             return dateFormat.string(from: date)
         }
@@ -1682,25 +1849,116 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 
    @objc func buttonClickedFaceMatch(sender:UIButton)
     {
-        picker.delegate = self
-        picker.allowsEditing = false
-        picker.sourceType = .camera
-        picker.cameraDevice = .front
-        picker.mediaTypes = ["public.image"]
-        self.present(picker, animated: true, completion: nil)
+    let orientastion = UIApplication.shared.statusBarOrientation
+    if orientastion ==  UIInterfaceOrientation.landscapeLeft {
+        orientation = .landscapeLeft
+    } else if orientastion == UIInterfaceOrientation.landscapeRight {
+        orientation = .landscapeRight
+    } else {
+        orientation = .portrait
+    }
+        AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
+        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
+//        picker.delegate = self
+//        picker.allowsEditing = false
+//        picker.sourceType = .camera
+//        picker.cameraDevice = .front
+//        picker.mediaTypes = ["public.image"]
+//        self.present(picker, animated: true, completion: nil)
     }
     
    @objc func buttonClickedLiveness(sender:UIButton)
     {
-        isCheckLiveNess = true
-        faceScoreData = nil
-        uniqStr = ProcessInfo.processInfo.globallyUniqueString
-        if pageType == .Default{
-            self.launchZoomToVerifyLivenessAndRetrieveFacemap() //lunchZoom setup
-        }else{
-            if photoImage != nil || faceImage != nil{
-                self.launchZoomToVerifyLivenessAndRetrieveFacemap() //lunchZoom setup
-            }
+    let orientastion = UIApplication.shared.statusBarOrientation
+    if orientastion ==  UIInterfaceOrientation.landscapeLeft {
+        orientation = .landscapeLeft
+    } else if orientastion == UIInterfaceOrientation.landscapeRight {
+        orientation = .landscapeRight
+    } else {
+        orientation = .portrait
+    }
+        AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
+        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: true)
+    
+        
+    }
+    
+    func LivenessData(stLivenessValue: String, livenessImage: UIImage, status: Bool) {
+        if(orientation == .landscapeLeft) {
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        } else if orientation == .landscapeRight {
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        }
+        
+        isFLpershow = true
+        self.livenessValue = stLivenessValue
+        self.imgCamaraFace = livenessImage
+        if status == false{
+            GlobalMethods.showAlertView("Please try again", with: self)
+        }
+        
+        if (faceRegion != nil)
+        {
+            /*
+             FaceMatch SDK method call to detect Face in back image
+             @Params: BackImage, Front Face Image faceRegion
+             @Return: Face Image Frame
+             */
+            
+            let face2 = EngineWrapper.detectTargetFaces(livenessImage, feature1: faceRegion?.feature)
+            let face11 = faceRegion?.image
+            /*
+             FaceMatch SDK method call to get FaceMatch Score
+             @Params: FrontImage Face, BackImage Face
+             @Return: Match Score
+             
+             */
+            
+            let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
+            if(fm_Score != 0.0){
+            let data = face2?.bound
+            let image = self.resizeImage(image: livenessImage, targetSize: data!)
+            imgCamaraFace = image
+            let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
+                faceScoreData = twoDecimalPlaces
+            self.removeOldValue("FACEMATCH SCORE : ")
+            self.removeOldValue1("0 %")
+            isCheckLiveNess = true
+                if self.pageType != .ScanOCR{
+                    let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
+                    self.arrDocumentData.insert(dict, at: 1)
+                }else{
+                    let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
+                    self.arrFaceLivenessScor.insert(ansData, at: 0)
+                }
+                
+                let stFaceImage = convertImageToBase64(image: image)
+                let stLivenessInage = convertImageToBase64(image: livenessImage)
+//                print(intID as Any)
+                var dictParam: [String: String] = [String: String]()
+                dictParam["kyc_id"] = "\(intID ?? 0)"
+                dictParam["face_match"] = "True"
+                dictParam["liveness"] = "True"
+                dictParam["face_match_score"] = "\(faceScoreData)"
+
+                dictParam["liveness_score"] = stLivenessValue
+                dictParam["facematch_image"] = stFaceImage
+                dictParam["liveness_image"] = stLivenessInage
+                    let sharedInstance = NetworkReachabilityManager()!
+                    var isConnectedToInternet:Bool {
+                        return sharedInstance.isReachable
+                    }
+                
+                // print(twoDecimalPlaces)
+//                if pageType != .ScanOCR{
+//                    let dict = [KEY_VALUE_FACE_MATCH: "\((stLivenessValue))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
+//                    arrDocumentData.insert(dict, at: 1)
+//                }else{
+//                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
+//                    self.arrFaceLivenessScor.insert(ansData, at: 0)
+//                }
+        }
+            tblResult.reloadData()
         }
     }
 }

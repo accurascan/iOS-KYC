@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Pods/Pods.xcodeproj">
+      location = "group:AccuraSDK.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:AccuraSDK.xcodeproj">
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
