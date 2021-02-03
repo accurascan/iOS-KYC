@@ -1,4 +1,4 @@
-﻿# Accura KYC iOS SDK - OCR, Face Match & Liveness Check
+# Accura KYC iOS SDK - OCR, Face Match & Liveness Check
 iOS KYC SDK - OCR &amp; Face Match <br/>
 Accura OCR is used for Optical character recognition.<br/>
 Accura Face Match is used for Matching 2 Faces. Source and Target. It matches the User Image from a Selfie vs User Image in document.<br/>
