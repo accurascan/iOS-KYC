@@ -12,7 +12,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var _constant_height: NSLayoutConstraint!
     @IBOutlet weak var _constant_width: NSLayoutConstraint!
     
-    @IBOutlet weak var AspectRatio: NSLayoutConstraint!
     @IBOutlet weak var lblOCRMsg: UILabel!
     @IBOutlet weak var lblTitleCountryName: UILabel!
     
@@ -54,8 +53,6 @@ class ViewController: UIViewController {
     
     var stUrl : String?
     var arrimgCountData = [String]()
-    var cardType: Int? = 0
-    var MRZDocType:Int? = 0
     
     var arrImageName : [String] = [String]()
     
@@ -85,24 +82,11 @@ class ViewController: UIViewController {
     
     var isFirstTimeStartCamara: Bool?
     var countface = 0
-    var statusBarRect = CGRect()
-    var bottomPadding:CGFloat = 0.0
-    var topPadding: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
-        statusBarRect = UIApplication.shared.statusBarFrame
-        let window = UIApplication.shared.windows.first
-       
-        if #available(iOS 11.0, *) {
-            bottomPadding = window!.safeAreaInsets.bottom
-            topPadding = window!.safeAreaInsets.top
-        } else {
-            // Fallback on earlier versions
-        }
         
         isFirstTimeStartCamara = false
         isCheckFirstTime = false
@@ -110,8 +94,7 @@ class ViewController: UIViewController {
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         _imageView.layer.masksToBounds = false
         _imageView.clipsToBounds = true
-//        NotificationCenter.default.addObserver(self, selector: #selector(ChangedOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
-        ChangedOrientation()
+        NotificationCenter.default.addObserver(self, selector: #selector(ChangedOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
         var width : CGFloat = 0
         var height : CGFloat = 0
         width = UIScreen.main.bounds.size.width
@@ -216,7 +199,6 @@ class ViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         accuraCameraWrapper?.stopCamera()
-        accuraCameraWrapper?.closeOCR()
         accuraCameraWrapper = nil
         _imageView.image = nil
         super.viewWillDisappear(animated)
@@ -224,7 +206,6 @@ class ViewController: UIViewController {
     
     @IBAction func backAction(_ sender: Any) {
         accuraCameraWrapper?.stopCamera()
-        accuraCameraWrapper?.closeOCR()
         arrFrontResultKey.removeAll()
         arrBackResultKey.removeAll()
         arrFrontResultValue.removeAll()
@@ -234,9 +215,6 @@ class ViewController: UIViewController {
         dictFaceDataFront.removeAllObjects()
         dictScanningMRZData.removeAllObjects()
         self.navigationController?.popViewController(animated: true)
-    }
-    @IBAction func buttonFlipAction(_ sender: UIButton) {
-        accuraCameraWrapper?.switchCamera()
     }
     
     //MARK:- Other Method
@@ -257,39 +235,16 @@ class ViewController: UIViewController {
         isFrontDataComplate = false
         isBackDataComplate = false
         DispatchQueue.main.async {
-            if self.cardType == 3 {
-                self._lblTitle.text = "Scan Bank Card"
-            } else {
-                self._lblTitle.text = "Scan Front Side of Document"
-            }
-            
+            self._lblTitle.text = "Scan Front Side of Document"
         }
-         
-        accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: _imageView, andLabelMsg: lblOCRMsg, andurl: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: Int32(cardid!), countryID: Int32(countryid!), isScanOCR: isCheckScanOCR, andLabelMsgTop: _lblTitle, andcardName: docName, andcardType: Int32(cardType!), andMRZDocType: Int32(MRZDocType!))
-//        accuraCameraWrapper?.andCardSide(.FRONT_CARD_SCAN)
-//        accuraCameraWrapper?.process(withBack1: "Backside", andisCheckBack: false)
-//        self.accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK);
+        accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: _imageView, andLabelMsg: lblOCRMsg, andurl: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: Int32(cardid!), countryID: Int32(countryid!), isScanOCR: isCheckScanOCR, andLabelMsgTop: _lblTitle, andcardName: docName)
     }
     
     @objc private func ChangedOrientation() {
         var width: CGFloat = 0.0
         var height: CGFloat = 0.0
-        
-        let orientastion = UIApplication.shared.statusBarOrientation
-        if(orientastion ==  UIInterfaceOrientation.portrait) {
-            width = UIScreen.main.bounds.size.width * 0.95
-            height  = (UIScreen.main.bounds.size.height - (self.bottomPadding + self.topPadding + self.statusBarRect.height)) * 0.35
-            viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
-//            self.viewNavigationBar.backgroundColor = #colorLiteral(red: 0.8352941176, green: 0.1960784314, blue: 0.2470588235, alpha: 1)
-        } else {
-//            height = UIScreen.main.bounds.size.height - ( viewNavigationBar.frame.height + 80)
-////            print(self.bottomPadding + self.topPadding + self.statusBarRect.height + viewNavigationBar.frame.height)
-//            width  = height / 0.69
-            self.viewNavigationBar.backgroundColor = .clear
-            height = UIScreen.main.bounds.size.height * 0.62
-            width = UIScreen.main.bounds.size.width * 0.51
-        }
-       
+        width = UIScreen.main.bounds.size.width * 0.95
+        height = UIScreen.main.bounds.size.height * 0.35
         _constant_width.constant = width
         _constant_height.constant = height
        // videoCameraWrapper?.changedOrintation(width, height: height)
@@ -335,59 +290,24 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: VideoCameraWrapperDelegate {
-    func dlPlateNumber(_ plateNumber: String!, andImageNumberPlate imageNumberPlate: UIImage!) {
-        shareScanningListing["plate_number"] = plateNumber
-        let vc : ShowResultVC = self.storyboard?.instantiateViewController(withIdentifier: "ShowResultVC") as! ShowResultVC
-        vc.plateNumber = plateNumber
-        vc.DLPlateImage = imageNumberPlate
-        vc.pageType = .DLPlate
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func resultData(_ resultmodel: ResultModel!) {
-        AudioServicesPlaySystemSound(SystemSoundID(1315))
-        imgPhoto = resultmodel.faceImage
-        self.dictScanningMRZData = resultmodel.shareScanningMRZListing
-        self.dictFaceDataFront = resultmodel.ocrFaceFrontData
-        self.dictFaceDataBack = resultmodel.ocrFaceBackData
-        self.dictSecuretyData = resultmodel.ocrSecurityData
-        self.arrFrontResultKey = resultmodel.arrayocrFrontSideDataKey as! [String]
-        self.arrFrontResultValue = resultmodel.arrayocrFrontSideDataValue as! [String]
-        self.arrBackResultKey = resultmodel.arrayocrBackSideDataKey as! [String]
-        self.arrBackResultValue = resultmodel.arrayocrBackSideDataValue as! [String]
-        self.imgViewCard = resultmodel.backSideImage
-        self.imgViewCardFront =  resultmodel.frontSideImage
-        passDataOtherViewController()
-    }
-    
-    func screenSound() {
-        AudioServicesPlaySystemSound(SystemSoundID(1315))
-         if !self.isflipanimation!{
-            self.isflipanimation = true
-             self.flipAnimation()
-             self._lblTitle.text = "Scan Back Side of Document"
-        }
-       
-    }
-    
     func recognizeSucceedBarcode(_ message: String!) {
         
     }
     
 
     func processedImage(_ image: UIImage!) {
-//        _imageView.image = image
+        _imageView.image = image
     }
     
     func recognizeFailed(_ message: String!) {
-//        GlobalMethods.showAlertView(message, with: self)
+        GlobalMethods.showAlertView(message, with: self)
     }
     
     func recognizeSucceed(_ scanedInfo: NSMutableDictionary!, recType: RecType, bRecDone: Bool, bFaceReplace: Bool, bMrzFirst: Bool, photoImage: UIImage, docFrontImage: UIImage!, docbackImage: UIImage!) {
-//            var imgFace: UIImage?
-//            imgFace = photoImage
-//            if(imgFace != nil)
-//            {
+            var imgFace: UIImage?
+            imgFace = photoImage
+            if(imgFace != nil)
+            {
                 if(bMrzFirst)
                     
                 {
@@ -397,9 +317,6 @@ extension ViewController: VideoCameraWrapperDelegate {
     //                    }
                         
                       documentImage = docbackImage
-                        if(docFrontImage != nil) {
-                            self.docfrontImage = docFrontImage
-                        }
                     }else{
                        documentImage = nil
     //                    if let image_photoImage: Data = dictScanningData["docfrontImage"] as? Data {
@@ -427,7 +344,6 @@ extension ViewController: VideoCameraWrapperDelegate {
                     vc.stCountryCardName = stCountryCardName
                     vc.imageCountryCard = cardImage
                     vc.isBackSide = isBackSide
-                    vc.pageType = .ScanPassport
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
                 else{
@@ -448,19 +364,11 @@ extension ViewController: VideoCameraWrapperDelegate {
                         return
                     }
                 }
-//            }
-//            else{
-//                return
-//            }
+            }
+            else{
+                return
+            }
         }
-    
-    func recognizSuccessBankCard(_ cardDetail: NSMutableDictionary!, andBankCardImage bankCardImage: UIImage!) {
-        let vc : ShowResultVC = self.storyboard?.instantiateViewController(withIdentifier: "ShowResultVC") as! ShowResultVC
-        vc.scannedData = cardDetail
-        vc.pageType = .BankCard
-        vc.bankCardImage = bankCardImage
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
     
     func matchedItem(_ image: UIImage!, isCardSide1 cs: Bool, isBack b: Bool, isFront f: Bool, imagePhoto imgp: UIImage!, imageResult: UIImage!) {
         if f == true{
@@ -473,94 +381,94 @@ extension ViewController: VideoCameraWrapperDelegate {
         isFront = f
     }
     
-//    func matchedItem(_ setDataFrontKey: NSMutableArray!, andsetDataFrontvalue setDataFrontvalue: NSMutableArray!, andmrzDatasacn mrzDataSacn: NSMutableDictionary!, setDataBackKey: NSMutableArray!, setDataBackValue: NSMutableArray!, setFaceData: NSMutableDictionary!, setSecurityData: NSMutableDictionary!, setFaceBackData: NSMutableDictionary!, setPhotoImage: UIImage!) {
-//        imgPhoto = setPhotoImage
-//        self.dictScanningMRZData = mrzDataSacn
-//        self.dictFaceDataFront = setFaceData
-//        self.dictFaceDataBack = setFaceBackData
-//        self.dictSecuretyData = setSecurityData
-//        for data in setDataFrontKey{
-//            if data as? String == "MRZ"{
-//                isCheckMRZData = true
-//            }
-//        }
-//        if self.isCardSide!{
-//            if self.isFront!{
-//                if !self.isCheckCard{
-//                    self.isCheckCard = true
-//                    isFrontDataComplate = true
-//                    self.arrFrontResultKey = setDataFrontKey as! [String]
-//                    self.arrFrontResultValue = setDataFrontvalue as! [String]
-//                    self._lblTitle.text! = "Scan Back side of \(self.docName)"
-//                }
-//            }else{
-//                if !self.isCheckcardBack{
-//                    self.isCheckcardBack = true
-//                    isBackDataComplate = true
-//                    self.arrBackResultKey = setDataBackKey as! [String]
-//                    self.arrBackResultValue = setDataBackValue as! [String]
-//                    self._lblTitle.text! = "Scan Front side of \(self.docName)"
-//                }
-//            }
-//            if isFrontDataComplate! && isBackDataComplate!{
-//                if !self.isCheckCardBackFrint{
-//                    accuraCameraWrapper?.stopCamera()
-//                    self.isCheckCardBackFrint = true
-//                    _imageView.image = nil
-//                    AudioServicesPlaySystemSound(SystemSoundID(1315))
-//                    passDataOtherViewController()
-//                }
-//            }else{
-//                if !self.isflipanimation!{
-//                    self.isflipanimation = true
-//                    self.flipAnimation()
-//                    if self.isFront!{
-//                        self.isFront = false
-//                        self.isBack = true
-//                        _imageView.image = nil
-//                        lblOCRMsg.text = "Keep Document In Frame"
-//                        self.accuraCameraWrapper?.process(withBack1: "Backside", andisCheckBack: true)
-//                    }else{
-//                        self.isFront = true
-//                        self.isBack = false
-//                        _imageView.image = nil
-//                        lblOCRMsg.text = "Keep Document In Frame"
-//                        self.accuraCameraWrapper?.process(withBack1: "Frontside", andisCheckBack: false)
-//                    }
-//                    return
-//                }else{
-//                    return
-//                }
-//            }
-//        }
-//        else{
-//            if isCheckMRZData!{
-//                if !self.isCheckCard{
-//                    accuraCameraWrapper?.stopCamera()
-//                    self.isCheckCard = true
-//                    _imageView.image = nil
-//                    self.arrFrontResultKey = setDataFrontKey as! [String]
-//                    self.arrFrontResultValue = setDataFrontvalue as! [String]
-//                    AudioServicesPlaySystemSound (1315);
-//                    passDataOtherViewController()
-//                }else{
-//                    return
-//                }
-//            }else{
-//                if !self.isCheckCard{
-//                    accuraCameraWrapper?.stopCamera()
-//                    self.isCheckCard = true
-//                    _imageView.image = nil
-//                    self.arrFrontResultKey = setDataFrontKey as! [String]
-//                    self.arrFrontResultValue = setDataFrontvalue as! [String]
-//                    AudioServicesPlaySystemSound (1315);
-//                    passDataOtherViewController()
-//                }else{
-//                    return
-//                }
-//            }
-//        }
-//    }
+    func matchedItem(_ setDataFrontKey: NSMutableArray!, andsetDataFrontvalue setDataFrontvalue: NSMutableArray!, andmrzDatasacn mrzDataSacn: NSMutableDictionary!, setDataBackKey: NSMutableArray!, setDataBackValue: NSMutableArray!, setFaceData: NSMutableDictionary!, setSecurityData: NSMutableDictionary!, setFaceBackData: NSMutableDictionary!, setPhotoImage: UIImage!) {
+        imgPhoto = setPhotoImage
+        self.dictScanningMRZData = mrzDataSacn
+        self.dictFaceDataFront = setFaceData
+        self.dictFaceDataBack = setFaceBackData
+        self.dictSecuretyData = setSecurityData
+        for data in setDataFrontKey{
+            if data as? String == "MRZ"{
+                isCheckMRZData = true
+            }
+        }
+        if self.isCardSide!{
+            if self.isFront!{
+                if !self.isCheckCard{
+                    self.isCheckCard = true
+                    isFrontDataComplate = true
+                    self.arrFrontResultKey = setDataFrontKey as! [String]
+                    self.arrFrontResultValue = setDataFrontvalue as! [String]
+                    self._lblTitle.text! = "Scan Back side of \(self.docName)"
+                }
+            }else{
+                if !self.isCheckcardBack{
+                    self.isCheckcardBack = true
+                    isBackDataComplate = true
+                    self.arrBackResultKey = setDataBackKey as! [String]
+                    self.arrBackResultValue = setDataBackValue as! [String]
+                    self._lblTitle.text! = "Scan Front side of \(self.docName)"
+                }
+            }
+            if isFrontDataComplate! && isBackDataComplate!{
+                if !self.isCheckCardBackFrint{
+                    accuraCameraWrapper?.stopCamera()
+                    self.isCheckCardBackFrint = true
+                    _imageView.image = nil
+                    AudioServicesPlaySystemSound(SystemSoundID(1315))
+                    passDataOtherViewController()
+                }
+            }else{
+                if !self.isflipanimation!{
+                    self.isflipanimation = true
+                    self.flipAnimation()
+                    if self.isFront!{
+                        self.isFront = false
+                        self.isBack = true
+                        _imageView.image = nil
+                        lblOCRMsg.text = "Keep Document In Frame"
+                        self.accuraCameraWrapper?.process(withBack1: "Backside", andisCheckBack: true)
+                    }else{
+                        self.isFront = true
+                        self.isBack = false
+                        _imageView.image = nil
+                        lblOCRMsg.text = "Keep Document In Frame"
+                        self.accuraCameraWrapper?.process(withBack1: "Frontside", andisCheckBack: false)
+                    }
+                    return
+                }else{
+                    return
+                }
+            }
+        }
+        else{
+            if isCheckMRZData!{
+                if !self.isCheckCard{
+                    accuraCameraWrapper?.stopCamera()
+                    self.isCheckCard = true
+                    _imageView.image = nil
+                    self.arrFrontResultKey = setDataFrontKey as! [String]
+                    self.arrFrontResultValue = setDataFrontvalue as! [String]
+                    AudioServicesPlaySystemSound (1315);
+                    passDataOtherViewController()
+                }else{
+                    return
+                }
+            }else{
+                if !self.isCheckCard{
+                    accuraCameraWrapper?.stopCamera()
+                    self.isCheckCard = true
+                    _imageView.image = nil
+                    self.arrFrontResultKey = setDataFrontKey as! [String]
+                    self.arrFrontResultValue = setDataFrontvalue as! [String]
+                    AudioServicesPlaySystemSound (1315);
+                    passDataOtherViewController()
+                }else{
+                    return
+                }
+            }
+        }
+    }
     
     func passDataOtherViewController(){
         let vc : ShowResultVC = self.storyboard?.instantiateViewController(withIdentifier: "ShowResultVC") as! ShowResultVC
@@ -597,46 +505,5 @@ extension ViewController: VideoCameraWrapperDelegate {
         } else {
             frontImageRotation = strRotation
         }
-    }
-    func reco_msg(_ message: String!) {
-        var msg = String();
-        if(message == ACCURA_ERROR_CODE_MOTION) {
-            msg = "Keep Document Steady";
-        } else if(message == ACCURA_ERROR_CODE_DOCUMENT_IN_FRAME) {
-            msg = "Keep document in frame";
-        } else if(message == ACCURA_ERROR_CODE_BRING_DOCUMENT_IN_FRAME) {
-            msg = "Bring card near to frame";
-        } else if(message == ACCURA_ERROR_CODE_PROCESSING) {
-            msg = "Processing...";
-        } else if(message == ACCURA_ERROR_CODE_BLUR_DOCUMENT) {
-            msg = "Blur detect in document";
-        } else if(message == ACCURA_ERROR_CODE_FACE_BLUR) {
-            msg = "Blur detected over face";
-        } else if(message == ACCURA_ERROR_CODE_GLARE_DOCUMENT) {
-            msg = "Glare detect in document";
-        } else if(message == ACCURA_ERROR_CODE_HOLOGRAM) {
-            msg = "Hologram Detected";
-        } else if(message == ACCURA_ERROR_CODE_DARK_DOCUMENT) {
-            msg = "Low lighting detected";
-        } else if(message == ACCURA_ERROR_CODE_PHOTO_COPY_DOCUMENT) {
-            msg = "Can not accept Photo Copy Document";
-        } else if(message == ACCURA_ERROR_CODE_FACE) {
-            msg = "Face not detected";
-        } else if(message == ACCURA_ERROR_CODE_MRZ) {
-            msg = "MRZ not detected";
-        } else if(message == ACCURA_ERROR_CODE_PASSPORT_MRZ) {
-            msg = "Passport MRZ not detected";
-        } else if(message == ACCURA_ERROR_CODE_ID_MRZ) {
-            msg = "ID MRZ not detected"
-        } else if(message == ACCURA_ERROR_CODE_VISA_MRZ) {
-            msg = "Visa MRZ not detected"
-        }else if(message == ACCURA_ERROR_CODE_UPSIDE_DOWN_SIDE) {
-            msg = "Document is upside down. Place it properly"
-        }else if(message == ACCURA_ERROR_CODE_WRONG_SIDE) {
-            msg = "Scanning wrong side of Document"
-        }else {
-            msg = message;
-        }
-        lblOCRMsg.text = msg
     }
 }

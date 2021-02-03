@@ -19,7 +19,6 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     
     @IBOutlet weak var constrintViweBorderHeight: NSLayoutConstraint!
     
-    @IBOutlet weak var viewNavigationBar: UIView!
     @IBOutlet weak var constrintVIewBorderWidth: NSLayoutConstraint!
     
     
@@ -51,10 +50,6 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     var countryid : Int? = 0
     var stillImageOutput : AVCaptureStillImageOutput!
     var isResultShow = false
-    var statusBarRect = CGRect()
-    var bottomPadding:CGFloat = 0.0
-    var topPadding: CGFloat = 0.0
-    
     //MARK:- UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,17 +60,9 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         else{
             self.labelMsg.text = "Scan front Side of Document"
         }
-        statusBarRect = UIApplication.shared.statusBarFrame
-        let window = UIApplication.shared.windows.first
-       
-        if #available(iOS 11.0, *) {
-            bottomPadding = window!.safeAreaInsets.bottom
-            topPadding = window!.safeAreaInsets.top
-        } else {
-            // Fallback on earlier versions
-        }
-//        NotificationCenter.default.addObserver(self, selector: #selector(ChangedOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
-        ChangedOrientation()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ChangedOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
+        
         var width : CGFloat = 0
         var height : CGFloat = 0
         
@@ -94,7 +81,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         self.imageViewFilp.isHidden = true
         
         if status == .authorized {
-            accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!), setBarcodeType: ".pdf417")//init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
+            accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
             let shortTap = UITapGestureRecognizer(target: self, action: #selector(handleTapToFocus(_:)))
             shortTap.numberOfTapsRequired = 1
             shortTap.numberOfTouchesRequired = 1
@@ -117,7 +104,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
         
-                    self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!), setBarcodeType: ".pdf417")//.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
+                    self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
         
                     self.accuraCameraWrapper?.startCamera()
                     
@@ -138,7 +125,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             if self.accuraCameraWrapper == nil {
                 imageView.isHidden = false
                 barCodeScannerView.isHidden = true
-                accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(self.countryid!), setBarcodeType: ".pdf417")//init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
+                accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!))
             }
             accuraCameraWrapper?.startCamera()
            if(isBarcodeEnabled){
@@ -192,40 +179,25 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         var width: CGFloat = 0.0
         var height: CGFloat = 0.0
     
-//            if UIDevice.current.orientation == .landscapeLeft {
-//                height = UIScreen.main.bounds.size.width * 0.85
-//                width = UIScreen.main.bounds.size.height * 0.75
-//                constrintViweBorderHeight.constant = height
-//                constrintVIewBorderWidth.constant = width
-//            } else if UIDevice.current.orientation == .landscapeRight {
-//                width = UIScreen.main.bounds.size.height * 0.75
-//                height = UIScreen.main.bounds.size.width * 0.85
-//                constrintViweBorderHeight.constant = height
-//                constrintVIewBorderWidth.constant = width
-//            } else if UIDevice.current.orientation == .portrait {
-//                width = UIScreen.main.bounds.size.width * 0.95
-//                height = UIScreen.main.bounds.size.height * 0.35
-//                constrintVIewBorderWidth.constant = width
-//                constrintViweBorderHeight.constant = height
-//            }
-        let orientastion = UIApplication.shared.statusBarOrientation
-        if(orientastion ==  UIInterfaceOrientation.portrait) {
-            width = UIScreen.main.bounds.size.width * 0.95
-            height  = (UIScreen.main.bounds.size.height - (self.bottomPadding + self.topPadding + self.statusBarRect.height)) * 0.35
-            viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
-//            self.viewNavigationBar.backgroundColor = #colorLiteral(red: 0.8352941176, green: 0.1960784314, blue: 0.2470588235, alpha: 1)
-        } else {
-//            height = UIScreen.main.bounds.size.height - ( viewNavigationBar.frame.height + 80)
-////            print(self.bottomPadding + self.topPadding + self.statusBarRect.height + viewNavigationBar.frame.height)
-//            width  = height / 0.69
-            self.viewNavigationBar.backgroundColor = .clear
-            height = UIScreen.main.bounds.size.height * 0.62
-            width = UIScreen.main.bounds.size.width * 0.51
-        }
+            if UIDevice.current.orientation == .landscapeLeft {
+                height = UIScreen.main.bounds.size.width * 0.85
+                width = UIScreen.main.bounds.size.height * 0.75
+                constrintViweBorderHeight.constant = height
+                constrintVIewBorderWidth.constant = width
+            } else if UIDevice.current.orientation == .landscapeRight {
+                width = UIScreen.main.bounds.size.height * 0.75
+                height = UIScreen.main.bounds.size.width * 0.85
+                constrintViweBorderHeight.constant = height
+                constrintVIewBorderWidth.constant = width
+            } else if UIDevice.current.orientation == .portrait {
+                width = UIScreen.main.bounds.size.width * 0.95
+                height = UIScreen.main.bounds.size.height * 0.35
+                constrintVIewBorderWidth.constant = width
+                constrintViweBorderHeight.constant = height
+            }
         
-        constrintVIewBorderWidth.constant = width
-        constrintViweBorderHeight.constant = height
-//        accuraCameraWrapper?.changedOrintation(width, height: height)
+    
+        accuraCameraWrapper?.changedOrintation(width, height: height)
         
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
             self.view.layoutIfNeeded()
@@ -1706,7 +1678,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     }
     
     func recognizeFailed(_ message: String!) {
-//        GlobalMethods.showAlertView(message, with: self)
+        GlobalMethods.showAlertView(message, with: self)
     }
     
     func recognizeSucceedBarcode(_ message: String!) {
@@ -1731,7 +1703,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             let alert = UIAlertController(title: "Barcode Result", message: message, preferredStyle: .alert)
             let retryButton = UIAlertAction(title: "RETRY", style: .default) { _ in
                 self.accuraCameraWrapper?.stopCamera()
-                self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!), setBarcodeType: ".pdf417")//init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
+                self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!))
                 self.accuraCameraWrapper?.startCamera()
             }
             alert.addAction(retryButton)
@@ -1796,16 +1768,6 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     func matchedItem(_ setDataFrontKey: NSMutableArray!, andsetDataFrontvalue setDataFrontvalue: NSMutableArray!, andmrzDatasacn mrzDataSacn: NSMutableDictionary!, setDataBackKey: NSMutableArray!, setDataBackValue: NSMutableArray!, setFaceData: NSMutableDictionary!, setSecurityData: NSMutableDictionary!, setFaceBackData: NSMutableDictionary!, setPhotoImage: UIImage!) {
          // print("Success")
     }
-    func resultData(_ resultmodel: ResultModel!) {
-        
-    }
-    func dlPlateNumber(_ plateNumber: String!, andImageNumberPlate imageNumberPlate: UIImage!) {
-        print(plateNumber)
-    }
-    
-    func screenSound() {
-        
-    }
     
     func capture() {
         let stillImageConnection = stillImageOutput.connection(with: AVMediaType.video)
@@ -1828,7 +1790,6 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
                             }
                         })
     }
-    
     
     func compressimage(with image: UIImage?, convertTo size: CGSize) -> UIImage? {
         UIGraphicsBeginImageContext(size)
@@ -1869,47 +1830,6 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         let imageRef: CGImage = contextImage.cgImage!.cropping(to: rect)!
         let image1: UIImage = UIImage(cgImage: imageRef)
         return image1
-    }
-    func reco_msg(_ message: String!) {
-        var msg = String();
-        if(message == ACCURA_ERROR_CODE_MOTION) {
-            msg = "Keep Document Steady";
-        } else if(message == ACCURA_ERROR_CODE_DOCUMENT_IN_FRAME) {
-                msg = "Keep document in frame";
-        } else if(message == ACCURA_ERROR_CODE_BRING_DOCUMENT_IN_FRAME) {
-            msg = "Bring card near to frame";
-        } else if(message == ACCURA_ERROR_CODE_PROCESSING) {
-            msg = "Processing...";
-        } else if(message == ACCURA_ERROR_CODE_BLUR_DOCUMENT) {
-            msg = "Blur detect in document";
-        } else if(message == ACCURA_ERROR_CODE_FACE_BLUR) {
-            msg = "Blur detected over face";
-        } else if(message == ACCURA_ERROR_CODE_GLARE_DOCUMENT) {
-            msg = "Glare detect in document";
-        } else if(message == ACCURA_ERROR_CODE_HOLOGRAM) {
-            msg = "Hologram Detected";
-        } else if(message == ACCURA_ERROR_CODE_DARK_DOCUMENT) {
-            msg = "Low lighting detected";
-        } else if(message == ACCURA_ERROR_CODE_PHOTO_COPY_DOCUMENT) {
-            msg = "Can not accept Photo Copy Document";
-        } else if(message == ACCURA_ERROR_CODE_FACE) {
-            msg = "Face not detected";
-        } else if(message == ACCURA_ERROR_CODE_MRZ) {
-            msg = "MRZ not detected";
-        } else if(message == ACCURA_ERROR_CODE_PASSPORT_MRZ) {
-            msg = "Passport MRZ not detected";
-        } else if(message == ACCURA_ERROR_CODE_ID_MRZ) {
-            msg = "ID MRZ not detected"
-        } else if(message == ACCURA_ERROR_CODE_VISA_MRZ) {
-            msg = "Visa MRZ not detected"
-        }else if(message == ACCURA_ERROR_CODE_UPSIDE_DOWN_SIDE) {
-            msg = "Document is upside down. Place it properly"
-        }else if(message == ACCURA_ERROR_CODE_WRONG_SIDE) {
-            msg = "Scanning wrong side of Document"
-        }else {
-            msg = "";
-        }
-        lblBottamMsg.text = msg
     }
     
 }
