@@ -84,11 +84,24 @@ class ViewController: UIViewController {
     
     var isFirstTimeStartCamara: Bool?
     var countface = 0
+    var statusBarRect = CGRect()
+    var bottomPadding:CGFloat = 0.0
+    var topPadding: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        
+        statusBarRect = UIApplication.shared.statusBarFrame
+        let window = UIApplication.shared.windows.first
+       
+        if #available(iOS 11.0, *) {
+            bottomPadding = window!.safeAreaInsets.bottom
+            topPadding = window!.safeAreaInsets.top
+        } else {
+            // Fallback on earlier versions
+        }
         
         isFirstTimeStartCamara = false
         isCheckFirstTime = false
@@ -96,7 +109,8 @@ class ViewController: UIViewController {
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         _imageView.layer.masksToBounds = false
         _imageView.clipsToBounds = true
-        NotificationCenter.default.addObserver(self, selector: #selector(ChangedOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(ChangedOrientation), name: UIDevice.orientationDidChangeNotification, object: nil)
+        ChangedOrientation()
         var width : CGFloat = 0
         var height : CGFloat = 0
         width = UIScreen.main.bounds.size.width
@@ -242,7 +256,12 @@ class ViewController: UIViewController {
         isFrontDataComplate = false
         isBackDataComplate = false
         DispatchQueue.main.async {
-            self._lblTitle.text = "Scan Front Side of Document"
+            if self.cardType == 3 {
+                self._lblTitle.text = "Scan Bank Card"
+            } else {
+                self._lblTitle.text = "Scan Front Side of Document"
+            }
+            
         }
          
         accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: _imageView, andLabelMsg: lblOCRMsg, andurl: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: Int32(cardid!), countryID: Int32(countryid!), isScanOCR: isCheckScanOCR, andLabelMsgTop: _lblTitle, andcardName: docName, andcardType: Int32(cardType!), andMRZDocType: Int32(MRZDocType!))
@@ -254,8 +273,19 @@ class ViewController: UIViewController {
     @objc private func ChangedOrientation() {
         var width: CGFloat = 0.0
         var height: CGFloat = 0.0
-        width = UIScreen.main.bounds.size.width * 0.95
-        height = UIScreen.main.bounds.size.height * 0.35
+        
+        let orientastion = UIApplication.shared.statusBarOrientation
+        if(orientastion ==  UIInterfaceOrientation.portrait) {
+            width = UIScreen.main.bounds.size.width * 0.95
+            height  = (UIScreen.main.bounds.size.height - (self.bottomPadding + self.topPadding + self.statusBarRect.height)) * 0.35
+        } else {
+//            height = UIScreen.main.bounds.size.height - ( viewNavigationBar.frame.height + 80)
+////            print(self.bottomPadding + self.topPadding + self.statusBarRect.height + viewNavigationBar.frame.height)
+//            width  = height / 0.69
+            height = UIScreen.main.bounds.size.height * 0.62
+            width = UIScreen.main.bounds.size.width * 0.51
+        }
+       
         _constant_width.constant = width
         _constant_height.constant = height
        // videoCameraWrapper?.changedOrintation(width, height: height)
@@ -342,18 +372,18 @@ extension ViewController: VideoCameraWrapperDelegate {
     
 
     func processedImage(_ image: UIImage!) {
-        _imageView.image = image
+//        _imageView.image = image
     }
     
     func recognizeFailed(_ message: String!) {
-        GlobalMethods.showAlertView(message, with: self)
+//        GlobalMethods.showAlertView(message, with: self)
     }
     
     func recognizeSucceed(_ scanedInfo: NSMutableDictionary!, recType: RecType, bRecDone: Bool, bFaceReplace: Bool, bMrzFirst: Bool, photoImage: UIImage, docFrontImage: UIImage!, docbackImage: UIImage!) {
-            var imgFace: UIImage?
-            imgFace = photoImage
-            if(imgFace != nil)
-            {
+//            var imgFace: UIImage?
+//            imgFace = photoImage
+//            if(imgFace != nil)
+//            {
                 if(bMrzFirst)
                     
                 {
@@ -363,6 +393,9 @@ extension ViewController: VideoCameraWrapperDelegate {
     //                    }
                         
                       documentImage = docbackImage
+                        if(docFrontImage != nil) {
+                            self.docfrontImage = docFrontImage
+                        }
                     }else{
                        documentImage = nil
     //                    if let image_photoImage: Data = dictScanningData["docfrontImage"] as? Data {
@@ -390,6 +423,7 @@ extension ViewController: VideoCameraWrapperDelegate {
                     vc.stCountryCardName = stCountryCardName
                     vc.imageCountryCard = cardImage
                     vc.isBackSide = isBackSide
+                    vc.pageType = .ScanPassport
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
                 else{
@@ -410,11 +444,19 @@ extension ViewController: VideoCameraWrapperDelegate {
                         return
                     }
                 }
-            }
-            else{
-                return
-            }
+//            }
+//            else{
+//                return
+//            }
         }
+    
+    func recognizSuccessBankCard(_ cardDetail: NSMutableDictionary!, andBankCardImage bankCardImage: UIImage!) {
+        let vc : ShowResultVC = self.storyboard?.instantiateViewController(withIdentifier: "ShowResultVC") as! ShowResultVC
+        vc.scannedData = cardDetail
+        vc.pageType = .BankCard
+        vc.bankCardImage = bankCardImage
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     func matchedItem(_ image: UIImage!, isCardSide1 cs: Bool, isBack b: Bool, isFront f: Bool, imagePhoto imgp: UIImage!, imageResult: UIImage!) {
         if f == true{
@@ -580,14 +622,16 @@ extension ViewController: VideoCameraWrapperDelegate {
             msg = "MRZ not detected";
         } else if(message == ACCURA_ERROR_CODE_PASSPORT_MRZ) {
             msg = "Passport MRZ not detected";
-        } else if(message == ACCURA_ERROR_CODE_RETRYING) {
-            msg = "Retrying...";
         } else if(message == ACCURA_ERROR_CODE_ID_MRZ) {
             msg = "ID MRZ not detected"
         } else if(message == ACCURA_ERROR_CODE_VISA_MRZ) {
             msg = "Visa MRZ not detected"
+        }else if(message == ACCURA_ERROR_CODE_UPSIDE_DOWN_SIDE) {
+            msg = "Document is upside down. Place it properly"
+        }else if(message == ACCURA_ERROR_CODE_WRONG_SIDE) {
+            msg = "Scanning wrong side of Document"
         }else {
-            msg = "";
+            msg = message;
         }
         lblOCRMsg.text = msg
     }

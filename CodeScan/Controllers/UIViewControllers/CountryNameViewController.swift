@@ -2,6 +2,7 @@
 import UIKit
 import SVProgressHUD
 import AccuraOCR
+import FaceMatchSDK
 
 struct CountryName {
     let id : Int?
@@ -36,6 +37,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
     var arrCountryList = NSMutableArray()
     var isMRZCell = false
     var isPDFCell = false
+    var isBankCard = false
     var accuraCameraWrapper: AccuraCameraWrapper? = nil
     
     //MARK:- View Controller Method
@@ -47,6 +49,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
         viewStatusBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         accuraCameraWrapper = AccuraCameraWrapper.init()
+        accuraCameraWrapper?.setDefaultDialogs(true)
 //        accuraCameraWrapper?.andCardSide(.BACK_CARD_SCAN)
 //        accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
 //        accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
@@ -54,6 +57,9 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             let sdkModel = self.accuraCameraWrapper?.loadEngine(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String)
             if(sdkModel != nil)
             {
+//                if(sdkModel!.i < 0){
+//                    GlobalMethods.showAlertView("Invalid license", with: self)
+//                }
                 if(sdkModel!.isMRZEnable)
                 {
                     self.isMRZCell = true
@@ -61,12 +67,10 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                 else{
                     self.isMRZCell = false
                 }
-                if(sdkModel!.isPDF417Enable)
-                {
-                    self.isPDFCell = true
-                }
-                else{
-                    self.isPDFCell = false
+                if(sdkModel!.isBankCardEnable) {
+                    self.isBankCard = true
+                } else {
+                    self.isBankCard = false
                 }
             }
             if(self.isMRZCell)
@@ -76,9 +80,8 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                 self.arrCountryList.add("VISA MRZ")
                 self.arrCountryList.add("Other MRZ")
             }
-            if(self.isPDFCell)
-            {
-                self.arrCountryList.add("Barcode")
+            if(self.isBankCard) {
+                self.arrCountryList.add("Bank Card")
             }
             let countryListStr = self.accuraCameraWrapper?.getOCRList()
             if(countryListStr != nil)
@@ -88,17 +91,17 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             }
             else{
-                GlobalMethods.showAlertView("", with: self)
+//                GlobalMethods.showAlertView("", with: self)
             }
             
              if(sdkModel != nil){
              if sdkModel!.i > 0{
-                self.accuraCameraWrapper?.setFaceBlurPercentage(90, stFaceBlurMessage: "")
-                self.accuraCameraWrapper?.setHologramDetection(true, sthologramMessage: "")
-                self.accuraCameraWrapper?.setLowLightTolerance(10, stLowLightMessage: "")
-                 self.accuraCameraWrapper?.setMotionThreshold(25, stMassage: "")
-                self.accuraCameraWrapper?.setGlarePercentage(6, intMax: 99, stGlareMessage: "")
-                self.accuraCameraWrapper?.setBlurPercentage(0)
+                self.accuraCameraWrapper?.setFaceBlurPercentage(80)
+                self.accuraCameraWrapper?.setHologramDetection(true)
+                self.accuraCameraWrapper?.setLowLightTolerance(10)
+                 self.accuraCameraWrapper?.setMotionThreshold(25)
+                self.accuraCameraWrapper?.setGlarePercentage(6, intMax: 99)
+                self.accuraCameraWrapper?.setBlurPercentage(60)
                 self.accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
 //                self.accuraCameraWrapper?.setCheckPhotoCopy(false, stCheckPhotoMessage: "")
              }
@@ -120,6 +123,17 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
     //MARK:- Button Action
     @IBAction func btnBackAction(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func buttonChangeOriwentation(_ sender: UIButton) {
+        if(sender.isSelected == true) {
+            sender.isSelected = false
+            AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
+        } else {
+            sender.isSelected = true
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        }
+        
     }
     
     
@@ -164,8 +178,12 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                 let loginVC = UIStoryboard(name: "CodeScanVC", bundle: nil).instantiateViewController(withIdentifier: "CodeScanVC") as! CodeScanVC
                 loginVC.isBarcodeEnabled = true
                 self.navigationController?.pushViewController(loginVC, animated: true)
-            }
-            else{
+            } else if(stringCell == "Bank Card") {
+                let vc: ViewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+                vc.isCheckScanOCR = true
+                vc.cardType = 3
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
                 let vc: ViewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
                 if(stringCell == "Passport MRZ") {
                     vc.MRZDocType = 1

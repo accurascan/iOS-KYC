@@ -1678,7 +1678,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     }
     
     func recognizeFailed(_ message: String!) {
-        GlobalMethods.showAlertView(message, with: self)
+//        GlobalMethods.showAlertView(message, with: self)
     }
     
     func recognizeSucceedBarcode(_ message: String!) {
@@ -1843,7 +1843,45 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         return image1
     }
     func reco_msg(_ message: String!) {
-        
+        var msg = String();
+        if(message == ACCURA_ERROR_CODE_MOTION) {
+            msg = "Keep Document Steady";
+        } else if(message == ACCURA_ERROR_CODE_DOCUMENT_IN_FRAME) {
+                msg = "Keep document in frame";
+        } else if(message == ACCURA_ERROR_CODE_BRING_DOCUMENT_IN_FRAME) {
+            msg = "Bring card near to frame";
+        } else if(message == ACCURA_ERROR_CODE_PROCESSING) {
+            msg = "Processing...";
+        } else if(message == ACCURA_ERROR_CODE_BLUR_DOCUMENT) {
+            msg = "Blur detect in document";
+        } else if(message == ACCURA_ERROR_CODE_FACE_BLUR) {
+            msg = "Blur detected over face";
+        } else if(message == ACCURA_ERROR_CODE_GLARE_DOCUMENT) {
+            msg = "Glare detect in document";
+        } else if(message == ACCURA_ERROR_CODE_HOLOGRAM) {
+            msg = "Hologram Detected";
+        } else if(message == ACCURA_ERROR_CODE_DARK_DOCUMENT) {
+            msg = "Low lighting detected";
+        } else if(message == ACCURA_ERROR_CODE_PHOTO_COPY_DOCUMENT) {
+            msg = "Can not accept Photo Copy Document";
+        } else if(message == ACCURA_ERROR_CODE_FACE) {
+            msg = "Face not detected";
+        } else if(message == ACCURA_ERROR_CODE_MRZ) {
+            msg = "MRZ not detected";
+        } else if(message == ACCURA_ERROR_CODE_PASSPORT_MRZ) {
+            msg = "Passport MRZ not detected";
+        } else if(message == ACCURA_ERROR_CODE_ID_MRZ) {
+            msg = "ID MRZ not detected"
+        } else if(message == ACCURA_ERROR_CODE_VISA_MRZ) {
+            msg = "Visa MRZ not detected"
+        }else if(message == ACCURA_ERROR_CODE_UPSIDE_DOWN_SIDE) {
+            msg = "Document is upside down. Place it properly"
+        }else if(message == ACCURA_ERROR_CODE_WRONG_SIDE) {
+            msg = "Scanning wrong side of Document"
+        }else {
+            msg = "";
+        }
+        lblBottamMsg.text = msg
     }
     
 }

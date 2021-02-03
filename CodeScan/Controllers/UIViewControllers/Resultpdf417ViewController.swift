@@ -1,11 +1,11 @@
 
 import UIKit
-import ZoomAuthenticationHybrid
 import SVProgressHUD
 import AccuraOCR
 import FaceMatchSDK
+import Alamofire
 
-class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate ,UIImagePickerControllerDelegate, UINavigationControllerDelegate,ZoomVerificationDelegate,CustomAFNetWorkingDelegate {
+class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate ,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate,LivenessData {
     
    
     //MARK:- Outlet
@@ -34,7 +34,9 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
     var matchImage: UIImage?
     var liveImage: UIImage?
     var stFace : String?
+    var livenessValue: String = ""
     var isFLpershow = false
+    var intID: Int?
     //MARK:- ViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +49,6 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         tblResult.estimatedRowHeight = 65.0;
         tblResult.rowHeight = UITableView.automaticDimension
         isCheckLiveNess = false
-        self.initializeZoom()
         /*
          FaceMatch SDK method to check if engine is initiated or not
          Return: true or false
@@ -85,8 +86,25 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // ZoomScanning SDK Reset
-        Zoom.sdk.preload()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Liveness.setLivenessURL(livenessURL: "Your URL")
+        Liveness.setBackGroundColor(backGroundColor: "#C4C4C5")
+        Liveness.setCloseIconColor(closeIconColor: "#000000")
+        Liveness.setFeedbackBackGroundColor(feedbackBackGroundColor: "#C4C4C5")
+        Liveness.setFeedbackTextColor(feedbackTextColor: "#000000")
+        Liveness.setFeedbackTextSize(feedbackTextSize: 18)
+        Liveness.setFeedBackframeMessage(feedBackframeMessage: "Frame Your Face")
+        Liveness.setFeedBackAwayMessage(feedBackAwayMessage: "Move Phone Away")
+        Liveness.setFeedBackOpenEyesMessage(feedBackOpenEyesMessage: "Keep Open Your Eyes")
+        Liveness.setFeedBackCloserMessage(feedBackCloserMessage: "Move Phone Closer")
+        Liveness.setFeedBackCenterMessage(feedBackCenterMessage: "Center Your Face")
+        Liveness.setFeedbackMultipleFaceMessage(feedBackMultipleFaceMessage: "Multiple face detected")
+        Liveness.setFeedBackFaceSteadymessage(feedBackFaceSteadymessage: "Keep Your Head Straight")
+        Liveness.setFeedBackLowLightMessage(feedBackLowLightMessage: "Low light detected")
+        Liveness.setFeedBackBlurFaceMessage(feedBackBlurFaceMessage: "Blur detected over face")
+        Liveness.setFeedBackGlareFaceMessage(feedBackGlareFaceMessage: "Glare detected")
     }
     
     
@@ -256,12 +274,10 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                     }
                     cell.user_img.image = imageFace
                 }
-                if dictResultData[KEY_FACE_IMAGE2] != nil{
+                if imgCamaraFace != nil{
                     cell.User_img2.isHidden = false
                     cell.view2.isHidden = false
-                    if let imageFace: UIImage =  dictResultData[KEY_FACE_IMAGE2]  as? UIImage{
-                        cell.User_img2.image = imageFace
-                    }
+                    cell.User_img2.image = imgCamaraFace
                 }
                 return cell
             }else if(indexPath.section == 1){
@@ -278,8 +294,8 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                 cell.btnLiveness.addTarget(self, action: #selector(buttonClickedLiveness(sender:)), for: .touchUpInside)
                 if(dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("FACEMATCH SCORE : ") ?? false || dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("LIVENESS SCORE : ") ?? false){
                     if isCheckLiveNess!{
-                        isCheckLiveNess = false
-                        cell.lblValueLiveness.text = "\(dictResultData[KEY_VALUE_FACE_MATCH] as? String ?? "") %"
+//                        isCheckLiveNess = false
+                        cell.lblValueLiveness.text = "\(livenessValue) %"
                         cell.lblValueFaceMatch.text = "\(String(describing: faceScoreData!)) %"
                     }else{
                         
@@ -332,107 +348,82 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         }
     }
     
-    func launchZoomToVerifyLivenessAndRetrieveFacemap() {
-        // Make sure initialization was successful before launcing ZoOm
-        var reason: String = ""
-        let status:ZoomSDKStatus = Zoom.sdk.getStatus()
-        switch(status) {
-        case .neverInitialized:
-            reason = "Initialize was never attempted";
-            break;
-        case .initialized:
-            reason = "The app token provided was verified";
-            break;
-        case .networkIssues:
-            reason = "The app token could not be verified";
-            break;
-        case .invalidToken:
-            reason = "The app token provided was invalid";
-            break;
-        case .versionDeprecated:
-            reason = "The current version of the SDK is deprecated";
-            break;
-        case .offlineSessionsExceeded:
-            reason = "The app token needs to be verified again";
-            break;
-        case .unknownError:
-            reason = "An unknown error occurred";
-            break;
-        default:
-            break;
+    func LivenessData(stLivenessValue: String, livenessImage: UIImage, status: Bool) {
+        isFLpershow = true
+        self.livenessValue = stLivenessValue
+        self.imgCamaraFace = livenessImage
+        if status == false{
+            GlobalMethods.showAlertView("Please try again", with: self)
         }
-
-        if(status != .initialized) {
-            let alert = UIAlertController(title: "Get Ready To ZoOm.", message: "ZoOm is not ready to be launched. \nReason: \(reason)", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return;
-        }
-
-        let vc = Zoom.sdk.createVerificationVC(delegate: self)//Zoom SDK set Delegate
-
-        let colors: [AnyObject] = [UIColor(red: 0.04, green: 0.71, blue: 0.64, alpha: 1).cgColor,UIColor(red: 0.07, green: 0.57, blue: 0.76, alpha: 1).cgColor]
-        self.configureGradientBackground(arrcolors: colors, inLayer: vc.view.layer)
-
-        // For proper modal presentation of ZoOm interface, modal presentation style must be set as .overFullScreen or .overCurrentContext.
-        // UIModalPresentationStyles.formsheet is not currently supported, as it impedes intended ZoOm functionality and user experience.
-        // Example of presenting ZoOm using cross dissolve effect
-
-        vc.modalTransitionStyle = .crossDissolve
-
-        // When presenting the ZoOm interface over your own application, you can keep your application showing in the background by using this presentation style
-
-        vc.modalPresentationStyle =  .overCurrentContext
-
-        // Refer to ZoomFrameCustomization for further presentation/interface customization.
-        self.present(vc, animated: true, completion: nil)
-    }
-
-    func initializeZoom(){
-        //Initialize the ZoOm SDK using your app token
-        Zoom.sdk.initialize(appToken: MY_ZOOM_DEVELOPER_APP_TOKEN1) { (validationResult) in
-            if validationResult {
-                // print("AppToken validated successfully")
-            } else {
-                if Zoom.sdk.getStatus() != .initialized {
-                    self.showInitFailedDialog()
+        
+        if (faceRegion != nil)
+        {
+            /*
+             FaceMatch SDK method call to detect Face in back image
+             @Params: BackImage, Front Face Image faceRegion
+             @Return: Face Image Frame
+             */
+            
+            let face2 = EngineWrapper.detectTargetFaces(livenessImage, feature1: faceRegion?.feature)
+            let face11 = faceRegion?.image
+            /*
+             FaceMatch SDK method call to get FaceMatch Score
+             @Params: FrontImage Face, BackImage Face
+             @Return: Match Score
+             
+             */
+            
+            let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
+            if(fm_Score != 0.0){
+            let data = face2?.bound
+            let image = self.resizeImage(image: livenessImage, targetSize: data!)
+            imgCamaraFace = image
+            let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
+                faceScoreData = twoDecimalPlaces
+            self.removeOldValue("FACEMATCH SCORE : ")
+            self.removeOldValue1("0 %")
+            isCheckLiveNess = true
+                if self.pageType != .ScanOCR{
+                    let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
+                    self.arrDocumentData.insert(dict, at: 1)
+                }else{
+                    let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
+                    self.arrFaceLivenessScor.insert(ansData, at: 0)
                 }
-            }
+                
+                let stFaceImage = convertImageToBase64(image: image)
+                let stLivenessInage = convertImageToBase64(image: livenessImage)
+//                print(intID as Any)
+                var dictParam: [String: String] = [String: String]()
+                dictParam["kyc_id"] = "\(intID ?? 0)"
+                dictParam["face_match"] = "True"
+                dictParam["liveness"] = "True"
+                dictParam["face_match_score"] = "\(faceScoreData)"
+
+                dictParam["liveness_score"] = stLivenessValue
+                dictParam["facematch_image"] = stFaceImage
+                dictParam["liveness_image"] = stLivenessInage
+                    let sharedInstance = NetworkReachabilityManager()!
+                    var isConnectedToInternet:Bool {
+                        return sharedInstance.isReachable
+                    }
+                
+                // print(twoDecimalPlaces)
+//                if pageType != .ScanOCR{
+//                    let dict = [KEY_VALUE_FACE_MATCH: "\((stLivenessValue))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
+//                    arrDocumentData.insert(dict, at: 1)
+//                }else{
+//                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
+//                    self.arrFaceLivenessScor.insert(ansData, at: 0)
+//                }
         }
-
-        // Configures the look and feel of Zoom
-        let currentCustomization = ZoomCustomization()
-        currentCustomization.showPreEnrollmentScreen = false; //show Pre-Enrollment screens
-
-        // Sample UI Customization: vertically center the ZoOm frame within the device's display
-        centerZoomFrameCustomization(currentCustomization);
-
-        // Apply the customization changes
-        Zoom.sdk.setCustomization(currentCustomization)
-        Zoom.sdk.auditTrailType = .height640 //Sets the type of audit trail images to be collected
-    }
-
-    func showInitFailedDialog(){
-        let alert = UIAlertController(title: "Initialization Failed", message: "Please check that you have set your ZoOm app token to the MY_ZOOM_DEVELOPER_APP_TOKEN variable in this file.  To retrieve your app token, visit https://dev.zoomlogin.com/zoomsdk/#/account.", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-
-    /**
-     * This method use set custom Frame lunchZoom
-     *
-     */
-    func centerZoomFrameCustomization(_ currentCustomization:ZoomCustomization){
-        let screenHeight = UIScreen.main.fixedCoordinateSpace.bounds.size.height
-        var frameHeight = CGFloat(screenHeight) * CGFloat(currentCustomization.frameCustomization.sizeRatio)
-
-        // Detect iPhone X and iPad displays
-        if(UIScreen.main.fixedCoordinateSpace.bounds.size.height >= 812) {
-            frameHeight = UIScreen.main.fixedCoordinateSpace.bounds.size.width * (16.0/9.0) * CGFloat(currentCustomization.frameCustomization.sizeRatio);
+            tblResult.reloadData()
         }
-
-        let topMarginToCenterFrame = (screenHeight - frameHeight)/2.0
-        currentCustomization.frameCustomization.topMargin = Double(topMarginToCenterFrame);
+    }
+    
+    func convertImageToBase64(image: UIImage) -> String {
+        let imageData = image.jpeg(.medium)
+      return imageData!.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
     }
 
     func configureGradientBackground(arrcolors:[AnyObject],inLayer:CALayer){
@@ -457,26 +448,21 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
 
     @objc func buttonClickedFaceMatch(sender:UIButton)
         {
-            picker.delegate = self
-            picker.allowsEditing = false
-            picker.sourceType = .camera
-            picker.cameraDevice = .front
-            picker.mediaTypes = ["public.image"]
-            self.present(picker, animated: true, completion: nil)
+        isCheckLiveNess = false
+        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
+//            picker.delegate = self
+//            picker.allowsEditing = false
+//            picker.sourceType = .camera
+//            picker.cameraDevice = .front
+//            picker.mediaTypes = ["public.image"]
+//            self.present(picker, animated: true, completion: nil)
         }
         
        @objc func buttonClickedLiveness(sender:UIButton)
         {
-            isCheckLiveNess = true
-            faceScoreData = ""
-            uniqStr = ProcessInfo.processInfo.globallyUniqueString
-            if pageType == .Default{
-                self.launchZoomToVerifyLivenessAndRetrieveFacemap() //lunchZoom setup
-            }else{
-                if photoImage != nil || faceImage != nil{
-                    self.launchZoomToVerifyLivenessAndRetrieveFacemap() //lunchZoom setup
-                }
-            }
+        isCheckLiveNess = true
+        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: true)
+//            isCheckLiveNess = true
         }
 
     /**
@@ -513,98 +499,6 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         return destImage
     }
     
-    //MARK:- ZoomVerification Methods
-        func onZoomVerificationResult(result: ZoomVerificationResult) {
-            if result.status == .failedBecauseEncryptionKeyInvalid{
-                let alert = UIAlertController(title: "Public Key Not Set.", message: "Retrieving facemaps requires that you generate a public/private key pair per the instructions at https://dev.zoomlogin.com/zoomsdk/#/zoom-server-guide", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }else if result.status == .userProcessedSuccessfully {
-                SVProgressHUD.show(withStatus: "Loading...")
-                self.handleVerificationSuccessResult(result: result)
-            }
-            else{
-                // Handle other error
-            }
-        }
-        
-        /**
-         * This method use to get liveness image and face match score
-         * Parameters to Pass: ZoomVerificationResult data
-         *
-         */
-        func handleVerificationSuccessResult(result:ZoomVerificationResult){
-            
-            let faceMetrics: ZoomFaceBiometricMetrics = result.faceMetrics!  // faceMetrics data is user scanning face
-            var faceImage2: UIImage? = nil
-            
-            if faceMetrics.auditTrail !=  nil &&  faceMetrics.auditTrail!.count > 0{
-                
-                    var isFindImg: Bool = false
-                    for (index,var dict) in arrDocumentData.enumerated(){
-                        for st in dict.keys{
-                            if st == KEY_FACE_IMAGE{
-                                // faceMetrics.auditTrail![0] will return user face image from zoom liveness check for face match
-                                dict[KEY_FACE_IMAGE2] = faceMetrics.auditTrail![0]
-                                arrDocumentData[index] = dict
-                                isFindImg = true
-                                break
-                            }
-                            if isFindImg{ break }
-                        }
-                    }
-                
-                // faceMetrics.auditTrail![0] will return user face image from zoom liveness check for face match
-                faceImage2 = faceMetrics.auditTrail?[0];
-                matchImage = faceImage2 ?? UIImage();
-                liveImage = faceImage2 ?? UIImage();
-                //Find Facematch score
-                if (faceRegion != nil)
-                {
-                    /*
-                     FaceMatch SDK method call to detect Face in back image
-                     @Params: BackImage, Front Face Image faceRegion
-                     @Return: Face Image Frame
-                     */
-                    
-                    let face2 = EngineWrapper.detectTargetFaces(faceImage2, feature1: faceRegion?.feature)
-                    /*
-                     FaceMatch SDK method call to get FaceMatch Score
-                     @Params: FrontImage Face, BackImage Face
-                     @Return: Match Score
-                     
-                     */
-                    let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
-                    let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
-                    self.removeOldValue("FACEMATCH SCORE : ")
-                    self.removeOldValue1("0 %")
-                    faceScoreData = twoDecimalPlaces
-                }
-            }
-            self.handleResultFromFaceTecManagedRESTAPICall(_result: result)
-        }
-        
-        /**
-         * This method use to get liveness score
-         * Parameters to Pass: ZoomVerificationResult user scanning data
-         *
-         */
-        func handleResultFromFaceTecManagedRESTAPICall(_result:ZoomVerificationResult){
-            if(_result.faceMetrics != nil)
-            {
-                let zoomFacemap = _result.faceMetrics?.zoomFacemap //zoomFacemap is Biometric Facemap
-                let zoom = zoomFacemap?.base64EncodedString(options: [])
-                
-                //Call Liveness Api
-                let dictPara: NSMutableDictionary = NSMutableDictionary()
-                dictPara["sessionId"] = _result.sessionId
-                dictPara["facemap"] = zoom
-                
-                //Call liveness Api
-                let apiObject = CustomAFNetWorking(post: WS_liveness, withTag: LivenessTag, withParameter: dictPara)
-                apiObject?.delegate = self
-            }
-        }
      //MARK:- UIImagePickerController Delegate
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             // Local variable inserted by Swift 4.2 migrator.
@@ -613,7 +507,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
             picker.dismiss(animated: true, completion: nil)
             isFLpershow = true
             SVProgressHUD.show(withStatus: "Loading...")
-            DispatchQueue.global(qos: .background).async {
+//            DispatchQueue.global(qos: .background).async {
                 guard var chosenImage:UIImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else{return}
                 
                 //Capture Image Left flipped
@@ -645,7 +539,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                     }
                     
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+//                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                     if (self.faceRegion != nil){
                         /*
                          Accura Face SDK method to detect user face from selfie or camera stream
@@ -666,6 +560,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                          */
                         let fm_Score = EngineWrapper.identify(self.faceRegion?.feature, featurebuff2: face2?.feature)
                         if(fm_Score != 0.0){
+                            isCheckLiveNess = false
                             let data = face2?.bound
                             let image = self.resizeImage(image: chosenImage, targetSize: data!)
                             self.removeOldValue1("0 %")
@@ -673,6 +568,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                             for (index,var dict) in self.arrDocumentData.enumerated(){
                                 for st in dict.keys{
                                     if st == KEY_FACE_IMAGE{
+                                        imgCamaraFace = image
                                         dict[KEY_FACE_IMAGE2] = image
                                         self.arrDocumentData[index] = dict
                                         isFindImg = true
@@ -685,6 +581,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                             self.removeOldValue("FACEMATCH SCORE : ")
                             
                             let twoDecimalPlaces = String(format: "%.2f", fm_Score * 100) //Match score Convert Float Value
+                            faceScoreData = twoDecimalPlaces
                             let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
                             self.arrDocumentData.insert(dict, at: 1)
                         }else {
@@ -694,8 +591,8 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                     self.tblResult.reloadData()
                     
                     SVProgressHUD.dismiss()
-                })
-            }
+//                })
+//            }
         }
         
     func resizeImage(image: UIImage, targetSize: CGRect) -> UIImage {

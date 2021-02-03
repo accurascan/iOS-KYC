@@ -1,5 +1,6 @@
 
 import UIKit
+import AccuraOCR
 
 struct CardType {
     let id : Int?

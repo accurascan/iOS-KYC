@@ -59,7 +59,6 @@
 		A3268522247F649B0028BCA5 /* FirstTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3268520247F649B0028BCA5 /* FirstTableViewCell.xib */; };
 		A3268523247F649B0028BCA5 /* FirstTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3268521247F649B0028BCA5 /* FirstTableViewCell.swift */; };
 		A3268527247F95F70028BCA5 /* CustomAFNetWorking.m in Sources */ = {isa = PBXBuildFile; fileRef = A3268525247F95F70028BCA5 /* CustomAFNetWorking.m */; };
-		A327632F25934F26006479EE /* ZoomAuthenticationHybrid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A327632E25934F26006479EE /* ZoomAuthenticationHybrid.framework */; };
 		A33412F724AB63A500CECDCB /* AccuraOCRSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */; };
 		A33E204B23E2AA78004FED85 /* ListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A33E204423E2AA78004FED85 /* ListTableCell.xib */; };
 		A33E204E23E2AA78004FED85 /* CountryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E204723E2AA78004FED85 /* CountryListCell.swift */; };
@@ -70,6 +69,7 @@
 		A382E69A230AA94800C56EAE /* FirstViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A382E697230AA94700C56EAE /* FirstViewVC.swift */; };
 		A384903E24A5EB4F00ECB42D /* FaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384903D24A5EB4F00ECB42D /* FaceView.swift */; };
 		A384904724A61EC700ECB42D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A384904624A61EC700ECB42D /* README.md */; };
+		A389C6A72599A5B900A73C1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A389C6A62599A5B900A73C1E /* GoogleService-Info.plist */; };
 		A3E3D55C24A5BB710034A3EA /* key.license in Resources */ = {isa = PBXBuildFile; fileRef = A3E3D55B24A5BB710034A3EA /* key.license */; };
 		A3E9E1C624A5C1C200D0B9FA /* accuraface.license in Resources */ = {isa = PBXBuildFile; fileRef = A3E9E1C524A5C1C200D0B9FA /* accuraface.license */; };
 		A3F172C2242250F30050FB25 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3F172C1242250F30050FB25 /* Launch Screen.storyboard */; };
@@ -98,7 +98,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A3CE785124877CF500B8D3F2 /* Embed Frameworks */ = {
+		A3D1BDD82594A31A00339909 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
@@ -229,7 +229,6 @@
 		A3268521247F649B0028BCA5 /* FirstTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstTableViewCell.swift; sourceTree = "<group>"; };
 		A3268525247F95F70028BCA5 /* CustomAFNetWorking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAFNetWorking.m; sourceTree = "<group>"; };
 		A3268526247F95F70028BCA5 /* CustomAFNetWorking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAFNetWorking.h; sourceTree = "<group>"; };
-		A327632E25934F26006479EE /* ZoomAuthenticationHybrid.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZoomAuthenticationHybrid.framework; sourceTree = "<group>"; };
 		A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccuraOCRSDK.swift; sourceTree = "<group>"; };
 		A33E204423E2AA78004FED85 /* ListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableCell.xib; sourceTree = "<group>"; };
 		A33E204723E2AA78004FED85 /* CountryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListCell.swift; sourceTree = "<group>"; };
@@ -240,6 +239,7 @@
 		A382E697230AA94700C56EAE /* FirstViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewVC.swift; sourceTree = "<group>"; };
 		A384903D24A5EB4F00ECB42D /* FaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceView.swift; sourceTree = "<group>"; };
 		A384904624A61EC700ECB42D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		A389C6A62599A5B900A73C1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A3E3D55B24A5BB710034A3EA /* key.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = key.license; sourceTree = "<group>"; };
 		A3E9E1C524A5C1C200D0B9FA /* accuraface.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = accuraface.license; sourceTree = "<group>"; };
 		A3F172C1242250F30050FB25 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -265,7 +265,6 @@
 				5C9AF504211999C600700EDF /* QuartzCore.framework in Frameworks */,
 				5C9AF502211999BD00700EDF /* AudioToolbox.framework in Frameworks */,
 				5C9AF500211999B300700EDF /* libsqlite3.tbd in Frameworks */,
-				A327632F25934F26006479EE /* ZoomAuthenticationHybrid.framework in Frameworks */,
 				5C9AF4FC2119998E00700EDF /* MessageUI.framework in Frameworks */,
 				5C9AF4FA2119998300700EDF /* CoreData.framework in Frameworks */,
 				5C9AF4F82119997700700EDF /* SystemConfiguration.framework in Frameworks */,
@@ -290,6 +289,7 @@
 		5C67D96A2111E02100154EB7 /* AccuraScan */ = {
 			isa = PBXGroup;
 			children = (
+				A389C6A62599A5B900A73C1E /* GoogleService-Info.plist */,
 				A3268524247F95F70028BCA5 /* CustomAfnetwork */,
 				A38570ED2318020200FF7209 /* External */,
 				A38570EB2318018500FF7209 /* License */,
@@ -629,7 +629,6 @@
 		A38570ED2318020200FF7209 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				A327632E25934F26006479EE /* ZoomAuthenticationHybrid.framework */,
 				A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */,
 				A384903D24A5EB4F00ECB42D /* FaceView.swift */,
 				A341D735230EA44F00FDF946 /* ZoomHybrid.pub */,
@@ -659,9 +658,9 @@
 				6104CC7320BB4E6D00AC428E /* Frameworks */,
 				6104CC7420BB4E6D00AC428E /* Resources */,
 				FA30D04B23DEE96300BA0DC0 /* ShellScript */,
-				A3CE785124877CF500B8D3F2 /* Embed Frameworks */,
 				B3695E97B6E06E938565E622 /* [CP] Embed Pods Frameworks */,
 				C2AEDCA40448518E8EA0BBF7 /* [CP] Copy Pods Resources */,
+				A3D1BDD82594A31A00339909 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -751,6 +750,7 @@
 				5C94E026211ACA8200428686 /* Aller_Std_It.ttf in Resources */,
 				A3F172C2242250F30050FB25 /* Launch Screen.storyboard in Resources */,
 				DC75E60420BF370A0096BC5A /* CodeInfoV.xib in Resources */,
+				A389C6A72599A5B900A73C1E /* GoogleService-Info.plist in Resources */,
 				A3268522247F649B0028BCA5 /* FirstTableViewCell.xib in Resources */,
 				A324C4362476ED2E0002AE35 /* DocumantVarifyCell.xib in Resources */,
 				A384904724A61EC700ECB42D /* README.md in Resources */,
@@ -1028,7 +1028,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.4;
 				DEFINES_MODULE = YES;
@@ -1044,7 +1044,7 @@
 					"$(PROJECT_DIR)/CodeScan/AccuraScan/External",
 				);
 				INFOPLIST_FILE = CodeScan/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1071,6 +1071,7 @@
 				SWIFT_REFLECTION_METADATA_LEVEL = all;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 			};
 			name = Debug;
@@ -1104,7 +1105,7 @@
 					"$(PROJECT_DIR)/CodeScan/AccuraScan/External",
 				);
 				INFOPLIST_FILE = CodeScan/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1129,6 +1130,7 @@
 				SWIFT_REFLECTION_METADATA_LEVEL = all;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_WORKSPACE = YES;
 				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 			};
 			name = Release;
