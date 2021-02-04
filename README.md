@@ -1,4 +1,4 @@
-﻿# Accura KYC iOS SDK - OCR, Face Match & Liveness Check
+# Accura KYC iOS SDK - OCR, Face Match & Liveness Check
 iOS KYC SDK - OCR &amp; Face Match <br/>
 Accura OCR is used for Optical character recognition.<br/>
 Accura Face Match is used for Matching 2 Faces. Source and Target. It matches the User Image from a Selfie vs User Image in document.<br/>
@@ -11,7 +11,7 @@ Below steps to setup Accura SDK's in your project.
 ## 1. Setup Accura OCR
 
 #### Step 1: install the AccuraOCR pod(xcode compatible version 12.3)
-	`pod 'AccuraOCRSDK', '1.1.1'`
+	`pod 'AccuraOCRSDK', '1.1.2'`
          
 #### Step 2: Add license file in to your project.    
 ```
@@ -129,14 +129,18 @@ Download and extract the AccuraOCR.framework.(can download From https://accurasc
 	 ```
 	 accuraCameraWrapper?.andCardSide(.FRONT_CARD_SCAN)
 	 ```  
-
+    * Enable Print logs in OCR and Liveness SDK
+    
+    ```
+     accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
+     ```
 
      
 #### Step 7 : Set CameraView
 
    Important Grant Camera and storage Permission.</br>
    supports Landscape Camera
-```1    
+```    
     import AccuraOCR
     import AVFoundation
     
@@ -233,43 +237,45 @@ Download and extract the AccuraOCR.framework.(can download From https://accurasc
 		}
         
 	    // it calls when recieve error message
-	    func reco_msg(_ messageCode: String!) {
+    func reco_msg(_ messageCode: String!) {
 			var message = String()
-    		if messageCode == ACCURA_ERROR_CODE_MOTION {
-        		message = "Keep Document Steady"
-    		} else if messageCode == ACCURA_ERROR_CODE_DOCUMENT_IN_FRAME {
-        		message = "Bring card near to frame"
-    		} else if messageCode == ACCURA_ERROR_CODE_BRING_DOCUMENT_IN_FRAME {
-        		message = "Bring card near to frame"
-    		} else if messageCode == ACCURA_ERROR_CODE_PROCESSING {
-        		message = "Processing..."
-    		} else if messageCode == ACCURA_ERROR_CODE_BLUR_DOCUMENT {
-        		message = "Blur detect in document"
-    		} else if messageCode == ACCURA_ERROR_CODE_FACE_BLUR {
-        		message = "Blur detected over face"
-    		} else if messageCode == ACCURA_ERROR_CODE_GLARE_DOCUMENT {
-        		message = "Glare detect in document"
-    		} else if messageCode == ACCURA_ERROR_CODE_HOLOGRAM {
-        		message = "Hologram Detected"
-    		} else if messageCode == ACCURA_ERROR_CODE_DARK_DOCUMENT {
-        		message = "Low lighting detected"
-    		} else if messageCode == ACCURA_ERROR_CODE_PHOTO_COPY_DOCUMENT {
-        		message = "Can not accept Photo Copy Document"
-    		} else if messageCode == ACCURA_ERROR_CODE_FACE {
-        		message = "Face not detected"
-    		} else if messageCode == ACCURA_ERROR_CODE_MRZ {
-        		message = "MRZ not detected"
-    		} else if messageCode == ACCURA_ERROR_CODE_PASSPORT_MRZ {
-        		message = "Passport MRZ not detected"
-    		} else if messageCode == ACCURA_ERROR_CODE_RETRYING {
-         	  	message = "Retrying..."
-       		} else if(message == ACCURA_ERROR_CODE_ID_MRZ) {
-            	message = "ID MRZ not detected"
-       		} else if(message == ACCURA_ERROR_CODE_VISA_MRZ) {
-            	message = "Visa MRZ not detected"
-        	}else {
-           	 	message = messageCode
-        	}
+        if messageCode == ACCURA_ERROR_CODE_MOTION {
+            message = "Keep Document Steady";
+        } else if(messageCode == ACCURA_ERROR_CODE_DOCUMENT_IN_FRAME) {
+            message = "Keep document in frame";
+        } else if(messageCode == ACCURA_ERROR_CODE_BRING_DOCUMENT_IN_FRAME) {
+            message = "Bring card near to frame";
+        } else if(messageCode == ACCURA_ERROR_CODE_PROCESSING) {
+            message = "Processing...";
+        } else if(messageCode == ACCURA_ERROR_CODE_BLUR_DOCUMENT) {
+            message = "Blur detect in document";
+        } else if(messageCode == ACCURA_ERROR_CODE_FACE_BLUR) {
+            message = "Blur detected over face";
+        } else if(messageCode == ACCURA_ERROR_CODE_GLARE_DOCUMENT) {
+            message = "Glare detect in document";
+        } else if(messageCode == ACCURA_ERROR_CODE_HOLOGRAM) {
+            message = "Hologram Detected";
+        } else if(messageCode == ACCURA_ERROR_CODE_DARK_DOCUMENT) {
+            message = "Low lighting detected";
+        } else if(messageCode == ACCURA_ERROR_CODE_PHOTO_COPY_DOCUMENT) {
+            message = "Can not accept Photo Copy Document";
+        } else if(messageCode == ACCURA_ERROR_CODE_FACE) {
+            message = "Face not detected";
+        } else if(messageCode == ACCURA_ERROR_CODE_MRZ) {
+            message = "MRZ not detected";
+        } else if(messageCode == ACCURA_ERROR_CODE_PASSPORT_MRZ) {
+            message = "Passport MRZ not detected";
+        } else if(messageCode == ACCURA_ERROR_CODE_ID_MRZ) {
+            message = "ID MRZ not detected"
+        } else if(messageCode == ACCURA_ERROR_CODE_VISA_MRZ) {
+            message = "Visa MRZ not detected"
+        }else if(messageCode == ACCURA_ERROR_CODE_UPSIDE_DOWN_SIDE) {
+            message = "Document is upside down. Place it properly"
+        }else if(messageCode == ACCURA_ERROR_CODE_WRONG_SIDE) {
+            message = "Scanning wrong side of Document"
+        }else {
+            message = message;
+        }
     		print(message)
 		}
  	}
@@ -342,7 +348,7 @@ Step 4: Open auto capture camera
 Step 5: Detect face image
 ```
 	func LivenessData(stLivenessValue: String, livenessImage: UIImage, status: Bool) {
-		func setFaceRegion(livenessImage) 
+		setFaceRegion(livenessImage) 
 	}
 ```       
 
@@ -385,15 +391,15 @@ Step 6: Implement face match code manually to your activity.
 	      *
 	      */
 	func setFaceRegion(_ image: UIImage) {
-    	var faceRegion : NSFaceRegion?
-        if(selectFirstImage){
+            var faceRegion : NSFaceRegion?
+       
             /*
              * Accura Face SDK method to detect user face from document image
              * Param: Document image
              * Return: User Face
              */
             faceRegion = EngineWrapper.detectSourceFaces(image)
-        }else{
+       
             let face1 : NSFaceRegion? = faceView1.getFaceRegion(); // Get image data
             if (face1 == nil) {
                 /*
@@ -410,7 +416,7 @@ Step 6: Implement face match code manually to your activity.
                  */
                 faceRegion = EngineWrapper.detectTargetFaces(image, feature1: face1?.feature);
             }
-        }
+        
         
         if (selectFirstImage){
             if (faceRegion != nil){
@@ -469,11 +475,6 @@ Step 6: Implement face match code manually to your activity.
         let face1:NSFaceRegion? = faceView1.getFaceRegion() // Get image data
         let face2:NSFaceRegion? = faceView2.getFaceRegion() // Get image data
         
-        if ((face1?.face == 0 || face1 == nil) || (face2?.face == 0 || face2 == nil)){
-            lableMatchRate.text = "Match Score : 0.0 %";
-            return
-        }
-        
         /*
          * FaceMatch SDK method call to get FaceMatch Score
          * @Params: FrontImage Face, BackImage Face
@@ -481,5 +482,5 @@ Step 6: Implement face match code manually to your activity.
          */
         let fmSore = EngineWrapper.identify(face1?.feature, featurebuff2: face2?.feature)
         let twoDecimalPlaces = String(format: "%.2f", fmSore*100) //Match score Convert Float Value
-        lableMatchRate.text = "Match Score : \(twoDecimalPlaces) %"
+        print(Match Score :- "\(twoDecimalPlaces) %")
 	}

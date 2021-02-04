@@ -19,6 +19,7 @@ class FirstViewVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
         navigationController?.navigationBar.isHidden = true
     }
     

@@ -73,7 +73,9 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
     }
     
     @IBAction func imageCamera1(_ sender: Any) {
+        DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
         Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
+        })
         selectFirstImage = true
 //        imagePicker.sourceType = UIImagePickerController.SourceType.camera
 //        imagePicker.allowsEditing = false
@@ -86,7 +88,10 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
     }
     
     @IBAction func imageCamera2(_ sender: Any) {
+        DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
         Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
+            self.view.setNeedsLayout()
+        })
         selectFirstImage = false
 //        imagePicker.sourceType = UIImagePickerController.SourceType.camera
 //        imagePicker.allowsEditing = false
