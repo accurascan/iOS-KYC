@@ -6,7 +6,7 @@ import Alamofire
 import AccuraOCR
 import FaceMatchSDK
 
-class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate, LivenessData {
+class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
     //MARK:- Outlet
     @IBOutlet weak var image1: UIImageView!
@@ -76,11 +76,12 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
         Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
         })
+
         selectFirstImage = true
-//        imagePicker.sourceType = UIImagePickerController.SourceType.camera
-//        imagePicker.allowsEditing = false
-//        imagePicker.modalPresentationStyle = .overCurrentContext
-//        self.present(imagePicker, animated: true, completion: nil)
+        imagePicker.sourceType = UIImagePickerController.SourceType.camera
+        imagePicker.allowsEditing = false
+        imagePicker.modalPresentationStyle = .overCurrentContext
+        self.present(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func imageGallery1(_ sender: Any) {
@@ -93,10 +94,10 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
             self.view.setNeedsLayout()
         })
         selectFirstImage = false
-//        imagePicker.sourceType = UIImagePickerController.SourceType.camera
-//        imagePicker.allowsEditing = false
-//        imagePicker.modalPresentationStyle = .overCurrentContext
-//        self.present(imagePicker, animated: true, completion: nil)
+        imagePicker.sourceType = UIImagePickerController.SourceType.camera
+        imagePicker.allowsEditing = false
+        imagePicker.modalPresentationStyle = .overCurrentContext
+        self.present(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func imageGallery2(_ sender: Any) {
@@ -204,23 +205,6 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
             })
         }
         
-    }
-    func LivenessData(stLivenessValue: String, livenessImage: UIImage, status: Bool) {
-        SVProgressHUD.show(withStatus: "Loading...")
-        DispatchQueue.global(qos: .background).async {
-            var originalImage = livenessImage
-            
-            
-            //Image Resize
-            let ratio = CGFloat(livenessImage.size.width) / originalImage.size.height
-            originalImage = self.compressimage(with: originalImage, convertTo: CGSize(width: 600 * ratio, height: 600))!
-            
-            let compressData = UIImage(data: livenessImage.jpegData(compressionQuality: 1.0)!)
-            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-                self.setFaceRegion(compressData!)//Set FaceMatch score
-                SVProgressHUD.dismiss()
-            })
-        }
     }
     
     /**
