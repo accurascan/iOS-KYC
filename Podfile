@@ -7,9 +7,5 @@ target 'AccuraSDK' do
   
   # Pods for CodeScan
    pod 'AccuraFaceMatchSDK', '1.0.5'
-   pod 'AccuraOCRSDK', '1.1.2'
-  pod 'Firebase/MLVision'
-  pod 'Firebase/MLVisionTextModel'
-  pod 'Firebase/MLVisionFaceModel'
-  pod 'Firebase/MLVisionBarcodeModel'
+   pod 'AccuraOCR', '2.0.1'
 end

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Aller_Std.ttf">
+            <string>Aller-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BarcodeTypeHFV" customModule="Accura_SDK" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQM-bY-wza">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose one or more barcodes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AqR-vE-Rip">
+                            <rect key="frame" x="8" y="10" width="189.5" height="21"/>
+                            <fontDescription key="fontDescription" name="Aller-Bold" family="Aller" pointSize="14"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="AqR-vE-Rip" firstAttribute="top" secondItem="AQM-bY-wza" secondAttribute="top" constant="10" id="1XS-GZ-yWF"/>
+                        <constraint firstAttribute="bottom" secondItem="AqR-vE-Rip" secondAttribute="bottom" constant="10" id="6XY-5S-DjX"/>
+                        <constraint firstItem="AqR-vE-Rip" firstAttribute="leading" secondItem="AQM-bY-wza" secondAttribute="leading" constant="8" id="KPo-z5-L1U"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="mue-Yb-LOg"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="AQM-bY-wza" secondAttribute="bottom" id="795-jk-lat"/>
+                <constraint firstItem="AQM-bY-wza" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="UfI-Vl-4Dw"/>
+                <constraint firstAttribute="trailing" secondItem="AQM-bY-wza" secondAttribute="trailing" id="VCe-KI-sIL"/>
+                <constraint firstItem="AQM-bY-wza" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="a3o-qQ-ePh"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="barcodeHeaderView" destination="AQM-bY-wza" id="ixu-RV-Xck"/>
+            </connections>
+            <point key="canvasLocation" x="33.5" y="-259.5"/>
+        </view>
+    </objects>
+</document>

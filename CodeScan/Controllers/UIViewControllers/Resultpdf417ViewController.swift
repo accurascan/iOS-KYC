@@ -26,6 +26,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
     var faceRegion: NSFaceRegion?
     var isCheckLiveNess: Bool?
     var isCheckIDMRZ: Bool = false
+    var AllBarcode: Bool = false
     var faceScoreData: String?
     var uniqStr = ""
     var pageType: NAV_PAGETYPE = .Default
@@ -37,6 +38,10 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
     var livenessValue: String = ""
     var isFLpershow = false
     var intID: Int?
+    var orientation: UIInterfaceOrientationMask?
+    var BarcodeData: String?
+    var liveness = Liveness()
+    
     //MARK:- ViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,7 +83,9 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         
         //Register tableview cell
         tblResult.register(UINib(nibName: "DrivePDFTableViewCell", bundle: nil), forCellReuseIdentifier: "drivePDF")
+        tblResult.register(UINib(nibName: "BarcodeTableViewCell", bundle: nil), forCellReuseIdentifier: "BarcodeTableViewCell")
         tblResult.register(UINib(nibName: "DrivingPDFstringTableViewCell", bundle: nil), forCellReuseIdentifier: "Stringcell")
+        self.tblResult.register(UINib.init(nibName: "ResultTableCell", bundle: nil), forCellReuseIdentifier: "ResultTableCell")
         tblResult!.dataSource = self as UITableViewDataSource
         self.tblResult.register(UINib.init(nibName: "UserImgTableCell", bundle: nil), forCellReuseIdentifier: "UserImgTableCell")
         tblResult.register(UINib.init(nibName: "DocumentTableCell", bundle: nil), forCellReuseIdentifier: "DocumentTableCell")
@@ -89,22 +96,9 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Liveness.setLivenessURL(livenessURL: "Your URL")
-        Liveness.setBackGroundColor(backGroundColor: "#C4C4C5")
-        Liveness.setCloseIconColor(closeIconColor: "#000000")
-        Liveness.setFeedbackBackGroundColor(feedbackBackGroundColor: "#C4C4C5")
-        Liveness.setFeedbackTextColor(feedbackTextColor: "#000000")
-        Liveness.setFeedbackTextSize(feedbackTextSize: 18)
-        Liveness.setFeedBackframeMessage(feedBackframeMessage: "Frame Your Face")
-        Liveness.setFeedBackAwayMessage(feedBackAwayMessage: "Move Phone Away")
-        Liveness.setFeedBackOpenEyesMessage(feedBackOpenEyesMessage: "Keep Open Your Eyes")
-        Liveness.setFeedBackCloserMessage(feedBackCloserMessage: "Move Phone Closer")
-        Liveness.setFeedBackCenterMessage(feedBackCenterMessage: "Center Your Face")
-        Liveness.setFeedbackMultipleFaceMessage(feedBackMultipleFaceMessage: "Multiple face detected")
-        Liveness.setFeedBackFaceSteadymessage(feedBackFaceSteadymessage: "Keep Your Head Straight")
-        Liveness.setFeedBackLowLightMessage(feedBackLowLightMessage: "Low light detected")
-        Liveness.setFeedBackBlurFaceMessage(feedBackBlurFaceMessage: "Blur detected over face")
-        Liveness.setFeedBackGlareFaceMessage(feedBackGlareFaceMessage: "Glare detected")
+        
+        self.tblResult.estimatedRowHeight = 60.0
+        self.tblResult.rowHeight = UITableView.automaticDimension
     }
     
     
@@ -114,6 +108,8 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         if(isCheckIDMRZ)
         {
             return 6
+        } else if (AllBarcode) {
+            return 2
         }
         else{
             return 2
@@ -139,6 +135,8 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
             else{
                 return 1
             }
+        } else if(AllBarcode) {
+            return 1
         }
         else{
             if(section == 0)
@@ -160,6 +158,8 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
             else{
                 return CGFloat.leastNonzeroMagnitude
             }
+        } else if (AllBarcode){
+            return 0
         }
         else{
             return 60
@@ -174,6 +174,8 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
             else{
                 return CGFloat.leastNonzeroMagnitude
             }
+        } else if (AllBarcode) {
+            return 0
         }
         else{
             return 20
@@ -208,6 +210,9 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                 let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 0))
                 return headerView
             }
+        } else if (AllBarcode) {
+            let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 0))
+            return headerView
         }
         else{
             let headerView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 60))
@@ -238,21 +243,43 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         {
             if(indexPath.section == 1)
             {
-                if(isFLpershow)
-                {
-                    return 116
+                if(photoImage != nil) {
+                    if(isFLpershow)
+                    {
+                        return 116
+                    }
+                    return 76
+                } else {
+                    return 0
                 }
-                return 76
+                
             }
             else if indexPath.section == 0{
-                return UITableView.automaticDimension
-            }else if(indexPath.section == 4 || indexPath.section == 5){
+                if(photoImage != nil) {
+                    return UITableView.automaticDimension
+                } else {
+                    return 0
+                }
+                
+            }else if(indexPath.section == 4){
                 return 310.0
+            }else if indexPath.section == 5 {
+                if imgViewBack != nil {
+                    return 310
+                } else {
+                    return 0
+                }
+                
             }else{
                 return UITableView.automaticDimension
             }
-        }
-        else{
+        } else if(AllBarcode) {
+            if indexPath.section == 0 {
+                return UITableView.automaticDimension
+            } else {
+                return 310.0
+            }
+        }else{
             return UITableView.automaticDimension
         }
     }
@@ -267,11 +294,6 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                 if let imageFace: UIImage =  dictResultData[KEY_FACE_IMAGE]  as? UIImage{
                     cell.User_img2.isHidden = true
                     cell.view2.isHidden = true
-                    if (UIDevice.current.orientation == .landscapeRight) {
-                        cell.user_img.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi / 2))
-                    } else if (UIDevice.current.orientation == .landscapeLeft) {
-                        cell.user_img.transform = CGAffineTransform(rotationAngle: CGFloat(-(Double.pi / 2)))
-                    }
                     cell.user_img.image = imageFace
                 }
                 if imgCamaraFace != nil{
@@ -294,8 +316,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                 cell.btnLiveness.addTarget(self, action: #selector(buttonClickedLiveness(sender:)), for: .touchUpInside)
                 if(dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("FACEMATCH SCORE : ") ?? false || dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("LIVENESS SCORE : ") ?? false){
                     if isCheckLiveNess!{
-//                        isCheckLiveNess = false
-                        cell.lblValueLiveness.text = "\(livenessValue) %"
+                        cell.lblValueLiveness.text = "\(livenessValue)"
                         cell.lblValueFaceMatch.text = "\(String(describing: faceScoreData!)) %"
                     }else{
                         
@@ -333,8 +354,24 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                 cell.imgDocument.image = imgViewBack
                 return cell
             }
-        }
-        else{
+        } else if (AllBarcode) {
+            if indexPath.section == 0{
+                let cell: BarcodeTableViewCell = tableView.dequeueReusableCell(withIdentifier: "BarcodeTableViewCell") as! BarcodeTableViewCell
+                cell.lableName.text = "Barcode Data :"
+                cell.labelValue.text = BarcodeData
+                return cell
+            }else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
+                
+                cell.selectionStyle = .none
+                cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
+                cell.lblDocName.text = "FRONT SIDE"
+                if imgViewFront != nil{
+                    cell.imgDocument.image = imgViewFront!
+                }
+                return cell
+            }
+        }else{
             if(indexPath.section == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "drivePDF", for: indexPath) as! DrivePDFTableViewCell
                 cell.lblpreTitle.text = keyArr[indexPath.row] as  String;
@@ -348,7 +385,13 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         }
     }
     
-    func LivenessData(stLivenessValue: String, livenessImage: UIImage, status: Bool) {
+    func livenessData(_ stLivenessValue: String!, livenessImage: UIImage!, status: Bool) {
+        
+        if(orientation == .landscapeLeft) {
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        } else if orientation == .landscapeRight {
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        }
         isFLpershow = true
         self.livenessValue = stLivenessValue
         self.imgCamaraFace = livenessImage
@@ -408,14 +451,6 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                         return sharedInstance.isReachable
                     }
                 
-                // print(twoDecimalPlaces)
-//                if pageType != .ScanOCR{
-//                    let dict = [KEY_VALUE_FACE_MATCH: "\((stLivenessValue))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
-//                    arrDocumentData.insert(dict, at: 1)
-//                }else{
-//                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
-//                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-//                }
         }
             tblResult.reloadData()
         }
@@ -448,21 +483,32 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
 
     @objc func buttonClickedFaceMatch(sender:UIButton)
         {
+        let orientastion = UIApplication.shared.statusBarOrientation
+        if orientastion ==  UIInterfaceOrientation.landscapeLeft {
+            orientation = .landscapeLeft
+        } else if orientastion == UIInterfaceOrientation.landscapeRight {
+            orientation = .landscapeRight
+        } else {
+            orientation = .portrait
+        }
+            AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
         isCheckLiveNess = false
-        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
-//            picker.delegate = self
-//            picker.allowsEditing = false
-//            picker.sourceType = .camera
-//            picker.cameraDevice = .front
-//            picker.mediaTypes = ["public.image"]
-//            self.present(picker, animated: true, completion: nil)
+        liveness.setLivenessAndFacematch(self, ischeckLiveness: false)
         }
         
        @objc func buttonClickedLiveness(sender:UIButton)
         {
+        let orientastion = UIApplication.shared.statusBarOrientation
+        if orientastion ==  UIInterfaceOrientation.landscapeLeft {
+            orientation = .landscapeLeft
+        } else if orientastion == UIInterfaceOrientation.landscapeRight {
+            orientation = .landscapeRight
+        } else {
+            orientation = .portrait
+        }
+        AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
         isCheckLiveNess = true
-        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: true)
-//            isCheckLiveNess = true
+        liveness.setLivenessAndFacematch(self, ischeckLiveness: true)
         }
 
     /**
@@ -632,13 +678,10 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                 }
                 if let livenessScore: Double = dictFinalResponse["livenessScore"] as? Double{
                     isFLpershow = true
-                    // print(livenessScore)
                     self.removeOldValue("LIVENESS SCORE : ")
                     self.removeOldValue1("0 %")
-//                    btnLiveness.isHidden = true
                     isCheckLiveNess = true
                     let twoDecimalPlaces = String(format: "%.2f", livenessScore)
-                    // print(twoDecimalPlaces)
                    let dict = [KEY_VALUE_FACE_MATCH: "\((twoDecimalPlaces))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
                    arrDocumentData.insert(dict, at: 1)
                    self.tblResult.reloadData()

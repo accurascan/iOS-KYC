@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0021908E22ACE78400E08B01 /* ListViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0021908D22ACE78400E08B01 /* ListViewVC.swift */; };
-		5254F068FD50B405B3B21626 /* Pods_AccuraSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFC2C35221EA6A375CB49B3 /* Pods_AccuraSDK.framework */; };
 		5C67D9812111E40B00154EB7 /* default_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C67D9802111E40A00154EB7 /* default_user.png */; };
 		5C7D02532143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7D02512143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift */; };
 		5C7D02542143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C7D02522143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib */; };
@@ -64,15 +63,23 @@
 		A33E204E23E2AA78004FED85 /* CountryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E204723E2AA78004FED85 /* CountryListCell.swift */; };
 		A33E205023E2AA78004FED85 /* ListTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E204923E2AA78004FED85 /* ListTableCell.swift */; };
 		A33E205723E2B439004FED85 /* CountryNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E205623E2B439004FED85 /* CountryNameViewController.swift */; };
-		A33ED5C7230EA6EB00005B85 /* ZoomHybrid.pub in Resources */ = {isa = PBXBuildFile; fileRef = A341D735230EA44F00FDF946 /* ZoomHybrid.pub */; };
 		A36D91BE230C57D900B01801 /* FaceMatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36D91BD230C57D900B01801 /* FaceMatchViewController.swift */; };
+		A37CC82825E10F1500FBEC23 /* BarcodeTypeHFV.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37CC82425E10F1500FBEC23 /* BarcodeTypeHFV.swift */; };
+		A37CC82925E10F1500FBEC23 /* BarcodeTypeTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = A37CC82525E10F1500FBEC23 /* BarcodeTypeTVC.xib */; };
+		A37CC82A25E10F1500FBEC23 /* BarcodeTypeHFV.xib in Resources */ = {isa = PBXBuildFile; fileRef = A37CC82625E10F1500FBEC23 /* BarcodeTypeHFV.xib */; };
+		A37CC82B25E10F1500FBEC23 /* BarcodeTypeTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37CC82725E10F1500FBEC23 /* BarcodeTypeTVC.swift */; };
+		A37CC82D25E10F2C00FBEC23 /* SelectCodeVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A37CC82C25E10F2C00FBEC23 /* SelectCodeVC.storyboard */; };
+		A37CC82F25E10F5B00FBEC23 /* SelectCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37CC82E25E10F5B00FBEC23 /* SelectCodeVC.swift */; };
 		A382E69A230AA94800C56EAE /* FirstViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A382E697230AA94700C56EAE /* FirstViewVC.swift */; };
 		A384903E24A5EB4F00ECB42D /* FaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A384903D24A5EB4F00ECB42D /* FaceView.swift */; };
 		A384904724A61EC700ECB42D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A384904624A61EC700ECB42D /* README.md */; };
 		A3E3D55C24A5BB710034A3EA /* key.license in Resources */ = {isa = PBXBuildFile; fileRef = A3E3D55B24A5BB710034A3EA /* key.license */; };
 		A3E9E1C624A5C1C200D0B9FA /* accuraface.license in Resources */ = {isa = PBXBuildFile; fileRef = A3E9E1C524A5C1C200D0B9FA /* accuraface.license */; };
+		A3F00C5925E4D820009A7E23 /* BarcodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F00C5725E4D820009A7E23 /* BarcodeTableViewCell.swift */; };
+		A3F00C5A25E4D820009A7E23 /* BarcodeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3F00C5825E4D820009A7E23 /* BarcodeTableViewCell.xib */; };
 		A3F172C2242250F30050FB25 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3F172C1242250F30050FB25 /* Launch Screen.storyboard */; };
 		A3F172C624225BF60050FB25 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F172C524225BF60050FB25 /* LaunchScreenViewController.swift */; };
+		DB9E344BFC7EB85CDE2D65D7 /* Pods_AccuraSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4017C20070C8B50B946F6AF2 /* Pods_AccuraSDK.framework */; };
 		DC75E60220BF36FB0096BC5A /* CodeInfoV.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC75E60120BF36FB0096BC5A /* CodeInfoV.swift */; };
 		DC75E60420BF370A0096BC5A /* CodeInfoV.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC75E60320BF370A0096BC5A /* CodeInfoV.xib */; };
 		FAD8829823DDE04E007247EC /* CodeScanVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAD8829423DDE04E007247EC /* CodeScanVC.storyboard */; };
@@ -111,7 +118,9 @@
 
 /* Begin PBXFileReference section */
 		0021908D22ACE78400E08B01 /* ListViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewVC.swift; sourceTree = "<group>"; };
-		3BBF4AB22967B7DB3377ECC9 /* Pods-AccuraSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AccuraSDK.release.xcconfig"; path = "Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK.release.xcconfig"; sourceTree = "<group>"; };
+		2E29775456FBC1B0EA73315A /* Pods-AccuraSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AccuraSDK.debug.xcconfig"; path = "Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		4017C20070C8B50B946F6AF2 /* Pods_AccuraSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AccuraSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42EEB8E7E4174954C301AA7A /* Pods-AccuraSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AccuraSDK.release.xcconfig"; path = "Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK.release.xcconfig"; sourceTree = "<group>"; };
 		5C67D96B2111E03500154EB7 /* Accura Scan-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Accura Scan-Bridging-Header.h"; sourceTree = "<group>"; };
 		5C67D9802111E40A00154EB7 /* default_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user.png; sourceTree = "<group>"; };
 		5C7D02512143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrivingPDFstringTableViewCell.swift; sourceTree = "<group>"; };
@@ -145,13 +154,13 @@
 		6104CC9220BB515E00AC428E /* CodeScanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeScanVC.swift; sourceTree = "<group>"; };
 		617EB0E020BB705D00BCBFD9 /* NSObjectExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
 		617EB0E220BB78B300BCBFD9 /* MainV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainV.swift; sourceTree = "<group>"; };
-		627B96B2165A0C81FF645F46 /* Pods-AccuraSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AccuraSDK.debug.xcconfig"; path = "Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		8432A2862135132A006BA16A /* DrivingPDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrivingPDF.swift; sourceTree = "<group>"; };
 		8432A28C213517A8006BA16A /* DrivingPDF.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DrivingPDF.xib; sourceTree = "<group>"; };
 		8432A29121352D87006BA16A /* DrivePDFTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrivePDFTableViewCell.swift; sourceTree = "<group>"; };
 		8432A29221352D87006BA16A /* DrivePDFTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DrivePDFTableViewCell.xib; sourceTree = "<group>"; };
 		84560227213691E900A844B6 /* Resultpdf417ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resultpdf417ViewController.swift; sourceTree = "<group>"; };
 		A30ABDA92487B29D0091362E /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A311CE4A25CD5884002AF010 /* AccuraOCR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AccuraOCR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A317873F2591ADB5004AA66A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		A31787412591ADB5004AA66A /* AccuraOCR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccuraOCR.h; sourceTree = "<group>"; };
 		A31787422591ADB5004AA66A /* AccuraSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccuraSDK.h; sourceTree = "<group>"; };
@@ -181,7 +190,7 @@
 		A317875E2591ADB5004AA66A /* AccuraOCR.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = AccuraOCR.xcworkspace; sourceTree = "<group>"; };
 		A31787602591ADB5004AA66A /* AccuraOCRTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccuraOCRTests.swift; sourceTree = "<group>"; };
 		A31787612591ADB5004AA66A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A31787622591ADB5004AA66A /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		A31787622591ADB5004AA66A /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A31787672591ADC5004AA66A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		A31787692591ADC5004AA66A /* AccuraOCR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccuraOCR.h; sourceTree = "<group>"; };
 		A317876A2591ADC5004AA66A /* AccuraSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccuraSDK.h; sourceTree = "<group>"; };
@@ -211,7 +220,7 @@
 		A31787862591ADC5004AA66A /* AccuraOCR.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = AccuraOCR.xcworkspace; sourceTree = "<group>"; };
 		A31787882591ADC5004AA66A /* AccuraOCRTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccuraOCRTests.swift; sourceTree = "<group>"; };
 		A31787892591ADC5004AA66A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A317878A2591ADC5004AA66A /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		A317878A2591ADC5004AA66A /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A324C4222476EC4F0002AE35 /* ShowResultVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowResultVC.swift; sourceTree = "<group>"; };
 		A324C4242476ECD10002AE35 /* FaceMatchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceMatchResultTableViewCell.swift; sourceTree = "<group>"; };
 		A324C4252476ECD10002AE35 /* FaceMatchResultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaceMatchResultTableViewCell.xib; sourceTree = "<group>"; };
@@ -232,18 +241,24 @@
 		A33E204723E2AA78004FED85 /* CountryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListCell.swift; sourceTree = "<group>"; };
 		A33E204923E2AA78004FED85 /* ListTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableCell.swift; sourceTree = "<group>"; };
 		A33E205623E2B439004FED85 /* CountryNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryNameViewController.swift; sourceTree = "<group>"; };
-		A341D735230EA44F00FDF946 /* ZoomHybrid.pub */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ZoomHybrid.pub; sourceTree = "<group>"; };
 		A36D91BD230C57D900B01801 /* FaceMatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceMatchViewController.swift; sourceTree = "<group>"; };
+		A37CC82425E10F1500FBEC23 /* BarcodeTypeHFV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeTypeHFV.swift; sourceTree = "<group>"; };
+		A37CC82525E10F1500FBEC23 /* BarcodeTypeTVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BarcodeTypeTVC.xib; sourceTree = "<group>"; };
+		A37CC82625E10F1500FBEC23 /* BarcodeTypeHFV.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BarcodeTypeHFV.xib; sourceTree = "<group>"; };
+		A37CC82725E10F1500FBEC23 /* BarcodeTypeTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeTypeTVC.swift; sourceTree = "<group>"; };
+		A37CC82C25E10F2C00FBEC23 /* SelectCodeVC.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SelectCodeVC.storyboard; sourceTree = "<group>"; };
+		A37CC82E25E10F5B00FBEC23 /* SelectCodeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCodeVC.swift; sourceTree = "<group>"; };
 		A382E697230AA94700C56EAE /* FirstViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewVC.swift; sourceTree = "<group>"; };
 		A384903D24A5EB4F00ECB42D /* FaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceView.swift; sourceTree = "<group>"; };
 		A384904624A61EC700ECB42D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		A3E3D55B24A5BB710034A3EA /* key.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = key.license; sourceTree = "<group>"; };
 		A3E9E1C524A5C1C200D0B9FA /* accuraface.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = accuraface.license; sourceTree = "<group>"; };
+		A3F00C5725E4D820009A7E23 /* BarcodeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeTableViewCell.swift; sourceTree = "<group>"; };
+		A3F00C5825E4D820009A7E23 /* BarcodeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BarcodeTableViewCell.xib; sourceTree = "<group>"; };
 		A3F172C1242250F30050FB25 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		A3F172C524225BF60050FB25 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		DC75E60120BF36FB0096BC5A /* CodeInfoV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeInfoV.swift; sourceTree = "<group>"; };
 		DC75E60320BF370A0096BC5A /* CodeInfoV.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeInfoV.xib; sourceTree = "<group>"; };
-		EDFC2C35221EA6A375CB49B3 /* Pods_AccuraSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AccuraSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAD8829523DDE04E007247EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CodeScanVC.storyboard; sourceTree = "<group>"; };
 		FAD8829623DDE04E007247EC /* MainStoryboard_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -268,7 +283,7 @@
 				5C9AF4F82119997700700EDF /* SystemConfiguration.framework in Frameworks */,
 				5C9AF4F62119996D00700EDF /* libz.1.dylib in Frameworks */,
 				5C9AF4F42119995800700EDF /* libsqlite3.dylib in Frameworks */,
-				5254F068FD50B405B3B21626 /* Pods_AccuraSDK.framework in Frameworks */,
+				DB9E344BFC7EB85CDE2D65D7 /* Pods_AccuraSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,8 +293,8 @@
 		1591AAD1BE8519D0388CFE79 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				627B96B2165A0C81FF645F46 /* Pods-AccuraSDK.debug.xcconfig */,
-				3BBF4AB22967B7DB3377ECC9 /* Pods-AccuraSDK.release.xcconfig */,
+				2E29775456FBC1B0EA73315A /* Pods-AccuraSDK.debug.xcconfig */,
+				42EEB8E7E4174954C301AA7A /* Pods-AccuraSDK.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -356,6 +371,7 @@
 		617EB0C620BB539E00BCBFD9 /* UIViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A37CC82E25E10F5B00FBEC23 /* SelectCodeVC.swift */,
 				A3F172C524225BF60050FB25 /* LaunchScreenViewController.swift */,
 				A382E697230AA94700C56EAE /* FirstViewVC.swift */,
 				A36D91BD230C57D900B01801 /* FaceMatchViewController.swift */,
@@ -396,6 +412,7 @@
 		934DB65DAB247E2C5F8233CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A311CE4A25CD5884002AF010 /* AccuraOCR.framework */,
 				A317873E2591ADB5004AA66A /* accuraocrsdk-framework */,
 				A31787662591ADC5004AA66A /* accuraocrsdk-framework */,
 				5C9AF51121199A2700700EDF /* CoreGraphics.framework */,
@@ -413,7 +430,7 @@
 				5C9AF4F72119997700700EDF /* SystemConfiguration.framework */,
 				5C9AF4F52119996D00700EDF /* libz.1.dylib */,
 				5C9AF4F32119995800700EDF /* libsqlite3.dylib */,
-				EDFC2C35221EA6A375CB49B3 /* Pods_AccuraSDK.framework */,
+				4017C20070C8B50B946F6AF2 /* Pods_AccuraSDK.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -586,6 +603,10 @@
 		A33E204323E2AA32004FED85 /* Custom Table Cell */ = {
 			isa = PBXGroup;
 			children = (
+				A37CC82425E10F1500FBEC23 /* BarcodeTypeHFV.swift */,
+				A37CC82625E10F1500FBEC23 /* BarcodeTypeHFV.xib */,
+				A37CC82725E10F1500FBEC23 /* BarcodeTypeTVC.swift */,
+				A37CC82525E10F1500FBEC23 /* BarcodeTypeTVC.xib */,
 				617EB0E220BB78B300BCBFD9 /* MainV.swift */,
 				A33E204723E2AA78004FED85 /* CountryListCell.swift */,
 				A324C42F2476ED020002AE35 /* DocumentTableCell.swift */,
@@ -610,6 +631,8 @@
 				5C7D02522143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib */,
 				DC75E60120BF36FB0096BC5A /* CodeInfoV.swift */,
 				DC75E60320BF370A0096BC5A /* CodeInfoV.xib */,
+				A3F00C5725E4D820009A7E23 /* BarcodeTableViewCell.swift */,
+				A3F00C5825E4D820009A7E23 /* BarcodeTableViewCell.xib */,
 			);
 			path = "Custom Table Cell";
 			sourceTree = "<group>";
@@ -628,7 +651,6 @@
 			children = (
 				A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */,
 				A384903D24A5EB4F00ECB42D /* FaceView.swift */,
-				A341D735230EA44F00FDF946 /* ZoomHybrid.pub */,
 				5C67D9802111E40A00154EB7 /* default_user.png */,
 			);
 			path = External;
@@ -637,6 +659,7 @@
 		FAD8829323DDE04E007247EC /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				A37CC82C25E10F2C00FBEC23 /* SelectCodeVC.storyboard */,
 				FAD8829423DDE04E007247EC /* CodeScanVC.storyboard */,
 				FAD8829623DDE04E007247EC /* MainStoryboard_iPhone.storyboard */,
 			);
@@ -650,14 +673,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6104CC8B20BB4E6E00AC428E /* Build configuration list for PBXNativeTarget "AccuraSDK" */;
 			buildPhases = (
-				FECE99DDDF645B371D64AE5C /* [CP] Check Pods Manifest.lock */,
+				98B08C984B7779B9C64FB4CA /* [CP] Check Pods Manifest.lock */,
 				6104CC7220BB4E6D00AC428E /* Sources */,
 				6104CC7320BB4E6D00AC428E /* Frameworks */,
 				6104CC7420BB4E6D00AC428E /* Resources */,
 				FA30D04B23DEE96300BA0DC0 /* ShellScript */,
-				B3695E97B6E06E938565E622 /* [CP] Embed Pods Frameworks */,
-				C2AEDCA40448518E8EA0BBF7 /* [CP] Copy Pods Resources */,
 				A3D1BDD82594A31A00339909 /* Embed Frameworks */,
+				5359A2DCCE0505C4683DC525 /* [CP] Embed Pods Frameworks */,
+				D0552ED9C2EC0C4BE8881A9C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -734,6 +757,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A37CC82D25E10F2C00FBEC23 /* SelectCodeVC.storyboard in Resources */,
 				FAD8829923DDE04E007247EC /* MainStoryboard_iPhone.storyboard in Resources */,
 				A324C42A2476ECE50002AE35 /* ResultTableCell.xib in Resources */,
 				5C94E024211ACA8200428686 /* Aller_Std.ttf in Resources */,
@@ -744,6 +768,7 @@
 				A324C4272476ECD10002AE35 /* FaceMatchResultTableViewCell.xib in Resources */,
 				FAD8829823DDE04E007247EC /* CodeScanVC.storyboard in Resources */,
 				5C7D02542143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib in Resources */,
+				A37CC82925E10F1500FBEC23 /* BarcodeTypeTVC.xib in Resources */,
 				5C94E026211ACA8200428686 /* Aller_Std_It.ttf in Resources */,
 				A3F172C2242250F30050FB25 /* Launch Screen.storyboard in Resources */,
 				DC75E60420BF370A0096BC5A /* CodeInfoV.xib in Resources */,
@@ -754,10 +779,11 @@
 				8432A28D213517A8006BA16A /* DrivingPDF.xib in Resources */,
 				A33E204B23E2AA78004FED85 /* ListTableCell.xib in Resources */,
 				5C94E028211ACA8200428686 /* Aller_Std_LtIt.ttf in Resources */,
-				A33ED5C7230EA6EB00005B85 /* ZoomHybrid.pub in Resources */,
 				A324C4312476ED020002AE35 /* DocumentTableCell.xib in Resources */,
 				5C94E025211ACA8200428686 /* Aller_Std_BdIt.ttf in Resources */,
+				A37CC82A25E10F1500FBEC23 /* BarcodeTypeHFV.xib in Resources */,
 				A3E3D55C24A5BB710034A3EA /* key.license in Resources */,
+				A3F00C5A25E4D820009A7E23 /* BarcodeTableViewCell.xib in Resources */,
 				5C94E029211ACA8200428686 /* Aller_Std_Rg.ttf in Resources */,
 				A3E9E1C624A5C1C200D0B9FA /* accuraface.license in Resources */,
 				8432A29421352D87006BA16A /* DrivePDFTableViewCell.xib in Resources */,
@@ -767,7 +793,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B3695E97B6E06E938565E622 /* [CP] Embed Pods Frameworks */ = {
+		5359A2DCCE0505C4683DC525 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -784,7 +810,29 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C2AEDCA40448518E8EA0BBF7 /* [CP] Copy Pods Resources */ = {
+		98B08C984B7779B9C64FB4CA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AccuraSDK-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0552ED9C2EC0C4BE8881A9C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -818,28 +866,6 @@
 			shellPath = /bin/sh;
 			shellScript = "APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\nFRAMEWORK_TMP_PATH=\"$FRAMEWORK_EXECUTABLE_PATH-tmp\"\n\ncase \"${TARGET_BUILD_DIR}\" in\n*\"iphonesimulator\")\n    echo \"No need to remove archs\"\n    ;;\n*)\n    if $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"i386\") ; then\n    lipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"i386\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    echo \"i386 architecture removed\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    fi\n    if $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"x86_64\") ; then\n    lipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"x86_64\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    echo \"x86_64 architecture removed\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    fi\n    ;;\nesac\n\necho \"Completed for executable $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\ndone\n";
 		};
-		FECE99DDDF645B371D64AE5C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AccuraSDK-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -850,6 +876,7 @@
 				A36D91BE230C57D900B01801 /* FaceMatchViewController.swift in Sources */,
 				A324C4262476ECD10002AE35 /* FaceMatchResultTableViewCell.swift in Sources */,
 				5C7D02532143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift in Sources */,
+				A37CC82B25E10F1500FBEC23 /* BarcodeTypeTVC.swift in Sources */,
 				A3268523247F649B0028BCA5 /* FirstTableViewCell.swift in Sources */,
 				617EB0E320BB78B300BCBFD9 /* MainV.swift in Sources */,
 				617EB0E120BB705D00BCBFD9 /* NSObjectExtensions.swift in Sources */,
@@ -865,6 +892,7 @@
 				A3F172C624225BF60050FB25 /* LaunchScreenViewController.swift in Sources */,
 				8432A2872135132A006BA16A /* DrivingPDF.swift in Sources */,
 				A30ABDAA2487B29D0091362E /* ViewController.swift in Sources */,
+				A37CC82F25E10F5B00FBEC23 /* SelectCodeVC.swift in Sources */,
 				6104CC9320BB515E00AC428E /* CodeScanVC.swift in Sources */,
 				A33E205723E2B439004FED85 /* CountryNameViewController.swift in Sources */,
 				A33E205023E2AA78004FED85 /* ListTableCell.swift in Sources */,
@@ -872,7 +900,9 @@
 				A324C42B2476ECE50002AE35 /* ResultTableCell.swift in Sources */,
 				A3268527247F95F70028BCA5 /* CustomAFNetWorking.m in Sources */,
 				A324C4372476ED2E0002AE35 /* DocumantVarifyCell.swift in Sources */,
+				A37CC82825E10F1500FBEC23 /* BarcodeTypeHFV.swift in Sources */,
 				A324C4332476ED020002AE35 /* DocumentTableCell.swift in Sources */,
+				A3F00C5925E4D820009A7E23 /* BarcodeTableViewCell.swift in Sources */,
 				0021908E22ACE78400E08B01 /* ListViewVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -943,6 +973,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1000,6 +1031,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1014,13 +1046,13 @@
 		};
 		6104CC8C20BB4E6E00AC428E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 627B96B2165A0C81FF645F46 /* Pods-AccuraSDK.debug.xcconfig */;
+			baseConfigurationReference = 2E29775456FBC1B0EA73315A /* Pods-AccuraSDK.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1038,6 +1070,31 @@
 					"$(PROJECT_DIR)/CodeScan",
 					"$(PROJECT_DIR)/CodeScan/AccuraScan/Framework",
 					"$(PROJECT_DIR)/CodeScan/AccuraScan/External",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking/AFNetworking.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AccuraOCR/AccuraOCR.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Protobuf/Protobuf.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SVProgressHUD/SVProgressHUD.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb.framework/Headers\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
+					"\"${PODS_TARGET_SRCROOT}/Sources/FBLPromises/include\"",
 				);
 				INFOPLIST_FILE = CodeScan/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1074,13 +1131,13 @@
 		};
 		6104CC8D20BB4E6E00AC428E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3BBF4AB22967B7DB3377ECC9 /* Pods-AccuraSDK.release.xcconfig */;
+			baseConfigurationReference = 42EEB8E7E4174954C301AA7A /* Pods-AccuraSDK.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1099,6 +1156,31 @@
 					"$(PROJECT_DIR)/CodeScan",
 					"$(PROJECT_DIR)/CodeScan/AccuraScan/Framework",
 					"$(PROJECT_DIR)/CodeScan/AccuraScan/External",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking/AFNetworking.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/AccuraOCR/AccuraOCR.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreDiagnostics/FirebaseCoreDiagnostics.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Protobuf/Protobuf.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SVProgressHUD/SVProgressHUD.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb.framework/Headers\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/Firebase\"",
+					"$(inherited)",
+					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
+					"\"${PODS_TARGET_SRCROOT}/Sources/FBLPromises/include\"",
 				);
 				INFOPLIST_FILE = CodeScan/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

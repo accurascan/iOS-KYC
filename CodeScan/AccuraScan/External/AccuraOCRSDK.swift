@@ -8,6 +8,7 @@
 
 import Foundation
 import AccuraOCR
+import Firebase
 public class AccuraOCRSDK: NSObject {
     
    public static func configure() -> Void{
@@ -18,6 +19,6 @@ public class AccuraOCRSDK: NSObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             accuraCameraWrapper?.accuraSDK()
         }
-        FirebaseApp.configure()
+//        FirebaseApp.configure()
     }
 }
