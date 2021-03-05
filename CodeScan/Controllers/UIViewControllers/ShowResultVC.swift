@@ -106,6 +106,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var dictFaceData : NSMutableDictionary = [:]
     var dictSecurityData : NSMutableDictionary = [:]
     var dictFaceBackData : NSMutableDictionary = [:]
+    var dictOCRTypeData: NSMutableDictionary = [:]
     var stFace : String?
     var imgViewCountryCard : UIImage?
     var imgSignature : UIImage?
@@ -135,12 +136,14 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var arrDataBackValue: [String] = []
     var arrDataForntValue1: [String] = []
     var arrDataBackValue1: [String] = []
+    var arrOCRTypeData: [String] = []
     var plateNumber: String?
     var DLPlateImage: UIImage?
     var ischekLivess: Bool = false
     var livenessValue: String = ""
     var intID: Int?
     var orientation: UIInterfaceOrientationMask?
+    var liveness = Liveness()
     
     //MARK:- UIViewContoller Methods
     override func viewDidLoad() {
@@ -179,6 +182,10 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         NotificationCenter.default.addObserver(self, selector: #selector(loadPhotoCaptured), name: NSNotification.Name("_UIImagePickerControllerUserDidCaptureItem"), object: nil)
         if pageType == .ScanOCR{
+            for(key, value) in dictOCRTypeData {
+                arrOCRTypeData.append(value as! String)
+                
+            }
             dictScanningData = NSDictionary(dictionary: scannedData)
             if arrDataForntKey.count != 0 && self.arrDataBackKey.count != 0{
                 setFaceImage()
@@ -305,23 +312,27 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Liveness.setLivenessURL(livenessURL: "Your URL")
-        Liveness.setBackGroundColor(backGroundColor: "#C4C4C5")
-        Liveness.setCloseIconColor(closeIconColor: "#000000")
-        Liveness.setFeedbackBackGroundColor(feedbackBackGroundColor: "#C4C4C5")
-        Liveness.setFeedbackTextColor(feedbackTextColor: "#000000")
-        Liveness.setFeedbackTextSize(feedbackTextSize: 18)
-        Liveness.setFeedBackframeMessage(feedBackframeMessage: "Frame Your Face")
-        Liveness.setFeedBackAwayMessage(feedBackAwayMessage: "Move Phone Away")
-        Liveness.setFeedBackOpenEyesMessage(feedBackOpenEyesMessage: "Keep Open Your Eyes")
-        Liveness.setFeedBackCloserMessage(feedBackCloserMessage: "Move Phone Closer")
-        Liveness.setFeedBackCenterMessage(feedBackCenterMessage: "Center Your Face")
-        Liveness.setFeedbackMultipleFaceMessage(feedBackMultipleFaceMessage: "Multiple face detected")
-        Liveness.setFeedBackFaceSteadymessage(feedBackFaceSteadymessage: "Keep Your Head Straight")
-        Liveness.setFeedBackLowLightMessage(feedBackLowLightMessage: "Low light detected")
-        Liveness.setFeedBackBlurFaceMessage(feedBackBlurFaceMessage: "Blur detected over face")
-        Liveness.setFeedBackGlareFaceMessage(feedBackGlareFaceMessage: "Glare detected")
-        
+        liveness.setLivenessURL("YOUR URL")
+        liveness.setBackGroundColor("#C4C4C5")
+        liveness.setCloseIconColor("#000000")
+        liveness.setFeedbackBackGroundColor("#C4C4C5")
+        liveness.setFeedbackTextColor("#000000")
+        liveness.setFeedbackTextSize(Float(18.0))
+        liveness.setFeedBackframeMessage("Frame Your Face")
+        liveness.setFeedBackAwayMessage("Move Phone Away")
+        liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+        liveness.setFeedBackCloserMessage("Move Phone Closer")
+        liveness.setFeedBackCenterMessage("Center Your Face")
+        liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
+        liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+        liveness.setFeedBackLowLightMessage("Low light detected")
+        liveness.setFeedBackBlurFaceMessage("Blur detected over face")
+        liveness.setFeedBackGlareFaceMessage("Glare detected")
+        // 0 for clean face and 100 for Blurry face
+        liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
+
+        // Set min and max percentage for glare
+        liveness.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
         //Set TableView Height
         self.tblResult.estimatedRowHeight = 60.0
         self.tblResult.rowHeight = UITableView.automaticDimension
@@ -347,7 +358,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     }
     override func viewDidDisappear(_ animated: Bool) {
-//        let orientastion = UIApplication.shared.statusBarOrientation
+
        
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -594,12 +605,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     arrDocumentData.append(dict)
                 }
                 break
-//            case 18:
-//                if correctPersonalChecksum != ""{
-//                    dict = [KEY_VALUE: correctPersonalChecksum,KEY_TITLE:"Correct Other ID Check No."] as [String : AnyObject]
-//                    arrDocumentData.append(dict)
-//                }
-//                break
+
             case 18:
                 if secondRowChecksum != ""{
                     dict = [KEY_VALUE: secondRowChecksum,KEY_TITLE:"Second Row Check No."] as [String : AnyObject]
@@ -815,12 +821,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     arrDocumentData.append(dict)
                 }
                 break
-//            case 20:
-//                if(correctPersonalChecksum != "") {
-//                    dict = [KEY_VALUE: correctPersonalChecksum,KEY_TITLE:"Correct Other ID Check No."] as [String : AnyObject]
-//                    arrDocumentData.append(dict)
-//                }
-//                break
+
             case 20:
                 if(secondRowChecksum != "") {
                     dict = [KEY_VALUE: secondRowChecksum,KEY_TITLE:"Second Row Check No."] as [String : AnyObject]
@@ -960,11 +961,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     //MARK: UIButton Method Action
     @IBAction func onCancelAction(_ sender: Any) {
-//        if orientation ==  .landscapeLeft {
-//            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-//        } else if orientation ==  .landscapeRight{
-//            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
-//        }
+
         if pageType == .ScanOCR{
             removeAllData()
         }
@@ -1093,7 +1090,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     let  dictResultData = arrFaceLivenessScor[indexPath.row]
                     
                     if isCheckLiveNess!{
-//                        isCheckLiveNess = false
+
                         cell.lblValueLiveness.text = "\(livenessValue)"
                         cell.lblValueFaceMatch.text = "\(String(describing: faceScoreData!)) %"
                     }else{
@@ -1136,20 +1133,19 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     cell.lblName.text = objDataKey
                     cell.lblValue.text = objDataValue
                     cell.imageViewSignHeight.constant = 0
-                    if objDataKey.contains("Sign") || objDataKey.contains("SIGN"){
+                    if !arrOCRTypeData.isEmpty {
+                        if (arrOCRTypeData[indexPath.row] == "2") {
                         if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters)
                         {
                             let image = UIImage(data: decodedData)
                             cell.imageViewSignHeight.constant = 51
                             cell.imageViewSign.image = image
                             cell.lblValue.text = ""
-//                            let attachment = NSTextAttachment()
-//                           attachment.image = image
-//                           let attachmentString = NSAttributedString(attachment: attachment)
-//                            cell.lblValue.attributedText = attachmentString
+
                         }
                         
                     }
+                }
                 }
                 return cell
             }
@@ -1174,7 +1170,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     }
                     
                 }
-//                cell.imageViewSign.isHidden = true
+
                 return cell
             }else if indexPath.section == 5{
                 let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
@@ -1214,10 +1210,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 return cell
             }
         }else if pageType == .DLPlate {
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
-//
-//            cell.selectionStyle = .none
-//            cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
+
             if indexPath.section == 0{
                 let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
                 cell.SignImageBG.tag = indexPath.section
@@ -1274,11 +1267,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 if let imageFace: UIImage =  dictResultData[KEY_FACE_IMAGE]  as? UIImage{
                     cell.User_img2.isHidden = true
                     cell.view2.isHidden = true
-//                    if (UIDevice.current.orientation == .landscapeRight) {
-//                        cell.user_img.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi / 2))
-//                    } else if (UIDevice.current.orientation == .landscapeLeft) {
-//                        cell.user_img.transform = CGAffineTransform(rotationAngle: CGFloat(-(Double.pi / 2)))
-//                    }
+
                     cell.user_img.image = imageFace
                 }
                 if imgCamaraFace != nil{
@@ -1302,7 +1291,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 cell.btnLiveness.addTarget(self, action: #selector(buttonClickedLiveness(sender:)), for: .touchUpInside)
                 if(dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("FACEMATCH SCORE : ") ?? false || dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("LIVENESS SCORE : ") ?? false){
                     if isCheckLiveNess!{
-//                        isCheckLiveNess = false
+
                         cell.lblValueLiveness.text = "\(livenessValue)"
                         if(faceScoreData != nil) {
                             cell.lblValueFaceMatch.text = "\(String(describing: faceScoreData!)) %"
@@ -1326,14 +1315,14 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 if dictResultData[KEY_TITLE] == nil && dictResultData[KEY_VALUE] != nil{
                     cell.lblValue.isHidden = false
                     cell.lblName.isHidden = false
-                    //                cell.lblSinglevalue.isHidden = true
+              
                     
                 }else{
                     cell.lblValue.isHidden = false
                     cell.lblName.isHidden = false
                 }
                 if dictResultData[KEY_TITLE] == nil && dictResultData[KEY_VALUE] != nil{
-                    //                cell.lblSinglevalue.text = dictResultData[KEY_VALUE] as? String ?? ""
+     
                     cell.lblSide.text = "MRZ"
                     cell.constarintViewHaderHeight.constant = 60
                     cell.lblName.text = "MRZ"
@@ -1858,13 +1847,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         orientation = .portrait
     }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
-//        picker.delegate = self
-//        picker.allowsEditing = false
-//        picker.sourceType = .camera
-//        picker.cameraDevice = .front
-//        picker.mediaTypes = ["public.image"]
-//        self.present(picker, animated: true, completion: nil)
+    liveness.setLivenessAndFacematch(self, ischeckLiveness: false)//.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
+
     }
     
    @objc func buttonClickedLiveness(sender:UIButton)
@@ -1878,12 +1862,12 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         orientation = .portrait
     }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: true)
+    liveness.setLivenessAndFacematch(self, ischeckLiveness: true)
     
         
     }
     
-    func LivenessData(stLivenessValue: String, livenessImage: UIImage, status: Bool) {
+    func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool) {
         if(orientation == .landscapeLeft) {
             AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
         } else if orientation == .landscapeRight {

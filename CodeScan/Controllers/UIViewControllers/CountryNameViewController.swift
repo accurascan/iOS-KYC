@@ -39,6 +39,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
     var isMRZCell = false
     var isPDFCell = false
     var isBankCard = false
+    var isBarcode = false
     var accuraCameraWrapper: AccuraCameraWrapper? = nil
     
     //MARK:- View Controller Method
@@ -80,6 +81,11 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                 } else {
                     self.isBankCard = false
                 }
+                if(sdkModel!.isBarcodeEnable) {
+                    self.isBarcode = true
+                } else {
+                    self.isBarcode = false
+                }
             }
             if(self.isMRZCell)
             {
@@ -90,6 +96,10 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             }
             if(self.isBankCard) {
                 self.arrCountryList.add("Bank Card")
+               
+            }
+            if(self.isBarcode) {
+                self.arrCountryList.add("Barcode")
             }
             let countryListStr = self.accuraCameraWrapper?.getOCRList()
             if(countryListStr != nil)

@@ -60,7 +60,29 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
             GlobalMethods.showAlertView("License Invalid", with: self)
         }
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        liveness = Liveness.init()
+        liveness.setBackGroundColor("#C4C4C5")
+        liveness.setCloseIconColor("#000000")
+        liveness.setFeedbackBackGroundColor("#C4C4C5")
+        liveness.setFeedbackTextColor("#000000")
+//        liveness.setFeedbackTextSize(Float(18.0))
+        liveness.setFeedBackframeMessage("Frame Your Face")
+        liveness.setFeedBackAwayMessage("Move Phone Away")
+        liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+        liveness.setFeedBackCloserMessage("Move Phone Closer")
+        liveness.setFeedBackCenterMessage("Center Your Face")
+        liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
+        liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+        liveness.setFeedBackLowLightMessage("Low light detected")
+        liveness.setFeedBackBlurFaceMessage("Blur detected over face")
+        liveness.setFeedBackGlareFaceMessage("Glare detected")
+        // 0 for clean face and 100 for Blurry face
+        liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
+
+        // Set min and max percentage for glare
+        liveness.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
+    }
     
     override func viewDidDisappear(_ animated: Bool) {
     }
@@ -71,16 +93,13 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
         faceView2 = nil
         self.navigationController?.popViewController(animated: true)
     }
-    
+    var liveness = Liveness()
     @IBAction func imageCamera1(_ sender: Any) {
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
+            self.liveness.setLivenessAndFacematch(self, ischeckLiveness: false)
         })
         selectFirstImage = true
-//        imagePicker.sourceType = UIImagePickerController.SourceType.camera
-//        imagePicker.allowsEditing = false
-//        imagePicker.modalPresentationStyle = .overCurrentContext
-//        self.present(imagePicker, animated: true, completion: nil)
+
     }
     
     @IBAction func imageGallery1(_ sender: Any) {
@@ -89,14 +108,11 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
     
     @IBAction func imageCamera2(_ sender: Any) {
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-        Liveness.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
+            self.liveness.setLivenessAndFacematch(self, ischeckLiveness: false)
             self.view.setNeedsLayout()
         })
         selectFirstImage = false
-//        imagePicker.sourceType = UIImagePickerController.SourceType.camera
-//        imagePicker.allowsEditing = false
-//        imagePicker.modalPresentationStyle = .overCurrentContext
-//        self.present(imagePicker, animated: true, completion: nil)
+
     }
     
     @IBAction func imageGallery2(_ sender: Any) {
@@ -205,7 +221,7 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
         }
         
     }
-    func LivenessData(stLivenessValue: String, livenessImage: UIImage, status: Bool) {
+    func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool) {
         SVProgressHUD.show(withStatus: "Loading...")
         DispatchQueue.global(qos: .background).async {
             var originalImage = livenessImage
