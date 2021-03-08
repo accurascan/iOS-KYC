@@ -41,7 +41,6 @@ import AccuraOCR
 var accuraCameraWrapper: AccuraCameraWrapper? = nil
 var arrCountryList = NSMutableArray()
 accuraCameraWrapper = AccuraCameraWrapper.init()
-DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 	let sdkModel = accuraCameraWrapper.loadEngine(your PathForDirectories)
 	if (sdkModel.i > 0) {
 		if(sdkModel!.isBankCardEnable) {
@@ -71,7 +70,6 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 	arrCountryList to get value(forKey: "card_name") //get card Name
 	arrCountryList to get value(forKey: "country_id") //get country id
 	arrCountryList to get value(forKey: "card_id") //get card id
-})
 ```
   
 
@@ -82,44 +80,44 @@ Call this function after initialize sdk if license is valid(sdkModel.i > 0)
 * Set Blur Percentage to allow blur on document
 ```
 // 0 for clean document and 100 for Blurry document
-accuraCameraWrapper?.setFaceBlurPercentage(int /*blurPercentage*/60)
+self.accuraCameraWrapper?.setBlurPercentage(60/*blurPercentage*/)
 ```
 
 * Set Blur Face Percentage to allow blur on detected Face
 ```
 // 0 for clean face and 100 for Blurry face
-accuraCameraWrapper?.setFaceBlurPercentage(int /*faceBlurPercentage*/80)
+accuraCameraWrapper?.setFaceBlurPercentage(80/*faceBlurPercentage*/)
 ```
 
 * Set Glare Percentage to detect Glare on document
 ```
 // Set min and max percentage for glare
-accuraCameraWrapper?.setGlarePercentage(int /*minPercentage*/6, int /*maxPercentage*/98)
+accuraCameraWrapper?.setGlarePercentage(6/*minPercentage*/, 98/*maxPercentage*/)
 ```
 
 * Set Photo Copy to allow photocopy document or not
 ```
 // Set allow photocopy document or not
-accuraCameraWrapper?.setCheckPhotoCopy(bool /*isCheckPhotoCopy*/false)
+accuraCameraWrapper?.setCheckPhotoCopy(false/*isCheckPhotoCopy*/)
 ```
 
 * Set Hologram detection to verify the hologram on the face
 ```
 // true to check hologram on face
-accuraCameraWrapper?.setHologramDetection(boolean /*isDetectHologram*/true)
+accuraCameraWrapper?.setHologramDetection(true/*isDetectHologram*/)
 ```
 
 * Set Low Light Tolerance to allow lighting to detect documant
 ```
 // 0 for full dark document and 100 for full bright document
-accuraCameraWrapper?.setLowLightTolerance(int /*lowlighttolerance*/10)
+accuraCameraWrapper?.setLowLightTolerance(10/*lowlighttolerance*/)
 ```
 
 * Set motion threshold to detect motion on camera document
 ```
 // 1 - allows 1% motion on document and
 // 100 - it can not detect motion and allow document to scan.
-accuraCameraWrapper?.setMotionThreshold(int /*setMotionThreshold*/4 string /*message*/ "Keep Document Steady")
+accuraCameraWrapper?.setMotionThreshold(25/*setMotionThreshold*/)
 ```
 
 * Sets camera Facing front or back camera
@@ -152,31 +150,13 @@ import AVFoundation
 var accuraCameraWrapper: AccuraCameraWrapper? = nil
 override func viewDidLoad() {
 	super.viewDidLoad()
-	let status = AVCaptureDevice.authorizationStatus(for: .video)
-	if status == .authorized {
-		accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName, andcardType: Int32(cardType/*2 = DLPlate And 3 = bankCard*/), andMRZDocType: /*SetMRZDocumentType*/ Int32(MRZDocType!/*0 = OtherMRZ, 1 = PassportMRZ, 2 = IDMRZ, 3 = VisaMRZ*/))
-	} else if status == .denied {
-		let alert = UIAlertController(title: "AccuraSdk", message: "It looks like your privacy settings are preventing us from accessing your camera.", preferredStyle: .alert)
-		let yesButton = UIAlertAction(title: "OK", style: .default) { _ in
-			if #available(iOS 10.0, *) {
-				UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
-			} else {
-				UIApplication.shared.openURL(URL(string:  UIApplication.openSettingsURLString)!)
-			}
-		}
-		alert.addAction(yesButton)
-		self.present(alert, animated: true, completion: nil)
-	} else if status == .restricted {
-	} else if status == .notDetermined  {
-		AVCaptureDevice.requestAccess(for: .video) { granted in
-			if granted {
-				accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName, andcardType: Int32(cardType!), andMRZDocType: /*SetMRZDocumentType*/Int32(MRZDocType!))
-			} else {
-				// print("Not granted access")
-			}
-		}
-	}
-	//Set minimum frame for frontside scan
+    // initialize Camera for OCR,MRZ,DLplate and BankCard
+    accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName, andcardType: Int32(cardType/*2 = DLPlate And 3 = bankCard*/), andMRZDocType: /*SetMRZDocumentType*/ Int32(MRZDocType!/*0 = OtherMRZ, 1 = PassportMRZ, 2 = IDMRZ, 3 = VisaMRZ*/))
+        
+    // initialize Camera for Barcode and PDF417 driving license
+    accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled/*set true for barcode and false for PDF417 driving license*/, countryID: Int32(self.countryid!), setBarcodeType: .all/*set barcode types*/)
+        
+	//Set min frame for qatar ID card
 	//call this function before start camera
 	accuraCameraWrapper?.setMinFrameForValidate(3) // Supports only odd number values
 }
@@ -206,12 +186,12 @@ extension ViewController: VideoCameraWrapperDelegate{
 		barcodeImage :- get barcode image
 	}
 
-	//  it calls continues when scan cards
+	//  it calls continues when detect frame from camera
 	func processedImage(_ image: UIImage!) {
 		image:- get camara image.
 	}
 
-	// it call when license key wrong otherwise didnt get key
+	// it call when license key wrong or didnt get key.license file
 	func recognizeFailed(_ message: String!) {
 		message:- message is a set alert message.
 	}
@@ -325,7 +305,7 @@ liveness.setFeedBackGlareFaceMessage("Glare detected")
 liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 
 // Set min and max percentage for glare
-liveness.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
+liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove this filter
 ```
 
 Step 2: Handle Accura liveness Result
@@ -337,7 +317,7 @@ func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Boo
 
 Step 1: install the AccuraFaceMatch pod <br />
 
-pod 'AccuraFaceMatchSDK', '1.0.5'
+`pod 'AccuraFaceMatchSDK', '1.0.5'`
 
 Step 2: Add licence file in to your project.<br />
 
@@ -372,7 +352,7 @@ liveness.setFeedBackGlareFaceMessage("Glare detected")
 liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 
 // Set min and max percentage for glare
-liveness.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
+liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove this filter
 ```
 
 Step 5: Detect face image
