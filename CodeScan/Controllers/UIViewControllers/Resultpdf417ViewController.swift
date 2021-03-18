@@ -2,10 +2,8 @@
 import UIKit
 import SVProgressHUD
 import AccuraOCR
-import FaceMatchSDK
-import Alamofire
 
-class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate ,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate,LivenessData {
+class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate ,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate,LivenessData,FacematchData {
     
    
     //MARK:- Outlet
@@ -41,6 +39,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
     var orientation: UIInterfaceOrientationMask?
     var BarcodeData: String?
     var liveness = Liveness()
+    var facematch = Facematch()
     
     //MARK:- ViewController Methods
     override func viewDidLoad() {
@@ -99,6 +98,38 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         
         self.tblResult.estimatedRowHeight = 60.0
         self.tblResult.rowHeight = UITableView.automaticDimension
+        liveness.setLivenessURL("YOURURL")
+        liveness.setBackGroundColor("#C4C4C5")
+        liveness.setCloseIconColor("#000000")
+        liveness.setFeedbackBackGroundColor("#C4C4C5")
+        liveness.setFeedbackTextColor("#000000")
+        liveness.setFeedbackTextSize(Float(18.0))
+        liveness.setFeedBackframeMessage("Frame Your Face")
+        liveness.setFeedBackAwayMessage("Move Phone Away")
+        liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+        liveness.setFeedBackCloserMessage("Move Phone Closer")
+        liveness.setFeedBackCenterMessage("Center Your Face")
+        liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
+        liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+        liveness.setFeedBackLowLightMessage("Low light detected")
+        liveness.setFeedBackBlurFaceMessage("Blur detected over face")
+        liveness.setFeedBackGlareFaceMessage("Glare detected")
+        
+        facematch.setBackGroundColor("#C4C4C5")
+        facematch.setCloseIconColor("#000000")
+        facematch.setFeedbackBackGroundColor("#C4C4C5")
+        facematch.setFeedbackTextColor("#000000")
+        facematch.setFeedbackTextSize(Float(18.0))
+        facematch.setFeedBackframeMessage("Frame Your Face")
+        facematch.setFeedBackAwayMessage("Move Phone Away")
+        facematch.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+        facematch.setFeedBackCloserMessage("Move Phone Closer")
+        facematch.setFeedBackCenterMessage("Center Your Face")
+        facematch.setFeedbackMultipleFaceMessage("Multiple face detected")
+        facematch.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+        facematch.setFeedBackLowLightMessage("Low light detected")
+        facematch.setFeedBackBlurFaceMessage("Blur detected over face")
+        facematch.setFeedBackGlareFaceMessage("Glare detected")
     }
     
     
@@ -387,11 +418,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
     
     func livenessData(_ stLivenessValue: String!, livenessImage: UIImage!, status: Bool) {
         
-        if(orientation == .landscapeLeft) {
-            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-        } else if orientation == .landscapeRight {
-            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
-        }
+   
         isFLpershow = true
         self.livenessValue = stLivenessValue
         self.imgCamaraFace = livenessImage
@@ -446,13 +473,70 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                 dictParam["liveness_score"] = stLivenessValue
                 dictParam["facematch_image"] = stFaceImage
                 dictParam["liveness_image"] = stLivenessInage
-                    let sharedInstance = NetworkReachabilityManager()!
-                    var isConnectedToInternet:Bool {
-                        return sharedInstance.isReachable
-                    }
                 
         }
             tblResult.reloadData()
+        }
+    }
+    
+    
+    func livenessViewDisappear() {
+        if(orientation == .landscapeLeft) {
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        } else if orientation == .landscapeRight {
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        }
+    }
+    
+    func facematchData(_ FaceImage: UIImage!) {
+        isFLpershow = true
+        self.livenessValue = "0.00 %"
+        self.imgCamaraFace = FaceImage
+        
+        if (faceRegion != nil)
+        {
+            /*
+             FaceMatch SDK method call to detect Face in back image
+             @Params: BackImage, Front Face Image faceRegion
+             @Return: Face Image Frame
+             */
+            
+            let face2 = EngineWrapper.detectTargetFaces(FaceImage, feature1: faceRegion?.feature)
+            let face11 = faceRegion?.image
+            /*
+             FaceMatch SDK method call to get FaceMatch Score
+             @Params: FrontImage Face, BackImage Face
+             @Return: Match Score
+             
+             */
+            
+            let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
+            if(fm_Score != 0.0){
+            let data = face2?.bound
+            let image = self.resizeImage(image: FaceImage, targetSize: data!)
+            imgCamaraFace = image
+            let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
+                faceScoreData = twoDecimalPlaces
+            self.removeOldValue("FACEMATCH SCORE : ")
+            self.removeOldValue1("0 %")
+            isCheckLiveNess = true
+                if self.pageType != .ScanOCR{
+                    let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
+                    self.arrDocumentData.insert(dict, at: 1)
+                }else{
+                    let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
+                    self.arrFaceLivenessScor.insert(ansData, at: 0)
+                }
+                
+        }
+            tblResult.reloadData()
+        }
+    }
+    func facematchViewDisappear() {
+        if(orientation == .landscapeLeft) {
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        } else if orientation == .landscapeRight {
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
         }
     }
     
@@ -779,6 +863,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
     
     //MARK:- UIButton Action
     @IBAction func btnBackpress(_ sender: Any) {
+        EngineWrapper.faceEngineClose()
         self.navigationController?.popViewController(animated: true)
     }
 }

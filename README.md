@@ -6,36 +6,45 @@ Accura Authentication is used for your customer verification and authentication.
 
 
 Below steps to setup Accura SDK's in your project.
+* Add below pod in podfile
+```
+    # install the AccuraKYC pod for AccuraOCR, AccuraFacematch And AccuraLiveness </br>
+    pod 'AccuraKYC', '2.1.2'
 
+    # not require below pods if you are installing AccuraKYC pod
+
+    # install the AccuraOCR pod for AccuraOCR and AccuraLiveness both.</br>
+    pod 'AccuraOCR', '2.0.2'
+
+    # install the AccuraFacematchSDK pod for AccuraFacematch only.</br>
+    pod 'AccuraFacematchSDK', '2.1.0'
+```
 
 ## 1. Setup Accura OCR
 
-#### Step 1: install the AccuraOCR pod
-`pod 'AccuraOCR', '2.0.1'`
-
-#### Step 2: Add license file in to your project.
+#### Step 1: Add license file in to your project.
 
 `key.license`
 
 Generate your Accura license from https://accurascan.com/developer/dashboard <br/>
 
-#### Step 3: Add `AccuraOCRSDK.swift` file in your projrct
+#### Step 2: Add `AccuraOCRSDK.swift` file in your projrct
 
   
 
-#### Step 4:  Run the App in Simulator.  ( Optional )
+#### Step 3:  Run the App in Simulator.  ( Optional )
 Download and extract the AccuraOCR.framework.zip (download From https://accurascan.com/iOSSDK/AccuraOCR.framework.zip)
 
   
 
-#### Step 5: Appdelegate.swift file in add<br />
+#### Step 4: Appdelegate.swift file in add<br />
 ```
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	AccuraOCRSDK.configure()
 	return true
 }
 ```
-#### Step 6 : To initialize sdk on app start:
+#### Step 5: To initialize sdk on app start:
 ```
 import AccuraOCR
 var accuraCameraWrapper: AccuraCameraWrapper? = nil
@@ -140,7 +149,7 @@ accuraCameraWrapper?.andCardSide(.FRONT_CARD_SCAN)
 accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
 ```
 
-#### Step 7 : Set CameraView
+#### Step 6 : Set CameraView
 
 Important Grant Camera and storage Permission.</br>
 supports Landscape Camera
@@ -310,64 +319,74 @@ liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove t
 
 Step 2: Handle Accura liveness Result
 ```
-func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool)
+// it calls when get liveness result
+func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool){
+}
+
+// it calls when liveness camera view dissappear
+func livenessViewDisappear() {
+}
 ```
 
-## 2. Setup Accura Face Match
 
-Step 1: install the AccuraFaceMatch pod <br />
+## 3. Setup Accura Face Match
 
-`pod 'AccuraFaceMatchSDK', '1.0.5'`
 
-Step 2: Add licence file in to your project.<br />
+Step 1: Add licence file in to your project.<br />
 
 - `accuraface.license` for Accura Face Match <br />
 
 Generate your Accura licence from <https://accurascan.com/developer/sdk-license>
 
-Step 3: Add `FaceView.swift` file in your project.
+Step 2: Add `FaceView.swift` file in your project.
 
-Step 4: Open auto capture camera
+Step 3: Open auto capture camera
 
 ```
 // To customize your screen theme and feed back messages
-var liveness = Liveness()
-liveness.setBackGroundColor("#C4C4C5")
-liveness.setCloseIconColor("#000000")
-liveness.setFeedbackBackGroundColor("#C4C4C5")
-liveness.setFeedbackTextColor("#000000")
-liveness.setFeedbackTextSize(Float(18.0))
-liveness.setFeedBackframeMessage("Frame Your Face")
-liveness.setFeedBackAwayMessage("Move Phone Away")
-liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
-liveness.setFeedBackCloserMessage("Move Phone Closer")
-liveness.setFeedBackCenterMessage("Center Your Face")
-liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
-liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
-liveness.setFeedBackLowLightMessage("Low light detected")
-liveness.setFeedBackBlurFaceMessage("Blur detected over face")
-liveness.setFeedBackGlareFaceMessage("Glare detected")
+var facematch = Facematch()
+facematch.setBackGroundColor("#C4C4C5")
+facematch.setCloseIconColor("#000000")
+facematch.setFeedbackBackGroundColor("#C4C4C5")
+facematch.setFeedbackTextColor("#000000")
+facematch.setFeedbackTextSize(Float(18.0))
+facematch.setFeedBackframeMessage("Frame Your Face")
+facematch.setFeedBackAwayMessage("Move Phone Away")
+facematch.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+facematch.setFeedBackCloserMessage("Move Phone Closer")
+facematch.setFeedBackCenterMessage("Center Your Face")
+facematch.setFeedbackMultipleFaceMessage("Multiple face detected")
+facematch.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+facematch.setFeedBackLowLightMessage("Low light detected")
+facematch.setFeedBackBlurFaceMessage("Blur detected over face")
+facematch.setFeedBackGlareFaceMessage("Glare detected")
 
 // 0 for clean face and 100 for Blurry face
-liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
+facematch.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 
 // Set min and max percentage for glare
-liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove this filter
+facematch.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove this filter
 ```
 
-Step 5: Detect face image
+Step 4: Detect face image
 
 ```
-func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool) {
-	setFaceRegion(livenessImage)
+// it calls when Face image
+func facematchData(_ FaceImage: UIImage!) {
+	setFaceRegion(FaceImage)
+}
+// it calls when Facematch camera view dissappear
+func facematchViewDisappear() {
 }
 ```
 
-Step 6: Implement face match code manually to your activity.
+Step 5: Implement face match code manually to your activity.
 
 Important Grant Camera and storage Permission.
 
 ```
+//if you are using Accura kyc pod need to import module 'import AccuraOCR' and if you using FaceMatchSDK pod need to import module 'import FaceMatchSDK'
+import AccuraOCR
 override func viewDidLoad() {
 	super.viewDidLoad()
 	/*
@@ -395,6 +414,11 @@ override func viewDidAppear(_ animated: Bool) {
 	}else if fmValue == -15{
 		// License Invalid
 	}
+}
+
+//make sure close FaceEngine when view disappear
+override func viewDidDisappear(_ animated: Bool) {
+    EngineWrapper.faceEngineClose()
 }
 
 /**

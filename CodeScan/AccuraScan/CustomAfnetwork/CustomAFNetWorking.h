@@ -4,7 +4,7 @@
 #define LivenessTag 6
 
 #import <Foundation/Foundation.h>
-#import <SDWebImage/UIImageView+WebCache.h>
+#import <UIKit/UIKit.h>
 
 
 @interface CustomAFNetWorking : NSObject

@@ -2,11 +2,13 @@
 import UIKit
 import SVProgressHUD
 import Photos
-import Alamofire
 import AccuraOCR
-import FaceMatchSDK
+import PhotosUI
 
-class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate, LivenessData {
+class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate,FacematchData, PHPickerViewControllerDelegate {
+    
+    
+
     
     //MARK:- Outlet
     @IBOutlet weak var image1: UIImageView!
@@ -25,6 +27,7 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
     var imagePicker = UIImagePickerController()
     var arrDocument: [UIImage] = [UIImage]()
     var selectFirstImage = false
+    var facematch = Facematch()
     
     //MARK:- UIViewController Methods
     override func viewDidLoad() {
@@ -61,27 +64,27 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-        liveness = Liveness.init()
-        liveness.setBackGroundColor("#C4C4C5")
-        liveness.setCloseIconColor("#000000")
-        liveness.setFeedbackBackGroundColor("#C4C4C5")
-        liveness.setFeedbackTextColor("#000000")
-//        liveness.setFeedbackTextSize(Float(18.0))
-        liveness.setFeedBackframeMessage("Frame Your Face")
-        liveness.setFeedBackAwayMessage("Move Phone Away")
-        liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
-        liveness.setFeedBackCloserMessage("Move Phone Closer")
-        liveness.setFeedBackCenterMessage("Center Your Face")
-        liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
-        liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
-        liveness.setFeedBackLowLightMessage("Low light detected")
-        liveness.setFeedBackBlurFaceMessage("Blur detected over face")
-        liveness.setFeedBackGlareFaceMessage("Glare detected")
+        facematch = Facematch.init()
+        facematch.setBackGroundColor("#C4C4C5")
+        facematch.setCloseIconColor("#000000")
+        facematch.setFeedbackBackGroundColor("#C4C4C5")
+        facematch.setFeedbackTextColor("#000000")
+        facematch.setFeedbackTextSize(Float(18.0))
+        facematch.setFeedBackframeMessage("Frame Your Face")
+        facematch.setFeedBackAwayMessage("Move Phone Away")
+        facematch.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+        facematch.setFeedBackCloserMessage("Move Phone Closer")
+        facematch.setFeedBackCenterMessage("Center Your Face")
+        facematch.setFeedbackMultipleFaceMessage("Multiple face detected")
+        facematch.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+        facematch.setFeedBackLowLightMessage("Low light detected")
+        facematch.setFeedBackBlurFaceMessage("Blur detected over face")
+        facematch.setFeedBackGlareFaceMessage("Glare detected")
         // 0 for clean face and 100 for Blurry face
-        liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
+        facematch.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 
         // Set min and max percentage for glare
-        liveness.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
+        facematch.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -91,12 +94,13 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
     @IBAction func actionBack(_ sender: Any) {
         faceView1 = nil
         faceView2 = nil
+        EngineWrapper.faceEngineClose()
         self.navigationController?.popViewController(animated: true)
     }
-    var liveness = Liveness()
+
     @IBAction func imageCamera1(_ sender: Any) {
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-            self.liveness.setLivenessAndFacematch(self, ischeckLiveness: false)
+            self.facematch.setFacematch(self)
         })
         selectFirstImage = true
 
@@ -108,7 +112,7 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
     
     @IBAction func imageCamera2(_ sender: Any) {
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-            self.liveness.setLivenessAndFacematch(self, ischeckLiveness: false)
+            self.facematch.setFacematch(self)
             self.view.setNeedsLayout()
         })
         selectFirstImage = false
@@ -156,10 +160,24 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
      *
      */
     func openGallary(_ isFirst: Bool){
-        selectFirstImage = isFirst
-        self.imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
-        self.imagePicker.allowsEditing = false
-        self.present(self.imagePicker, animated: true, completion: nil)
+        if #available(iOS 14, *) {
+            selectFirstImage = isFirst
+                    // using PHPickerViewController
+                    var config = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
+                    config.selectionLimit = 1
+                    config.filter = .images
+                    config.preferredAssetRepresentationMode = .current
+                    let picker = PHPickerViewController(configuration: config)
+                    picker.delegate = self
+                    self.present(picker, animated: true, completion: nil)
+            
+        } else {
+            selectFirstImage = isFirst
+            self.imagePicker.sourceType = .photoLibrary
+            self.imagePicker.allowsEditing = false
+            self.present(self.imagePicker, animated: true, completion: nil)
+        }
+        
     }
     
     //MARK:- Image Rotation
@@ -221,17 +239,42 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
         }
         
     }
-    func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool) {
+    @available(iOS 14, *)
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        dismiss(animated: true, completion: nil)
+        guard !results.isEmpty else { return }
+        // request image urls
+        for result in results {
+            result.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { (object, error) in
+                if let image = object as? UIImage {
+                    DispatchQueue.main.async {
+                        // Use UIImage
+                        let ratio = CGFloat(image.size.width) / image.size.height
+                        let originalImage = self.compressimage(with: image, convertTo: CGSize(width: 600 * ratio, height: 600))!
+                        
+                        let compressData = UIImage(data: originalImage.jpegData(compressionQuality: 1.0)!)
+                        
+                        self.setFaceRegion(compressData!)//Set FaceMatch score
+                        SVProgressHUD.dismiss()
+                        print("Selected image: \(image)")
+                    }
+                }
+            })
+        }
+    }
+    
+    
+    func facematchData(_ FaceImage: UIImage!) {
         SVProgressHUD.show(withStatus: "Loading...")
         DispatchQueue.global(qos: .background).async {
-            var originalImage = livenessImage
+            var originalImage = FaceImage
             
             
             //Image Resize
-            let ratio = CGFloat(livenessImage.size.width) / originalImage.size.height
+            let ratio = CGFloat(FaceImage.size.width) / originalImage!.size.height
             originalImage = self.compressimage(with: originalImage, convertTo: CGSize(width: 600 * ratio, height: 600))!
             
-            let compressData = UIImage(data: livenessImage.jpegData(compressionQuality: 1.0)!)
+            let compressData = UIImage(data: FaceImage.jpegData(compressionQuality: 1.0)!)
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                 self.setFaceRegion(compressData!)//Set FaceMatch score
                 SVProgressHUD.dismiss()
@@ -239,6 +282,10 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
         }
     }
     
+    
+    func facematchViewDisappear() {
+        
+    }
     /**
      * This method use calculate faceMatch score
      * Parameters to Pass: selected uiimage

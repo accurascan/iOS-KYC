@@ -1,7 +1,6 @@
 
 import UIKit
 import CoreData
-import Firebase
 import AccuraOCR
 //list of Page Type
 public enum NAV_PAGETYPE: Int {
