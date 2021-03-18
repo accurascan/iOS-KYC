@@ -2,7 +2,7 @@
 import UIKit
 import SVProgressHUD
 import AccuraOCR
-import FaceMatchSDK
+
 
 struct CountryName {
     let id : Int?

@@ -6,6 +6,6 @@ target 'AccuraSDK' do
   use_frameworks!
   
   # Pods for CodeScan
-   pod 'AccuraFaceMatchSDK', '1.0.5'
-   pod 'AccuraOCR', '2.0.1'
+  pod 'AccuraKYC','2.1.2'
+
 end

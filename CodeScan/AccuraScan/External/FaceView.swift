@@ -2,8 +2,7 @@
 
 import UIKit
 import Pods_AccuraSDK
-import FaceMatchSDK
-
+import AccuraOCR
 class FaceView: UIView {
 
     var faceImage: UIImage? = nil

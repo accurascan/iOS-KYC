@@ -1,9 +1,7 @@
 
 import UIKit
 import SVProgressHUD
-import Alamofire
 import AccuraOCR
-import FaceMatchSDK
 
 //Define Global Key
 let KEY_TITLE           =  "KEY_TITLE"
@@ -28,7 +26,7 @@ struct Objects {
     
 }
 
-class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, LivenessData {
+class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, LivenessData, FacematchData {
     //MARK:- Outlet
     @IBOutlet weak var img_height: NSLayoutConstraint!
     @IBOutlet weak var lblLinestitle: UILabel!
@@ -144,6 +142,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var intID: Int?
     var orientation: UIInterfaceOrientationMask?
     var liveness = Liveness()
+    var facematch = Facematch()
     
     //MARK:- UIViewContoller Methods
     override func viewDidLoad() {
@@ -312,7 +311,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        liveness.setLivenessURL("YOUR URL")
+        liveness.setLivenessURL("YourURL")
         liveness.setBackGroundColor("#C4C4C5")
         liveness.setCloseIconColor("#000000")
         liveness.setFeedbackBackGroundColor("#C4C4C5")
@@ -333,6 +332,32 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 
         // Set min and max percentage for glare
         liveness.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
+        
+        
+        
+
+        facematch.setBackGroundColor("#C4C4C5")
+        facematch.setCloseIconColor("#000000")
+        facematch.setFeedbackBackGroundColor("#C4C4C5")
+        facematch.setFeedbackTextColor("#000000")
+        facematch.setFeedbackTextSize(Float(18.0))
+        facematch.setFeedBackframeMessage("Frame Your Face")
+        facematch.setFeedBackAwayMessage("Move Phone Away")
+        facematch.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+        facematch.setFeedBackCloserMessage("Move Phone Closer")
+        facematch.setFeedBackCenterMessage("Center Your Face")
+        facematch.setFeedbackMultipleFaceMessage("Multiple face detected")
+        facematch.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+        facematch.setFeedBackLowLightMessage("Low light detected")
+        facematch.setFeedBackBlurFaceMessage("Blur detected over face")
+        facematch.setFeedBackGlareFaceMessage("Glare detected")
+        // 0 for clean face and 100 for Blurry face
+        facematch.setBlurPercentage(80) // set blure percentage -1 to remove this filter
+
+        // Set min and max percentage for glare
+        facematch.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
+        
+        
         //Set TableView Height
         self.tblResult.estimatedRowHeight = 60.0
         self.tblResult.rowHeight = UITableView.automaticDimension
@@ -965,6 +990,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if pageType == .ScanOCR{
             removeAllData()
         }
+        EngineWrapper.faceEngineClose()
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -1847,7 +1873,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         orientation = .portrait
     }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-    liveness.setLivenessAndFacematch(self, ischeckLiveness: false)//.setLivenessAndFacematch(livenessView: self, ischeckLiveness: false)
+    facematch.setFacematch(self)
 
     }
     
@@ -1868,11 +1894,11 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool) {
-        if(orientation == .landscapeLeft) {
-            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-        } else if orientation == .landscapeRight {
-            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
-        }
+//        if(orientation == .landscapeLeft) {
+//            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+//        } else if orientation == .landscapeRight {
+//            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+//        }
         
         isFLpershow = true
         self.livenessValue = stLivenessValue
@@ -1928,10 +1954,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 dictParam["liveness_score"] = stLivenessValue
                 dictParam["facematch_image"] = stFaceImage
                 dictParam["liveness_image"] = stLivenessInage
-                    let sharedInstance = NetworkReachabilityManager()!
-                    var isConnectedToInternet:Bool {
-                        return sharedInstance.isReachable
-                    }
                 
                 // print(twoDecimalPlaces)
 //                if pageType != .ScanOCR{
@@ -1941,6 +1963,65 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 //                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
 //                    self.arrFaceLivenessScor.insert(ansData, at: 0)
 //                }
+        }
+            tblResult.reloadData()
+        }
+    }
+    
+    func livenessViewDisappear() {
+        if(orientation == .landscapeLeft) {
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        } else if orientation == .landscapeRight {
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        }
+    }
+    
+    func facematchViewDisappear() {
+        if(orientation == .landscapeLeft) {
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        } else if orientation == .landscapeRight {
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        }
+    }
+    func facematchData(_ FaceImage: UIImage!) {
+        isFLpershow = true
+        self.imgCamaraFace = FaceImage
+        self.livenessValue = "0.00 %"
+        
+        if (faceRegion != nil)
+        {
+            /*
+             FaceMatch SDK method call to detect Face in back image
+             @Params: BackImage, Front Face Image faceRegion
+             @Return: Face Image Frame
+             */
+            
+            let face2 = EngineWrapper.detectTargetFaces(FaceImage, feature1: faceRegion?.feature)
+            let face11 = faceRegion?.image
+            /*
+             FaceMatch SDK method call to get FaceMatch Score
+             @Params: FrontImage Face, BackImage Face
+             @Return: Match Score
+             
+             */
+            
+            let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
+            if(fm_Score != 0.0){
+            let data = face2?.bound
+            let image = self.resizeImage(image: FaceImage, targetSize: data!)
+            imgCamaraFace = image
+            let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
+                faceScoreData = twoDecimalPlaces
+            self.removeOldValue("FACEMATCH SCORE : ")
+            self.removeOldValue1("0 %")
+            isCheckLiveNess = true
+                if self.pageType != .ScanOCR{
+                    let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
+                    self.arrDocumentData.insert(dict, at: 1)
+                }else{
+                    let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
+                    self.arrFaceLivenessScor.insert(ansData, at: 0)
+                }
         }
             tblResult.reloadData()
         }
