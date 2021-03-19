@@ -20,6 +20,10 @@ Below steps to setup Accura SDK's in your project.
     pod 'AccuraFacematchSDK', '2.1.0'
 ```
 
+ * Run the App in Simulator.  ( Optional )
+    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.0.2/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.0.2/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.0.2/FaceMatchSDK.framework.zip) and Extract it
+    2. add this framework in your project's root directory
+
 ## 1. Setup Accura OCR
 
 #### Step 1: Add license file in to your project.
@@ -30,21 +34,14 @@ Generate your Accura license from https://accurascan.com/developer/dashboard <br
 
 #### Step 2: Add `AccuraOCRSDK.swift` file in your projrct
 
-  
-
-#### Step 3:  Run the App in Simulator.  ( Optional )
-Download and extract the AccuraOCR.framework.zip (download From https://accurascan.com/iOSSDK/AccuraOCR.framework.zip)
-
-  
-
-#### Step 4: Appdelegate.swift file in add<br />
+#### Step 3: Appdelegate.swift file in add<br />
 ```
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 	AccuraOCRSDK.configure()
 	return true
 }
 ```
-#### Step 5: To initialize sdk on app start:
+#### Step 4: To initialize sdk on app start:
 ```
 import AccuraOCR
 var accuraCameraWrapper: AccuraCameraWrapper? = nil
@@ -149,7 +146,7 @@ accuraCameraWrapper?.andCardSide(.FRONT_CARD_SCAN)
 accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
 ```
 
-#### Step 6 : Set CameraView
+#### Step 5: Set CameraView
 
 Important Grant Camera and storage Permission.</br>
 supports Landscape Camera
