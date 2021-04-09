@@ -6,7 +6,9 @@ Accura Authentication is used for your customer verification and authentication.
 
 
 Below steps to setup Accura SDK's in your project.
-* Add below pod in podfile
+1. install Git LFS using install git-lfs command
+
+2. Add below pod in podfile
 ```
     # install the AccuraKYC pod for AccuraOCR, AccuraFacematch And AccuraLiveness </br>
     pod 'AccuraKYC', '2.1.2'
@@ -20,7 +22,7 @@ Below steps to setup Accura SDK's in your project.
     pod 'AccuraFacematchSDK', '2.1.0'
 ```
 
- * Run the App in Simulator.  ( Optional )
+ 3. Run the App in Simulator.  ( Optional )
     1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.0.2/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.0.2/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.0.2/FaceMatchSDK.framework.zip) and Extract it
     2. add this framework in your project's root directory
 
