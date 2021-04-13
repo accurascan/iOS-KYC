@@ -92,7 +92,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                 self.arrCountryList.add("Passport MRZ")
                 self.arrCountryList.add("ID card MRZ")
                 self.arrCountryList.add("VISA MRZ")
-                self.arrCountryList.add("Other MRZ")
+                self.arrCountryList.add("All MRZ")
             }
             if(self.isBankCard) {
                 self.arrCountryList.add("Bank Card")
