@@ -60,6 +60,8 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     var statusBarRect = CGRect()
     var bottomPadding:CGFloat = 0.0
     var topPadding: CGFloat = 0.0
+    var isFirstTimeStartCamara: Bool?
+    var isCheckFirstTime : Bool?
     
     //MARK:- UIViewController Methods
     override func viewDidLoad() {
@@ -82,7 +84,8 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         }
 
         ChangedOrientation()
-      
+        isFirstTimeStartCamara = false
+        isCheckFirstTime = false
         var width : CGFloat = 0
         var height : CGFloat = 0
         
@@ -101,6 +104,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         self.imageViewFilp.isHidden = true
         
         if status == .authorized {
+            isCheckFirstTime = true
             accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(countryid!), setBarcodeType: selectedTypes)
             let shortTap = UITapGestureRecognizer(target: self, action: #selector(handleTapToFocus(_:)))
             shortTap.numberOfTapsRequired = 1
@@ -123,7 +127,8 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         } else if status == .notDetermined  {
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
-        
+                    self.isCheckFirstTime = true
+                     self.isFirstTimeStartCamara = true
                     self.accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: self.imageView, andLabelMsg: self.lblBottamMsg, andurl: 1, isBarcodeEnable: self.isBarcodeEnabled, countryID: Int32(self.countryid!), setBarcodeType: self.selectedTypes)
         
                     self.accuraCameraWrapper?.startCamera()
@@ -162,13 +167,22 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
                 barCodeScannerView.isHidden = true
                 accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled, countryID: Int32(self.countryid!), setBarcodeType: selectedTypes)
             }
+        if isFirstTimeStartCamara!{
             accuraCameraWrapper?.startCamera()
+        }
            if(isBarcodeEnabled){
                labelMsg.text = "Scan Barcode"
            }
           else{
                 labelMsg.text = "Scan front side of Document"
             }
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        if !isFirstTimeStartCamara! && isCheckFirstTime!{
+
+          isFirstTimeStartCamara = true
+          accuraCameraWrapper?.startCamera()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1713,7 +1727,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     
    
     func processedImage(_ image: UIImage!) {
-        imageView.image = image
+//        imageView.image = image
     }
     
     func recognizeFailed(_ message: String!) {

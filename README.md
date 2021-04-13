@@ -11,19 +11,21 @@ Below steps to setup Accura SDK's in your project.
 2. Add below pod in podfile
 ```
     # install the AccuraKYC pod for AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC', '2.1.2'
+    pod 'AccuraKYC', '2.1.3'
 
     # not require below pods if you are installing AccuraKYC pod
 
     # install the AccuraOCR pod for AccuraOCR and AccuraLiveness both.</br>
-    pod 'AccuraOCR', '2.0.2'
+    pod 'AccuraOCR', '2.1.3'
 
     # install the AccuraFacematchSDK pod for AccuraFacematch only.</br>
-    pod 'AccuraFacematchSDK', '2.1.0'
+    pod 'AccuraFacematchSDK', '2.1.3'
 ```
 
+
  3. Run the App in Simulator.  ( Optional )
-    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.0.2/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.0.2/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.0.2/FaceMatchSDK.framework.zip) and Extract it
+    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/FaceMatchSDK.framework.zip) and Extract it
+    
     2. add this framework in your project's root directory
 
 ## 1. Setup Accura OCR
@@ -59,7 +61,7 @@ accuraCameraWrapper = AccuraCameraWrapper.init()
 			// ID MRZ
 			// Visa MRZ
 			// Passport MRZ
-			// Other MRZ
+			// All MRZ
 		}
 		
 		// if sdkModel.isOCREnable then get card data
@@ -159,7 +161,7 @@ var accuraCameraWrapper: AccuraCameraWrapper? = nil
 override func viewDidLoad() {
 	super.viewDidLoad()
     // initialize Camera for OCR,MRZ,DLplate and BankCard
-    accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName, andcardType: Int32(cardType/*2 = DLPlate And 3 = bankCard*/), andMRZDocType: /*SetMRZDocumentType*/ Int32(MRZDocType!/*0 = OtherMRZ, 1 = PassportMRZ, 2 = IDMRZ, 3 = VisaMRZ*/))
+    accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName, andcardType: Int32(cardType/*2 = DLPlate And 3 = bankCard*/), andMRZDocType: /*SetMRZDocumentType*/ Int32(MRZDocType!/*0 = AllMRZ, 1 = PassportMRZ, 2 = IDMRZ, 3 = VisaMRZ*/))
         
     // initialize Camera for Barcode and PDF417 driving license
     accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled/*set true for barcode and false for PDF417 driving license*/, countryID: Int32(self.countryid!), setBarcodeType: .all/*set barcode types*/)

@@ -141,10 +141,19 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
                     }
                     
                 } else {
-                    let alert = UIAlertController(title: "AccuraFrame", message: "Please allow Photos access to AccuraFrame \n Goto \n  Setting >> AccuraFrame >> Photos", preferredStyle: .alert);
-                    let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                    alert.addAction(defaultAction)
-                    self.present(alert, animated: true, completion: nil)
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "AccuraFrame", message: "It looks like your privacy settings are preventing us from accessing your Photos", preferredStyle: .alert);
+                        let defaultAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            if #available(iOS 10.0, *) {
+                                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+                            } else {
+                                UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
+                            }
+                        }
+                        alert.addAction(defaultAction)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                   
                 }
             })
         }else if photos == .authorized{
