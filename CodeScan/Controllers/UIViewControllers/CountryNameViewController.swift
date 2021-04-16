@@ -135,6 +135,16 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidAppear(_ animated: Bool) {
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        let orientastion = UIApplication.shared.statusBarOrientation
+        if orientastion ==  UIInterfaceOrientation.landscapeLeft {
+            buttonOrtientation.isSelected = true
+        } else if orientastion == UIInterfaceOrientation.landscapeRight {
+            buttonOrtientation.isSelected = true
+        } else {
+            buttonOrtientation.isSelected = false
+        }
+    }
     
 
     

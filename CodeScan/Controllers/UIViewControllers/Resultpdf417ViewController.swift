@@ -114,6 +114,8 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         liveness.setFeedBackLowLightMessage("Low light detected")
         liveness.setFeedBackBlurFaceMessage("Blur detected over face")
         liveness.setFeedBackGlareFaceMessage("Glare detected")
+        liveness.setBlurPercentage(80)
+        liveness.setGlarePercentage(-1, -1)
         
         facematch.setBackGroundColor("#C4C4C5")
         facematch.setCloseIconColor("#000000")
@@ -130,6 +132,8 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         facematch.setFeedBackLowLightMessage("Low light detected")
         facematch.setFeedBackBlurFaceMessage("Blur detected over face")
         facematch.setFeedBackGlareFaceMessage("Glare detected")
+        facematch.setBlurPercentage(80)
+        facematch.setGlarePercentage(-1, -1)
     }
     
     

@@ -331,7 +331,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 
         // Set min and max percentage for glare
-        liveness.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
+        liveness.setGlarePercentage(-1, -1) //set glaremin -1 to remove this filter
         
         
         
@@ -355,7 +355,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         facematch.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 
         // Set min and max percentage for glare
-        facematch.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
+        facematch.setGlarePercentage(-1, -1) //set glaremin -1 to remove this filter
         
         
         //Set TableView Height
