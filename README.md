@@ -10,21 +10,24 @@ Below steps to setup Accura SDK's in your project.
 
 2. Add below pod in podfile
 ```
-    # install the AccuraKYC pod for AccuraOCR, AccuraFacematch And AccuraLiveness </br>
+    # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
     pod 'AccuraKYC', '2.1.3'
 
     # not require below pods if you are installing AccuraKYC pod
 
-    # install the AccuraOCR pod for AccuraOCR and AccuraLiveness both.</br>
-    pod 'AccuraOCR', '2.1.3'
+    # install the AccuraOCR pod for AccuraOCR only.</br>
+    pod 'AccuraOCR', '2.1.4'
 
     # install the AccuraFacematchSDK pod for AccuraFacematch only.</br>
     pod 'AccuraFacematchSDK', '2.1.3'
+
+    # install the AccuraLiveness pod for AccuraLiveness only.</br>
+    pod 'AccuraLiveness', '2.1.4'
 ```
 
 
  3. Run the App in Simulator.  ( Optional )
-    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/FaceMatchSDK.framework.zip) and Extract it
+    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/FaceMatchSDK.framework.zip), [AccuraLiveness.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraLiveness.framework.zip) and Extract it
     
     2. add this framework in your project's root directory
 
@@ -287,8 +290,19 @@ extension ViewController: VideoCameraWrapperDelegate{
 
 ## 2. Setup Accura liveness
 
-Contact to  [connect@accurascan.com](mailto:connect@accurascan.com)  to get Url for liveness
+Contact to  [connect@accurascan.com](mailto:connect@accurascan.com)  to get Url for liveness </br>
 Step 1: Open camera for liveness Detectcion.
+
+* import the module name  `import AccuraLiveness`  if you are using `AccuraLiveness` pod
+
+* If you are using `AccuraLiveness` pod must have to configure liveness SDK in `didFinishLaunchingWithOptions` method in `AppDelegate.swift`
+```
+let liveness = Liveness.init()
+liveness.configure()
+```
+
+* Setup auto capture Camera
+
 ```
 //set liveness url
 var liveness = Liveness()

@@ -1784,7 +1784,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
                 placeVC?.passStr = message
                 placeVC?.photoImage = photoImage1
                 placeVC?.imgViewFront = imgViewFront
-                placeVC?.imgViewBack = imageView.image
+                placeVC?.imgViewBack = barcodeImage
                 placeVC?.isCheckIDMRZ = true
                 if let aVC = placeVC {
                     navigationController?.pushViewController(aVC, animated: true)
@@ -1805,7 +1805,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             {
                 self.labelMsg.text = "Scan Back Side of Document"
                 photoImage1 = imgFace
-                imgViewFront = imageView.image
+                imgViewFront = docFrontImage
                 self.flipAnimation()
             }
         }
