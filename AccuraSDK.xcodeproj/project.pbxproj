@@ -435,8 +435,8 @@
 				6104CC7420BB4E6D00AC428E /* Resources */,
 				FA30D04B23DEE96300BA0DC0 /* ShellScript */,
 				A3D1BDD82594A31A00339909 /* Embed Frameworks */,
-				83E44B1B05F6568AEC24EE76 /* [CP] Embed Pods Frameworks */,
-				5ADE29B94C4A1BD9034CEF73 /* [CP] Copy Pods Resources */,
+				5E60F889265D3FB807444C8C /* [CP] Embed Pods Frameworks */,
+				89E973CFBB94F46D8DEE3482 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -522,24 +522,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5ADE29B94C4A1BD9034CEF73 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		83E44B1B05F6568AEC24EE76 /* [CP] Embed Pods Frameworks */ = {
+		5E60F889265D3FB807444C8C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -554,6 +537,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		89E973CFBB94F46D8DEE3482 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		98B08C984B7779B9C64FB4CA /* [CP] Check Pods Manifest.lock */ = {

@@ -28,6 +28,30 @@ Below steps to setup Accura SDK's in your project.
     pod 'AccuraLiveness', '2.1.4'
 ```
 
+Note :- after pod install done make sure check the pod size at below path </br>
+* If you are using `AccuraKYC` pod </br>
+    `your Project's root dicrectory/Pods/AccuraKYC/Framework/AccuraOCR.framework` </br>
+    the `AccuraOCR.framework` size should be around 276 MB
+            
+* If you are using `AccuraOCR` pod </br>
+   ` your Project's root dicrectory/Pods/AccuraOCR/Framework/AccuraOCR.framework` </br>
+    the `AccuraOCR.framework` size should be around 261 MB
+* If you are using `AccuraLiveness_FM` pod </br>
+   ` your Project's root dicrectory/Pods/AccuraLiveness_FM/Framework/AccuraLiveness_FM.framework` </br>
+    the `AccuraLiveness_FM.framework` size should be around 155 MB
+* If you are using `AccuraFaceMatchSDK` pod </br>
+    `your Project's root dicrectory/Pods/AccuraFaceMatchSDK/Framework/FacematchSDK.framework` </br>
+    the `FacematchSDK.framework` size should be around 284 MB
+* If you are using `AccuraLiveness` pod </br>
+   ` your Project's root dicrectory/Pods/AccuraLiveness/Framework/AccuraLiveness.framework` </br>
+    the `AccuraLiveness.framework` size should be around 110 MB
+    
+    if getting issue in pods size follow the below steps </br>
+        1. Clean the pod using `pod clean` command </br>
+        2. install Git LFS using `install git-lfs` command </br>
+        3. Run `pod install` </br>
+            
+
 
  3. Run the App in Simulator.  ( Optional )
     1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/FaceMatchSDK.framework.zip), [AccuraLiveness.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraLiveness.framework.zip), [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.5/AccuraLiveness_fm.framework.zip) and Extract it
