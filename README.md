@@ -17,6 +17,9 @@ Below steps to setup Accura SDK's in your project.
 
     # install the AccuraOCR pod for AccuraOCR only.</br>
     pod 'AccuraOCR', '2.1.4'
+    
+    # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
+    pod 'AccuraLiveness_FM', '2.1.4'
 
     # install the AccuraFacematchSDK pod for AccuraFacematch only.</br>
     pod 'AccuraFacematchSDK', '2.1.3'
@@ -27,7 +30,7 @@ Below steps to setup Accura SDK's in your project.
 
 
  3. Run the App in Simulator.  ( Optional )
-    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/FaceMatchSDK.framework.zip), [AccuraLiveness.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraLiveness.framework.zip) and Extract it
+    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/FaceMatchSDK.framework.zip), [AccuraLiveness.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraLiveness.framework.zip), [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.5/AccuraLiveness_fm.framework.zip) and Extract it
     
     2. add this framework in your project's root directory
 
