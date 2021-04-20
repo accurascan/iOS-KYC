@@ -84,7 +84,7 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
         facematch.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 
         // Set min and max percentage for glare
-        facematch.setGlarePercentage(-1, 99) //set glaremin -1 to remove this filter
+        facematch.setGlarePercentage(-1, -1) //set glaremin -1 to remove this filter
     }
     
     override func viewDidDisappear(_ animated: Bool) {

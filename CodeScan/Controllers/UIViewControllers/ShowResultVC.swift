@@ -1407,11 +1407,16 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             if indexPath.section == 0{
                 return UITableView.automaticDimension
             }else if indexPath.section == 1{
-                if(isFLpershow)
-                {
-                    return 116
+                if(imagePhoto != nil) {
+                    if(isFLpershow)
+                    {
+                        return 116
+                    }
+                    return 76
+                } else {
+                    return 0
                 }
-                return 76
+                
             }else if indexPath.section == 2{
                 if !arrSecurity.isEmpty{
                     let data = arrSecurity[indexPath.row]

@@ -96,6 +96,11 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
     
     override func viewWillAppear(_ animated: Bool) {
         
+        if(orientation == .landscapeLeft) {
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        } else if orientation == .landscapeRight {
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        }
         self.tblResult.estimatedRowHeight = 60.0
         self.tblResult.rowHeight = UITableView.automaticDimension
         liveness.setLivenessURL("YOURURL")
@@ -581,7 +586,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         }
             AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
         isCheckLiveNess = false
-        liveness.setLivenessAndFacematch(self, ischeckLiveness: false)
+        facematch.setFacematch(self)
         }
         
        @objc func buttonClickedLiveness(sender:UIButton)
