@@ -601,7 +601,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
         isCheckLiveNess = true
-        liveness.setLivenessAndFacematch(self, ischeckLiveness: true)
+        liveness.setLiveness(self)
         }
 
     /**
