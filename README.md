@@ -36,13 +36,10 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
    ` your Project's root dicrectory/Pods/AccuraLiveness_FM/Framework/AccuraLiveness_FM.framework` </br>
     the `AccuraLiveness_FM.framework` size should be around 155 MB
     
-    if getting issue in pods size follow the below steps </br>
-        1. Clean the pod using `pod clean` command </br>
-        2. install Git LFS using `install git-lfs` command </br>
-        3. Run `pod install` </br>
+    
             
 
- 4. Solving pod issue (follow this step only if pod size doesnt match as said in point 3)
+ 4. Solving pod issue (follow this step only if pod size doesnt match as said in point 3) </br>
      i.   Clean the pod using `pod clean` command </br>
      ii.  install Git LFS using `install git-lfs` command </br>
      iii. Run `pod install` </br>
