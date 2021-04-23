@@ -24,7 +24,7 @@ Below steps to setup Accura SDK's in your project.
 
 3. Run `pod install`
 
-Note :- after pod install done make sure check the pod size at below path </br>
+Note :- after pod install, make sure to check the pod size as mentioned below </br>
 * If you are using `AccuraKYC` pod </br>
     `your Project's root dicrectory/Pods/AccuraKYC/Framework/AccuraOCR.framework` </br>
     the `AccuraOCR.framework` size should be around 276 MB
