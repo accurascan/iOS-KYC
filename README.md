@@ -22,6 +22,8 @@ Below steps to setup Accura SDK's in your project.
     pod 'AccuraLiveness_FM', '2.1.4'
 ```
 
+3. Run `pod install`
+
 Note :- after pod install done make sure check the pod size at below path </br>
 * If you are using `AccuraKYC` pod </br>
     `your Project's root dicrectory/Pods/AccuraKYC/Framework/AccuraOCR.framework` </br>
@@ -41,7 +43,7 @@ Note :- after pod install done make sure check the pod size at below path </br>
             
 
 
- 3. Run the App in Simulator.  ( Optional )
+ 4. Run the App in Simulator.  ( Optional )
     1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.6/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.6/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.5/AccuraLiveness_fm.framework.zip) and Extract it
     
     2. add this framework in your project's root directory
