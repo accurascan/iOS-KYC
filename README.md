@@ -11,21 +11,15 @@ Below steps to setup Accura SDK's in your project.
 2. Add below pod in podfile
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC', '2.1.3'
+    pod 'AccuraKYC', '2.1.6'
 
     # not require below pods if you are installing AccuraKYC pod
 
     # install the AccuraOCR pod for AccuraOCR only.</br>
-    pod 'AccuraOCR', '2.1.4'
+    pod 'AccuraOCR', '2.1.6'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
     pod 'AccuraLiveness_FM', '2.1.4'
-
-    # install the AccuraFacematchSDK pod for AccuraFacematch only.</br>
-    pod 'AccuraFacematchSDK', '2.1.3'
-
-    # install the AccuraLiveness pod for AccuraLiveness only.</br>
-    pod 'AccuraLiveness', '2.1.4'
 ```
 
 Note :- after pod install done make sure check the pod size at below path </br>
@@ -39,12 +33,6 @@ Note :- after pod install done make sure check the pod size at below path </br>
 * If you are using `AccuraLiveness_FM` pod </br>
    ` your Project's root dicrectory/Pods/AccuraLiveness_FM/Framework/AccuraLiveness_FM.framework` </br>
     the `AccuraLiveness_FM.framework` size should be around 155 MB
-* If you are using `AccuraFaceMatchSDK` pod </br>
-    `your Project's root dicrectory/Pods/AccuraFaceMatchSDK/Framework/FacematchSDK.framework` </br>
-    the `FacematchSDK.framework` size should be around 284 MB
-* If you are using `AccuraLiveness` pod </br>
-   ` your Project's root dicrectory/Pods/AccuraLiveness/Framework/AccuraLiveness.framework` </br>
-    the `AccuraLiveness.framework` size should be around 110 MB
     
     if getting issue in pods size follow the below steps </br>
         1. Clean the pod using `pod clean` command </br>
@@ -54,7 +42,7 @@ Note :- after pod install done make sure check the pod size at below path </br>
 
 
  3. Run the App in Simulator.  ( Optional )
-    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraOCR.framework.zip), [FaceMatchSDK.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.3/FaceMatchSDK.framework.zip), [AccuraLiveness.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.4/AccuraLiveness.framework.zip), [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.5/AccuraLiveness_fm.framework.zip) and Extract it
+    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.6/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.6/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.5/AccuraLiveness_fm.framework.zip) and Extract it
     
     2. add this framework in your project's root directory
 
@@ -320,9 +308,9 @@ extension ViewController: VideoCameraWrapperDelegate{
 Contact to  [connect@accurascan.com](mailto:connect@accurascan.com)  to get Url for liveness </br>
 Step 1: Open camera for liveness Detectcion.
 
-* import the module name  `import AccuraLiveness`  if you are using `AccuraLiveness` pod
+* import the module name  `import AccuraLiveness_fm`  if you are using `AccuraLiveness_FM` pod
 
-* If you are using `AccuraLiveness` pod must have to configure liveness SDK in `didFinishLaunchingWithOptions` method in `AppDelegate.swift`
+* If you are using `AccuraLiveness_FM` pod must have to configure liveness SDK in `didFinishLaunchingWithOptions` method in `AppDelegate.swift`
 ```
 let liveness = Liveness.init()
 liveness.configure()
@@ -383,6 +371,8 @@ Generate your Accura licence from <https://accurascan.com/developer/sdk-license>
 Step 2: Add `FaceView.swift` file in your project.
 
 Step 3: Open auto capture camera
+
+- import the module name  `import AccuraLiveness_fm`  if you are using `AccuraLiveness_FM` pod
 
 ```
 // To customize your screen theme and feed back messages

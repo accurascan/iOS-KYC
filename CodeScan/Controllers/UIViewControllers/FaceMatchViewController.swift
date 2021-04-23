@@ -133,6 +133,20 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
     func openPhotosLibrary(_isFirst: Bool){
         //Check camera permission
         let photos = PHPhotoLibrary.authorizationStatus()
+        if photos == .denied {
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "AccuraFrame", message: "It looks like your privacy settings are preventing us from accessing your Photos", preferredStyle: .alert);
+                let defaultAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+                    } else {
+                        UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
+                    }
+                }
+                alert.addAction(defaultAction)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
         if photos == .denied || photos == .notDetermined{
             PHPhotoLibrary.requestAuthorization({status in
                 if status == .authorized{
@@ -140,20 +154,6 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
                         self.openGallary(_isFirst)
                     }
                     
-                } else {
-                    DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "AccuraFrame", message: "It looks like your privacy settings are preventing us from accessing your Photos", preferredStyle: .alert);
-                        let defaultAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            if #available(iOS 10.0, *) {
-                                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
-                            } else {
-                                UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
-                            }
-                        }
-                        alert.addAction(defaultAction)
-                        self.present(alert, animated: true, completion: nil)
-                    }
-                   
                 }
             })
         }else if photos == .authorized{

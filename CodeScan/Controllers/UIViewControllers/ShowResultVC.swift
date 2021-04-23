@@ -1893,7 +1893,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         orientation = .portrait
     }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-    liveness.setLivenessAndFacematch(self, ischeckLiveness: true)
+    liveness.setLiveness(self)
     
         
     }
