@@ -42,8 +42,12 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
         3. Run `pod install` </br>
             
 
+ 4. Solving pod issue (follow this step only if pod size doesnt match as said in point 3)
+     i.   Clean the pod using `pod clean` command </br>
+     ii.  install Git LFS using `install git-lfs` command </br>
+     iii. Run `pod install` </br>
 
- 4. Run the App in Simulator.  ( Optional )
+ 5. Run the App in Simulator.  ( Optional )
     1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.6/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.6/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.5/AccuraLiveness_fm.framework.zip) and Extract it
     
     2. add this framework in your project's root directory
