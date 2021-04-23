@@ -15,7 +15,7 @@ Below steps to setup Accura SDK's in your project.
 
     # not require below pods if you are installing AccuraKYC pod
 
-    # install the AccuraOCR pod for AccuraOCR only.</br>
+    # install the AccuraOCR pod for AccuraOCR only.
     pod 'AccuraOCR', '2.1.6'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
