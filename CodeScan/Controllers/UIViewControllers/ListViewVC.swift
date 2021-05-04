@@ -20,6 +20,7 @@ class ListViewVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var viewNavigationBar: UIView!
     @IBOutlet weak var viewStatusBar: UIView!
     @IBOutlet weak var btnBack: UIButton!
+    @IBOutlet weak var buttonOrientation: UIButton!
     
     //MARK:- Variable
     var screenList = NSMutableArray()
@@ -38,6 +39,12 @@ class ListViewVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        let orientation = UIApplication.shared.statusBarOrientation
+        if(orientation ==  UIInterfaceOrientation.portrait) {
+            buttonOrientation.isSelected = false
+        } else {
+            buttonOrientation.isSelected = true
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -49,7 +56,16 @@ class ListViewVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBAction func btnBackAction(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-
+    @IBAction func buttoOrientationAction(_ sender: UIButton) {
+        if(sender.isSelected == true) {
+            sender.isSelected = false
+            AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
+        } else {
+            sender.isSelected = true
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        }
+    }
+    
     //MARK: UITableView Delegate and Datasource method
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
