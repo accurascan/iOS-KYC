@@ -11,15 +11,15 @@ Below steps to setup Accura SDK's in your project.
 2. Add below pod in podfile
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC', '2.1.7'
+    pod 'AccuraKYC', '3.0.0'
 
     # not require below pods if you are installing AccuraKYC pod
 
     # install the AccuraOCR pod for AccuraOCR only.
-    pod 'AccuraOCR', '2.1.7'
+    pod 'AccuraOCR', '3.0.0'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
-    pod 'AccuraLiveness_FM', '2.1.4'
+    pod 'AccuraLiveness_FM', '3.0.0'
 ```
 
 3. Run `pod install`
@@ -27,14 +27,14 @@ Below steps to setup Accura SDK's in your project.
 Note :- after pod install, make sure to check the pod size as mentioned below </br>
 * If you are using `AccuraKYC` pod </br>
     `your Project's root dicrectory/Pods/AccuraKYC/Framework/AccuraOCR.framework` </br>
-    the `AccuraOCR.framework` size should be around 276 MB
+    the `AccuraOCR.framework` size should be around 285 MB
             
 * If you are using `AccuraOCR` pod </br>
    ` your Project's root dicrectory/Pods/AccuraOCR/Framework/AccuraOCR.framework` </br>
-    the `AccuraOCR.framework` size should be around 261 MB
+    the `AccuraOCR.framework` size should be around 270 MB
 * If you are using `AccuraLiveness_FM` pod </br>
    ` your Project's root dicrectory/Pods/AccuraLiveness_FM/Framework/AccuraLiveness_FM.framework` </br>
-    the `AccuraLiveness_FM.framework` size should be around 155 MB
+    the `AccuraLiveness_FM.framework` size should be around 157 MB
     
     
             
@@ -45,7 +45,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
      iii. Run `pod install` </br>
 
  5. Run the App in Simulator.  ( Optional )
-    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.7/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.7/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/2.1.5/AccuraLiveness_fm.framework.zip) and Extract it
+    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.0.0/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.0.0/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.0.0/AccuraLiveness_fm.framework.zip) and Extract it
     
     2. add this framework in your project's root directory
 
@@ -57,16 +57,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
 
 Generate your Accura license from https://accurascan.com/developer/dashboard <br/>
 
-#### Step 2: Add `AccuraOCRSDK.swift` file in your projrct
-
-#### Step 3: Appdelegate.swift file in add<br />
-```
-func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-	AccuraOCRSDK.configure()
-	return true
-}
-```
-#### Step 4: To initialize sdk on app start:
+#### Step 2: To initialize sdk on app start:
 ```
 import AccuraOCR
 var accuraCameraWrapper: AccuraCameraWrapper? = nil
@@ -171,7 +162,7 @@ accuraCameraWrapper?.andCardSide(.FRONT_CARD_SCAN)
 accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
 ```
 
-#### Step 5: Set CameraView
+#### Step 3: Set CameraView
 
 Important Grant Camera and storage Permission.</br>
 supports Landscape Camera
@@ -313,11 +304,6 @@ Step 1: Open camera for liveness Detectcion.
 
 * import the module name  `import AccuraLiveness_fm`  if you are using `AccuraLiveness_FM` pod
 
-* If you are using `AccuraLiveness_FM` pod must have to configure liveness SDK in `didFinishLaunchingWithOptions` method in `AppDelegate.swift`
-```
-let liveness = Liveness.init()
-liveness.configure()
-```
 
 * Setup auto capture Camera
 

@@ -54,7 +54,6 @@
 		A324C4372476ED2E0002AE35 /* DocumantVarifyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324C4352476ED2E0002AE35 /* DocumantVarifyCell.swift */; };
 		A3268522247F649B0028BCA5 /* FirstTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3268520247F649B0028BCA5 /* FirstTableViewCell.xib */; };
 		A3268523247F649B0028BCA5 /* FirstTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3268521247F649B0028BCA5 /* FirstTableViewCell.swift */; };
-		A33412F724AB63A500CECDCB /* AccuraOCRSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */; };
 		A33E204B23E2AA78004FED85 /* ListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A33E204423E2AA78004FED85 /* ListTableCell.xib */; };
 		A33E204E23E2AA78004FED85 /* CountryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E204723E2AA78004FED85 /* CountryListCell.swift */; };
 		A33E205023E2AA78004FED85 /* ListTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33E204923E2AA78004FED85 /* ListTableCell.swift */; };
@@ -152,7 +151,6 @@
 		A324C4352476ED2E0002AE35 /* DocumantVarifyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumantVarifyCell.swift; sourceTree = "<group>"; };
 		A3268520247F649B0028BCA5 /* FirstTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FirstTableViewCell.xib; sourceTree = "<group>"; };
 		A3268521247F649B0028BCA5 /* FirstTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstTableViewCell.swift; sourceTree = "<group>"; };
-		A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccuraOCRSDK.swift; sourceTree = "<group>"; };
 		A33E204423E2AA78004FED85 /* ListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableCell.xib; sourceTree = "<group>"; };
 		A33E204723E2AA78004FED85 /* CountryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryListCell.swift; sourceTree = "<group>"; };
 		A33E204923E2AA78004FED85 /* ListTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableCell.swift; sourceTree = "<group>"; };
@@ -396,7 +394,6 @@
 		A38570ED2318020200FF7209 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				A33412F624AB63A500CECDCB /* AccuraOCRSDK.swift */,
 				5C67D9802111E40A00154EB7 /* default_user.png */,
 			);
 			path = External;
@@ -435,8 +432,7 @@
 				6104CC7420BB4E6D00AC428E /* Resources */,
 				FA30D04B23DEE96300BA0DC0 /* ShellScript */,
 				A3D1BDD82594A31A00339909 /* Embed Frameworks */,
-				9CEA3762185CA84935E8895E /* [CP] Embed Pods Frameworks */,
-				02EB0986D628649C5E41016F /* [CP] Copy Pods Resources */,
+				E1B1DC9A1FAFB51724D97DA2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -522,23 +518,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		02EB0986D628649C5E41016F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		98B08C984B7779B9C64FB4CA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -561,7 +540,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9CEA3762185CA84935E8895E /* [CP] Embed Pods Frameworks */ = {
+		E1B1DC9A1FAFB51724D97DA2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -612,7 +591,6 @@
 				A324C4302476ED020002AE35 /* UserImgTableCell.swift in Sources */,
 				DC75E60220BF36FB0096BC5A /* CodeInfoV.swift in Sources */,
 				8432A29321352D87006BA16A /* DrivePDFTableViewCell.swift in Sources */,
-				A33412F724AB63A500CECDCB /* AccuraOCRSDK.swift in Sources */,
 				A382E69A230AA94800C56EAE /* FirstViewVC.swift in Sources */,
 				84560228213691E900A844B6 /* Resultpdf417ViewController.swift in Sources */,
 				A324C4232476EC500002AE35 /* ShowResultVC.swift in Sources */,

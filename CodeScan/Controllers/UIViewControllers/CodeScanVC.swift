@@ -349,6 +349,8 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             self.selectedTypes = .upce
         case "UPC-A":
             self.selectedTypes = .upca
+        case "CODABAR":
+            self.selectedTypes = .codabar
         default:
             break
         }
