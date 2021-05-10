@@ -36,7 +36,6 @@ let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         UIApplication.shared.statusBarStyle = .lightContent
         
-        AccuraOCRSDK.configure()
         
         return true
     }

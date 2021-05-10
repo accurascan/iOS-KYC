@@ -59,9 +59,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         accuraCameraWrapper = AccuraCameraWrapper.init()
         accuraCameraWrapper?.setDefaultDialogs(true)
-//        accuraCameraWrapper?.andCardSide(.BACK_CARD_SCAN)
-//        accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
-//        accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
+        accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let sdkModel = self.accuraCameraWrapper?.loadEngine(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String)
             if(sdkModel != nil)

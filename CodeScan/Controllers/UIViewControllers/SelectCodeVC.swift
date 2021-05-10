@@ -19,7 +19,7 @@ class SelectCodeVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     @IBOutlet weak var viewBakGround: UIView!
     
     //MARK:- Variable
-    var Types: [String] = ["ALL FORMATS","AZTEC","CODE 39","CODE 93","CODE 128","DATA MATRIX", "EAN-8", "EAN-13","ITF", "PDF417", "QR CODE", "UPC-A","UPC-E"]
+    var Types: [String] = ["ALL FORMATS","AZTEC","CODABAR","CODE 39","CODE 93","CODE 128","DATA MATRIX", "EAN-8", "EAN-13","ITF", "PDF417", "QR CODE", "UPC-A","UPC-E"]
     var selectedTypes: String = String()
     var selectedTypesDelegate: SelectedTypesDelegate!
     
