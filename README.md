@@ -304,11 +304,6 @@ Step 1: Open camera for liveness Detectcion.
 
 * import the module name  `import AccuraLiveness_fm`  if you are using `AccuraLiveness_FM` pod
 
-* If you are using `AccuraLiveness_FM` pod must have to configure liveness SDK in `didFinishLaunchingWithOptions` method in `AppDelegate.swift`
-```
-let liveness = Liveness.init()
-liveness.configure()
-```
 
 * Setup auto capture Camera
 
