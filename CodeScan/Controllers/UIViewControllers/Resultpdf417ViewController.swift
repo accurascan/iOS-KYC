@@ -121,6 +121,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         liveness.setFeedBackGlareFaceMessage("Glare detected")
         liveness.setBlurPercentage(80)
         liveness.setGlarePercentage(-1, -1)
+        liveness.evaluateServerTrustWIthSSLPinning(true)
         
         facematch.setBackGroundColor("#C4C4C5")
         facematch.setCloseIconColor("#000000")
