@@ -11,15 +11,15 @@ Below steps to setup Accura SDK's in your project.
 2. Add below pod in podfile
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC', '3.0.0'
+    pod 'AccuraKYC', '3.1.0'
 
     # not require below pods if you are installing AccuraKYC pod
 
     # install the AccuraOCR pod for AccuraOCR only.
-    pod 'AccuraOCR', '3.0.0'
+    pod 'AccuraOCR', '3.1.0'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
-    pod 'AccuraLiveness_FM', '3.0.0'
+    pod 'AccuraLiveness_FM', '3.1.0'
 ```
 
 3. Run `pod install`
@@ -45,7 +45,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
      iii. Run `pod install` </br>
 
  5. Run the App in Simulator.  ( Optional )
-    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.0.0/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.0.0/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.0.0/AccuraLiveness_fm.framework.zip) and Extract it
+    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.0/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.0/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.0/AccuraLiveness_fm.framework.zip) and Extract it
     
     2. add this framework in your project's root directory
 
@@ -334,6 +334,10 @@ liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 
 // Set min and max percentage for glare
 liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove this filter
+
+// if you want to enable SSL certificate pinning for Liveness API set it true. 
+// if 'evaluateServerTrustWIthSSLPinning()' is true must have to add SSL Certificate of Your liveness API Server in Your Proeject's Root directory
+liveness.evaluateServerTrustWIthSSLPinning(true)
 ```
 
 Step 2: Handle Accura liveness Result
