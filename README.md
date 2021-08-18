@@ -11,12 +11,12 @@ Below steps to setup Accura SDK's in your project.
 2. Add below pod in podfile
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC', '3.1.0'
+    pod 'AccuraKYC', '3.1.1'
 
     # not require below pods if you are installing AccuraKYC pod
 
     # install the AccuraOCR pod for AccuraOCR only.
-    pod 'AccuraOCR', '3.1.0'
+    pod 'AccuraOCR', '3.1.1'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
     pod 'AccuraLiveness_FM', '3.1.0'
@@ -45,7 +45,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
      iii. Run `pod install` </br>
 
  5. Run the App in Simulator.  ( Optional )
-    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.0/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.0/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.0/AccuraLiveness_fm.framework.zip) and Extract it
+    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.1/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.1/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.0/AccuraLiveness_fm.framework.zip) and Extract it
     
     2. add this framework in your project's root directory
 
@@ -154,7 +154,7 @@ accuraCameraWrapper?.switchCamera()
 
 * Set Front/Back Side Scan
 ```
-accuraCameraWrapper?.andCardSide(.FRONT_CARD_SCAN)
+accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
 ```
 
 * Enable Print logs in OCR and Liveness SDK
@@ -173,7 +173,7 @@ var accuraCameraWrapper: AccuraCameraWrapper? = nil
 override func viewDidLoad() {
 	super.viewDidLoad()
     // initialize Camera for OCR,MRZ,DLplate and BankCard
-    accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andLabelMsgTop:/*Lable*/ _lblTitle, andcardName:/*string*/  docName, andcardType: Int32(cardType/*2 = DLPlate And 3 = bankCard*/), andMRZDocType: /*SetMRZDocumentType*/ Int32(MRZDocType!/*0 = AllMRZ, 1 = PassportMRZ, 2 = IDMRZ, 3 = VisaMRZ*/))
+    accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: /*setCardId*/ Int32(cardid!), countryID: /*setcountryid*/ Int32(countryid!), isScanOCR:/*Bool*/ isCheckScanOCR, andcardName:/*string*/  docName, andcardType: Int32(cardType/*2 = DLPlate And 3 = bankCard*/), andMRZDocType: /*SetMRZDocumentType*/ Int32(MRZDocType!/*0 = AllMRZ, 1 = PassportMRZ, 2 = IDMRZ, 3 = VisaMRZ*/))
         
     // initialize Camera for Barcode and PDF417 driving license
     accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: imageView, andLabelMsg: lblBottamMsg, andurl: 1, isBarcodeEnable: isBarcodeEnabled/*set true for barcode and false for PDF417 driving license*/, countryID: Int32(self.countryid!), setBarcodeType: .all/*set barcode types*/)
@@ -201,12 +201,30 @@ extension ViewController: VideoCameraWrapperDelegate{
 	frameSize:- get layer frame size
 	borderRatio:- get layer ratio
 	}
+    
+    func isBothSideAvailable(_ isBothAvailable: Bool) {
+        accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
+    }
 	
-	//it calls when scan barcode
-	func recognizeSucceedBarcode(_ message: String!, barcodeImage: UIImage!){
-		message:- get barocde data
-		barcodeImage :- get barcode image
-	}
+	//it calls when scan barcode an PDF417 Driving license
+    func recognizeSucceedBarcode(_ message: String!, back BackSideImage: UIImage!, frontImage FrontImage: UIImage!, face FaceImage: UIImage!) {
+          //message :- Barcode Data
+          //BackSideImage :- back image of Document
+          //FrontImage :- front image of Document
+          //FaceImage :- Face image of document
+          if(isBarcodeEnabled) {
+              //display result of barcode
+          } else {
+               if(BackSideImage == nil) {
+                    self.accuraCameraWrapper?.cardSide(.BACK_CARD_SCAN)
+                    self.flipAnimation()
+              } else if (FrontImage == nil) {
+                  self.accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
+                  self.flipAnimation()
+              }else {
+                  //Display Result
+              }
+         }
 
 	//  it calls continues when detect frame from camera
 	func processedImage(_ image: UIImage!) {
@@ -235,8 +253,15 @@ extension ViewController: VideoCameraWrapperDelegate{
 
 	//  it calls when get OCR data
 	func resultData(_ resultmodel: ResultModel!) {
-	resultmodel:- get OCR data
-	}
+        if isbothSideAvailable {
+            accuraCameraWrapper?.cardSide(.BACK_CARD_SCAN)
+            if(resultmodel.arrayocrBackSideDataKey.count > 0) {
+                //Display Result
+            }
+        } else {
+            //Display result
+        }
+    }
 
 	//  it calls when detect vehicle numberplate
 	func dlPlateNumber(_ plateNumber: String!, andImageNumberPlate imageNumberPlate: UIImage!) {
@@ -294,6 +319,47 @@ extension ViewController: VideoCameraWrapperDelegate{
 		}
 		print(message)
 	}
+}
+
+
+// it calls when update title messages
+func reco_titleMessage(_ messageCode: Int32) {
+    var msg: String = ""
+    switch messageCode {
+        case SCAN_TITLE_OCR_FRONT:
+            var frontMsg = "Scan Front side of ";
+            frontMsg = frontMsg.appending(docName)
+            msg = frontMsg
+            break
+        case SCAN_TITLE_OCR_BACK:
+            var backMsg = "Scan Back side of ";
+            backMsg = backMsg.appending(docName)
+            msg = backMsg
+            break
+        case  SCAN_TITLE_OCR:
+            var backMsg = "Scan ";
+            backMsg = backMsg.appending(docName)
+            msg = backMsg
+            break
+        case SCAN_TITLE_MRZ_PDF417_FRONT:
+            msg = "Scan Front Side of Document"
+            break
+        case SCAN_TITLE_MRZ_PDF417_BACK:
+            msg = "Scan Back Side of Document"
+            break
+        case SCAN_TITLE_DLPLATE:
+            msg = "Scan Number plate"
+            break
+        case SCAN_TITLE_BARCODE:
+            msg = "Scan Barcode"
+            break
+        case SCAN_TITLE_BANKCARD:
+            msg = "Scan BankCard"
+            break
+        default:
+            break
+    }
+    print(msg)
 }
 ```
 
