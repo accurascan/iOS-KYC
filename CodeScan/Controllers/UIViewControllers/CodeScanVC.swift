@@ -62,17 +62,13 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     var topPadding: CGFloat = 0.0
     var isFirstTimeStartCamara: Bool?
     var isCheckFirstTime : Bool?
+    var cardType: Int? = 0
+    var passStr: String = ""
+    var barcodeData: String = ""
     
     //MARK:- UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        if(isBarcodeEnabled)
-        {
-            self.labelMsg.text = ""
-        }
-        else{
-            self.labelMsg.text = "Scan front Side of Document"
-        }
         statusBarRect = UIApplication.shared.statusBarFrame
         let window = UIApplication.shared.windows.first
        
@@ -170,12 +166,6 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         if isFirstTimeStartCamara!{
             accuraCameraWrapper?.startCamera()
         }
-           if(isBarcodeEnabled){
-               labelMsg.text = "Scan Barcode"
-           }
-          else{
-                labelMsg.text = "Scan front side of Document"
-            }
     }
     override func viewDidAppear(_ animated: Bool) {
         if !isFirstTimeStartCamara! && isCheckFirstTime!{
@@ -1734,7 +1724,17 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     
     func recognizeFailed(_ message: String!) {
     }
-    func recognizeSucceedBarcode(_ message: String!, barcodeImage: UIImage!) {
+    func recognizeSucceedBarcode(_ message: String!, back BackSideImage: UIImage!, frontImage FrontImage: UIImage!, face FaceImage: UIImage!) {
+        
+        if FrontImage != nil {
+            imgViewFront = FrontImage
+        }
+        if BackSideImage != nil {
+            imgViewBack = BackSideImage
+        }
+        if FaceImage != nil {
+            photoImage1 = FaceImage
+        }
         if(isBarcodeEnabled){
         let isPDF = self.decodework(type: message)
         if(isPDF && isResultShow == false)
@@ -1748,7 +1748,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             placeVC?.keyArr = keyArr as! [String]
             placeVC?.valueArr = valueArr as! [String]
             placeVC?.passStr = message
-            placeVC?.imgViewFront = barcodeImage
+            placeVC?.imgViewFront = FrontImage
             placeVC?.AllBarcode = false
             placeVC?.isCheckIDMRZ = true
             if let aVC = placeVC {
@@ -1764,7 +1764,7 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
             let codeStory = UIStoryboard(name: "CodeScanVC", bundle: nil)
             let placeVC = codeStory.instantiateViewController(withIdentifier: "Resultpdf417ViewController") as? Resultpdf417ViewController
             placeVC?.BarcodeData = message
-            placeVC?.imgViewFront = barcodeImage
+            placeVC?.imgViewFront = FrontImage
             placeVC?.AllBarcode = true
             if let aVC = placeVC {
                 navigationController?.pushViewController(aVC, animated: true)
@@ -1772,44 +1772,69 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
         }
     }
         else{
-            let isPDF = self.decodework(type: message)
-            if(isPDF && isResultShow == false)
-            {
-                isResultShow = true
-                mainV.removeAlert()
-                self.accuraCameraWrapper?.stopCamera()
-                AudioServicesPlaySystemSound(1315)
-                let codeStory = UIStoryboard(name: "CodeScanVC", bundle: nil)
-                let placeVC = codeStory.instantiateViewController(withIdentifier: "Resultpdf417ViewController") as? Resultpdf417ViewController
-                placeVC?.keyArr = keyArr as! [String]
-                placeVC?.valueArr = valueArr as! [String]
-                placeVC?.passStr = message
-                placeVC?.photoImage = photoImage1
-                placeVC?.imgViewFront = imgViewFront
-                placeVC?.imgViewBack = barcodeImage
-                placeVC?.isCheckIDMRZ = true
-                if let aVC = placeVC {
-                    navigationController?.pushViewController(aVC, animated: true)
+            if(message != "") {
+                barcodeData = message
+            }
+            if(BackSideImage == nil) {
+                self.accuraCameraWrapper?.cardSide(.BACK_CARD_SCAN)
+                self.flipAnimation()
+                
+            } else if (FrontImage == nil) {
+                self.accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
+                self.flipAnimation()
+            }else {
+                let isPDF = self.decodework(type: barcodeData)
+                if(isPDF && isResultShow == false)
+                {
+                    isResultShow = true
+                    mainV.removeAlert()
+    //                self.accuraCameraWrapper?.stopCamera()
+    //                AudioServicesPlaySystemSound(1315)
+                    AudioServicesPlaySystemSound(1315)
+                    let codeStory = UIStoryboard(name: "CodeScanVC", bundle: nil)
+                    let placeVC = codeStory.instantiateViewController(withIdentifier: "Resultpdf417ViewController") as? Resultpdf417ViewController
+                    placeVC?.keyArr = keyArr as! [String]
+                    placeVC?.valueArr = valueArr as! [String]
+                    passStr = barcodeData
+                    placeVC?.passStr = passStr
+                    
+                    placeVC?.photoImage = photoImage1
+                    placeVC?.imgViewFront = imgViewFront
+                    imgViewBack = BackSideImage
+                    placeVC?.imgViewBack = imgViewBack
+                    placeVC?.isCheckIDMRZ = true
+                    if let aVC = placeVC {
+                        navigationController?.pushViewController(aVC, animated: true)
+                    }
                 }
             }
+            
+        }
+    }
+    
+    func isBothSideAvailable(_ isBothAvailable: Bool) {
+        if isBothAvailable {
+            self.accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
         }
     }
     
     func recognizeSucceed(_ scanedInfo: NSMutableDictionary!, recType: RecType, bRecDone: Bool, bFaceReplace: Bool, bMrzFirst: Bool, photoImage: UIImage!, docFrontImage: UIImage!, docbackImage: UIImage!) {
-        if(isBarcodeEnabled)
-        {
+    }
+    
+    func reco_titleMessage(_ messageCode: Int32) {
+        switch messageCode {
+        case SCAN_TITLE_MRZ_PDF417_FRONT:
+            labelMsg.text = "Scan Front Side of Document"
+            break
+        case SCAN_TITLE_MRZ_PDF417_BACK:
+            labelMsg.text = "Scan Back Side of Document"
+            break
+        case SCAN_TITLE_BARCODE:
+            labelMsg.text = "Scan Barcode"
+            break
+        default:
+            break
             
-        }
-        else{
-            var imgFace: UIImage?
-            imgFace = photoImage
-            if(imgFace != nil)
-            {
-                self.labelMsg.text = "Scan Back Side of Document"
-                photoImage1 = imgFace
-                imgViewFront = docFrontImage
-                self.flipAnimation()
-            }
         }
     }
     

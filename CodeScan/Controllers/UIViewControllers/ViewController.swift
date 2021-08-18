@@ -52,7 +52,7 @@ class ViewController: UIViewController {
     var dictFaceDataBack: NSMutableDictionary = [:]
     var dictOCRTypeData:NSMutableDictionary = [:]
     var arrBackFrontImage : [UIImageView] = [UIImageView]()
-    
+    var isbothSideAvailable = false
     var stUrl : String?
     var arrimgCountData = [String]()
     var cardType: Int? = 0
@@ -249,17 +249,8 @@ class ViewController: UIViewController {
         imgPhoto = nil
         isFrontDataComplate = false
         isBackDataComplate = false
-        DispatchQueue.main.async {
-            if self.cardType == 3 {
-                self._lblTitle.text = "Scan Bank Card"
-            } else {
-                self._lblTitle.text = "Scan Front Side of Document"
-            }
-            
-        }
          
-        accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: _imageView, andLabelMsg: lblOCRMsg, andurl: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: Int32(cardid!), countryID: Int32(countryid!), isScanOCR: isCheckScanOCR, andLabelMsgTop: _lblTitle, andcardName: docName, andcardType: Int32(cardType!), andMRZDocType: Int32(MRZDocType!))
-        accuraCameraWrapper?.andCardSide(.FRONT_CARD_SCAN)
+        accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self, andImageView: _imageView, andLabelMsg: lblOCRMsg, andurl: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, cardId: Int32(cardid!), countryID: Int32(countryid!), isScanOCR: isCheckScanOCR, andcardName: docName, andcardType: Int32(cardType!), andMRZDocType: Int32(MRZDocType!))
         accuraCameraWrapper?.setMinFrameForValidate(5)
     }
     
@@ -329,6 +320,11 @@ class ViewController: UIViewController {
 
 extension ViewController: VideoCameraWrapperDelegate {
     
+    func isBothSideAvailable(_ isBothAvailable: Bool) {
+        isbothSideAvailable = isBothAvailable
+        accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
+    }
+    
     func  onUpdateLayout(_ frameSize: CGSize, _ borderRatio: Float) {
         var width: CGFloat = 0.0
         var height: CGFloat = 0.0
@@ -383,7 +379,15 @@ extension ViewController: VideoCameraWrapperDelegate {
         self.dictOCRTypeData = resultmodel.ocrTypeData
         self.imgViewCard = resultmodel.backSideImage
         self.imgViewCardFront =  resultmodel.frontSideImage
-        passDataOtherViewController()
+        if isbothSideAvailable {
+            accuraCameraWrapper?.cardSide(.BACK_CARD_SCAN)
+            if(resultmodel.arrayocrBackSideDataKey.count > 0) {
+              
+                passDataOtherViewController()
+            }
+        } else {
+            passDataOtherViewController()
+        }
     }
     
     func screenSound() {
@@ -391,7 +395,6 @@ extension ViewController: VideoCameraWrapperDelegate {
          if !self.isflipanimation!{
             self.isflipanimation = true
              self.flipAnimation()
-             self._lblTitle.text = "Scan Back Side of Document"
         }
        
     }
@@ -406,7 +409,11 @@ extension ViewController: VideoCameraWrapperDelegate {
     }
     
     func recognizeFailed(_ message: String!) {
-//        GlobalMethods.showAlertView(message, with: self)
+        let alert = UIAlertController(title: "AccuraSDK", message: message, preferredStyle: .alert)
+        let yesButton = UIAlertAction(title: "OK", style: .default) { _ in
+        }
+        alert.addAction(yesButton)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func recognizeSucceed(_ scanedInfo: NSMutableDictionary!, recType: RecType, bRecDone: Bool, bFaceReplace: Bool, bMrzFirst: Bool, photoImage: UIImage, docFrontImage: UIImage!, docbackImage: UIImage!) {
@@ -455,13 +462,12 @@ extension ViewController: VideoCameraWrapperDelegate {
                         self.docfrontImage = self._imageView.image
                         self.imageRotation(rotation: "FrontImage")
                         isBackSide = true
-                        self._lblTitle.text = "Scan Back Side of Document"
                         self.flipAnimation()
-                        return
+//                        return
                     }
                     }
                     else{
-                        return
+//                        return
                     }
                 }
         }
@@ -563,5 +569,44 @@ extension ViewController: VideoCameraWrapperDelegate {
             msg = message;
         }
         lblOCRMsg.text = msg
+    }
+    
+    func reco_titleMessage(_ messageCode: Int32) {
+        print("msgcode:- ",messageCode)
+        switch messageCode {
+        case SCAN_TITLE_OCR_FRONT:
+            var frontMsg = "Scan Front side of ";
+            frontMsg = frontMsg.appending(docName)
+            _lblTitle.text = frontMsg
+            break
+        case SCAN_TITLE_OCR_BACK:
+            var backMsg = "Scan Back side of ";
+            backMsg = backMsg.appending(docName)
+            _lblTitle.text = backMsg
+            break
+        case SCAN_TITLE_OCR:
+            var backMsg = "Scan ";
+            backMsg = backMsg.appending(docName)
+            _lblTitle.text = backMsg
+            break
+        case SCAN_TITLE_MRZ_PDF417_FRONT:
+            _lblTitle.text = "Scan Front Side of Document"
+            break
+        case SCAN_TITLE_MRZ_PDF417_BACK:
+            _lblTitle.text = "Scan Back Side of Document"
+            break
+        case SCAN_TITLE_DLPLATE:
+            _lblTitle.text = "Scan Number plate"
+            break
+        case SCAN_TITLE_BARCODE:
+            _lblTitle.text = "Scan Barcode"
+            break
+        case SCAN_TITLE_BANKCARD:
+            _lblTitle.text = "Scan BankCard"
+            break
+        default:
+            break
+            
+        }
     }
 }
