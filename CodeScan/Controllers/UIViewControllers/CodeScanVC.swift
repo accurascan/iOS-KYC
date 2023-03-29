@@ -1696,12 +1696,14 @@ class CodeScanVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate, UIGe
     }
     
     func flipAnimation() {
-        self.imageViewFilp.isHidden = false
-        UIView.animate(withDuration: 1.5, animations: {
-            UIView.setAnimationTransition(.flipFromLeft, for: self.imageViewFilp, cache: true)
-            AudioServicesPlaySystemSound(1315)
-        }) { _ in
-            self.imageViewFilp.isHidden = true
+        DispatchQueue.main.async {
+            self.imageViewFilp.isHidden = false
+            UIView.animate(withDuration: 1.5, animations: {
+                UIView.setAnimationTransition(.flipFromLeft, for: self.imageViewFilp, cache: true)
+                AudioServicesPlaySystemSound(1315)
+            }) { _ in
+                self.imageViewFilp.isHidden = true
+            }
         }
     }
     

@@ -308,12 +308,14 @@ class ViewController: UIViewController {
     }
     
     func flipAnimation() {
-        self._imgFlipView.isHidden = false
-        UIView.animate(withDuration: 1.5, animations: {
-            UIView.setAnimationTransition(.flipFromLeft, for: self._imgFlipView, cache: true)
-            AudioServicesPlaySystemSound(1315)
-        }) { _ in
-            self._imgFlipView.isHidden = true
+        DispatchQueue.main.async {
+            self._imgFlipView.isHidden = false
+            UIView.animate(withDuration: 1.5, animations: {
+                UIView.setAnimationTransition(.flipFromLeft, for: self._imgFlipView, cache: true)
+                AudioServicesPlaySystemSound(1315)
+            }) { _ in
+                self._imgFlipView.isHidden = true
+            }
         }
     }
 }
@@ -333,13 +335,23 @@ extension ViewController: VideoCameraWrapperDelegate {
                 let orientastion = UIApplication.shared.statusBarOrientation
                 if(orientastion ==  UIInterfaceOrientation.portrait) {
                     width = frameSize.width
-                    height  = frameSize.height
+                    if(frameSize.width < frameSize.height){
+                        height  = frameSize.height - 100
+                    }else{
+                        height  = frameSize.height
+                    }
+                    
                     viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
                 } else {
 
                     self.viewNavigationBar.backgroundColor = .clear
                     height = (((UIScreen.main.bounds.size.height - 100) * 5) / 5.6)
-                    width = (height / CGFloat(borderRatio))
+                    if(frameSize.width < frameSize.height){
+                        width = (height / CGFloat(0.66))
+                    }else{
+                        width = (height / CGFloat(borderRatio))
+                    }
+                    
                     print("boreder ratio :- ", borderRatio)
                 }
                 print("layer", width)
