@@ -570,6 +570,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     stSex = "FEMALE";
                 }else if sex == "M" {
                     stSex = "MALE";
+                } else if sex == "X" {
+                    stSex = "OTHER";
                 } else {
                     stSex = sex
                 }
@@ -792,7 +794,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     stSex = "FEMALE";
                 }else if sex == "M" {
                     stSex = "MALE";
-                } else {
+                }else if sex == "X" {
+                    stSex = "OTHER";
+                }  else {
                     stSex = sex
                 }
                 if(sex != "") {
