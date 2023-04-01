@@ -55,7 +55,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
     # not require below pods if you are installing AccuraKYC pod
 
     # install the AccuraOCR pod for AccuraOCR only.
-    pod 'AccuraOCR_Sim', '3.2.2'
+    pod 'AccuraOCR_Sim', '3.2.3'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
     pod 'AccuraLiveness_FM_Sim', '4.2.1'
