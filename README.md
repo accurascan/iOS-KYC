@@ -21,8 +21,14 @@ Below steps to setup Accura SDK's in your project.
     pod 'AccuraOCR', '3.2.2'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
-    pod 'AccuraLiveness_FM', '4.2.1'
+    pod 'AccuraLiveness_FM', '4.2.2'
 ```
+  Note:-If you want to use Framework instead of pods, you can use the below git link, You can clone the project and take the respective .framework file
+  * [Accura KYC](https://github.com/accurascan/KYC-SDK-iOS)
+  * [Accura OCR](https://github.com/accurascan/AccuraOCR-SDK-iOS/tree/master)
+  * [Accura Liveness and Face Match](https://github.com/accurascan/Accura-iOS-SDK-FM-Liveness)
+  
+  Note:- If you are using frameworks, you need to add the pods present in their respective .podspec file (e.g spec.dependency 'SVProgressHUD' as pod 'SVProgressHUD')
 
 3. Run `pod install`
 
@@ -50,7 +56,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
  Note:- Comment the previous pods and use the below pods to run the app in simulator. </br>
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC_Sim', '3.2.2'
+    pod 'AccuraKYC_Sim', '3.2.5'
 
     # not require below pods if you are installing AccuraKYC pod
 
@@ -58,8 +64,14 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
     pod 'AccuraOCR_Sim', '3.2.3'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
-    pod 'AccuraLiveness_FM_Sim', '4.2.1'
+    pod 'AccuraLiveness_FM_Sim', '4.2.4'
 ```
+  Note:-If you want to use Framework instead of pods, you can use the below git link. You can clone the project and take the respective .framework file
+  * [Accura KYC Simulator](https://github.com/accurascan/KYC-SDK-iOS/tree/sim)
+  * [Accura OCR Simulator](https://github.com/accurascan/AccuraOCR-SDK-iOS/tree/sim)
+  * [Accura Liveness and Face Match Simulator](https://github.com/accurascan/Accura-iOS-SDK-FM-Liveness/tree/sim)
+  
+  Note:- If you are using frameworks, you need to add the pods present in their respective .podspec file (e.g spec.dependency 'SVProgressHUD' as pod 'SVProgressHUD')
 
 ## 1. Setup Accura OCR
 
