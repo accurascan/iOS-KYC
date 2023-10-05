@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0021908E22ACE78400E08B01 /* ListViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0021908D22ACE78400E08B01 /* ListViewVC.swift */; };
+		18EA85962ACEA71D00CBD571 /* key.license in Resources */ = {isa = PBXBuildFile; fileRef = 18EA85942ACEA71D00CBD571 /* key.license */; };
+		18EA85972ACEA71D00CBD571 /* accuraface.license in Resources */ = {isa = PBXBuildFile; fileRef = 18EA85952ACEA71D00CBD571 /* accuraface.license */; };
 		5C67D9812111E40B00154EB7 /* default_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C67D9802111E40A00154EB7 /* default_user.png */; };
 		5C7D02532143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7D02512143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift */; };
 		5C7D02542143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C7D02522143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib */; };
@@ -68,8 +70,6 @@
 		A382E69A230AA94800C56EAE /* FirstViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A382E697230AA94700C56EAE /* FirstViewVC.swift */; };
 		A384904724A61EC700ECB42D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A384904624A61EC700ECB42D /* README.md */; };
 		A3862D3625FC787600345FE8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9AF507211999F100700EDF /* CoreMedia.framework */; };
-		A3B38684261D767900A92D80 /* key.license in Resources */ = {isa = PBXBuildFile; fileRef = A3E3D55B24A5BB710034A3EA /* key.license */; };
-		A3B38686261D76BB00A92D80 /* accuraface.license in Resources */ = {isa = PBXBuildFile; fileRef = A3B38685261D76BB00A92D80 /* accuraface.license */; };
 		A3B51CD925FB8D50007534B1 /* CustomAFNetWorking.m in Sources */ = {isa = PBXBuildFile; fileRef = A3B51CD725FB8D50007534B1 /* CustomAFNetWorking.m */; };
 		A3C8065725F8F4BA004D8310 /* FaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C8065625F8F4BA004D8310 /* FaceView.swift */; };
 		A3F00C5925E4D820009A7E23 /* BarcodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F00C5725E4D820009A7E23 /* BarcodeTableViewCell.swift */; };
@@ -98,6 +98,8 @@
 
 /* Begin PBXFileReference section */
 		0021908D22ACE78400E08B01 /* ListViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewVC.swift; sourceTree = "<group>"; };
+		18EA85942ACEA71D00CBD571 /* key.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = key.license; sourceTree = "<group>"; };
+		18EA85952ACEA71D00CBD571 /* accuraface.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = accuraface.license; sourceTree = "<group>"; };
 		2E29775456FBC1B0EA73315A /* Pods-AccuraSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AccuraSDK.debug.xcconfig"; path = "Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		4017C20070C8B50B946F6AF2 /* Pods_AccuraSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AccuraSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EEB8E7E4174954C301AA7A /* Pods-AccuraSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AccuraSDK.release.xcconfig"; path = "Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK.release.xcconfig"; sourceTree = "<group>"; };
@@ -164,11 +166,9 @@
 		A37CC82E25E10F5B00FBEC23 /* SelectCodeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCodeVC.swift; sourceTree = "<group>"; };
 		A382E697230AA94700C56EAE /* FirstViewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewVC.swift; sourceTree = "<group>"; };
 		A384904624A61EC700ECB42D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
-		A3B38685261D76BB00A92D80 /* accuraface.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = accuraface.license; sourceTree = "<group>"; };
 		A3B51CD725FB8D50007534B1 /* CustomAFNetWorking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAFNetWorking.m; sourceTree = "<group>"; };
 		A3B51CD825FB8D50007534B1 /* CustomAFNetWorking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAFNetWorking.h; sourceTree = "<group>"; };
 		A3C8065625F8F4BA004D8310 /* FaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FaceView.swift; path = AccuraScan/External/FaceView.swift; sourceTree = "<group>"; };
-		A3E3D55B24A5BB710034A3EA /* key.license */ = {isa = PBXFileReference; lastKnownFileType = text; path = key.license; sourceTree = "<group>"; };
 		A3F00C5725E4D820009A7E23 /* BarcodeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeTableViewCell.swift; sourceTree = "<group>"; };
 		A3F00C5825E4D820009A7E23 /* BarcodeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BarcodeTableViewCell.xib; sourceTree = "<group>"; };
 		A3F172C1242250F30050FB25 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -385,8 +385,8 @@
 		A38570EB2318018500FF7209 /* License */ = {
 			isa = PBXGroup;
 			children = (
-				A3B38685261D76BB00A92D80 /* accuraface.license */,
-				A3E3D55B24A5BB710034A3EA /* key.license */,
+				18EA85952ACEA71D00CBD571 /* accuraface.license */,
+				18EA85942ACEA71D00CBD571 /* key.license */,
 			);
 			path = License;
 			sourceTree = "<group>";
@@ -483,11 +483,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A37CC82D25E10F2C00FBEC23 /* SelectCodeVC.storyboard in Resources */,
+				18EA85972ACEA71D00CBD571 /* accuraface.license in Resources */,
 				FAD8829923DDE04E007247EC /* MainStoryboard_iPhone.storyboard in Resources */,
 				A324C42A2476ECE50002AE35 /* ResultTableCell.xib in Resources */,
 				5C94E024211ACA8200428686 /* Aller_Std.ttf in Resources */,
 				5C67D9812111E40B00154EB7 /* default_user.png in Resources */,
-				A3B38684261D767900A92D80 /* key.license in Resources */,
 				6104CC8420BB4E6E00AC428E /* Assets.xcassets in Resources */,
 				5C94E027211ACA8200428686 /* Aller_Std_Lt.ttf in Resources */,
 				A324C4322476ED020002AE35 /* UserImgTableCell.xib in Resources */,
@@ -505,11 +505,11 @@
 				8432A28D213517A8006BA16A /* DrivingPDF.xib in Resources */,
 				A33E204B23E2AA78004FED85 /* ListTableCell.xib in Resources */,
 				5C94E028211ACA8200428686 /* Aller_Std_LtIt.ttf in Resources */,
-				A3B38686261D76BB00A92D80 /* accuraface.license in Resources */,
 				A324C4312476ED020002AE35 /* DocumentTableCell.xib in Resources */,
 				5C94E025211ACA8200428686 /* Aller_Std_BdIt.ttf in Resources */,
 				A37CC82A25E10F1500FBEC23 /* BarcodeTypeHFV.xib in Resources */,
 				A3F00C5A25E4D820009A7E23 /* BarcodeTableViewCell.xib in Resources */,
+				18EA85962ACEA71D00CBD571 /* key.license in Resources */,
 				5C94E029211ACA8200428686 /* Aller_Std_Rg.ttf in Resources */,
 				8432A29421352D87006BA16A /* DrivePDFTableViewCell.xib in Resources */,
 			);

@@ -13,7 +13,7 @@ Below steps to setup Accura SDK's in your project.
 2. Add below pod in podfile
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC', '3.2.2'
+    pod 'AccuraKYC', '3.2.7'
 
     # not require below pods if you are installing AccuraKYC pod
 
@@ -21,7 +21,7 @@ Below steps to setup Accura SDK's in your project.
     pod 'AccuraOCR', '3.2.2'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
-    pod 'AccuraLiveness_FM', '4.2.2'
+    pod 'AccuraLiveness_FM', '4.2.7'
 ```
   Note:-If you want to use Framework instead of pods, you can use the below git link, You can clone the project and take the respective .framework file
   * [Accura KYC](https://github.com/accurascan/KYC-SDK-iOS)
@@ -56,7 +56,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
  Note:- Comment the previous pods and use the below pods to run the app in simulator. </br>
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC_Sim', '3.2.5'
+    pod 'AccuraKYC_Sim', '3.2.7'
 
     # not require below pods if you are installing AccuraKYC pod
 
@@ -64,7 +64,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
     pod 'AccuraOCR_Sim', '3.2.3'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
-    pod 'AccuraLiveness_FM_Sim', '4.2.4'
+    pod 'AccuraLiveness_FM_Sim', '4.2.7'
 ```
   Note:-If you want to use Framework instead of pods, you can use the below git link. You can clone the project and take the respective .framework file
   * [Accura KYC Simulator](https://github.com/accurascan/KYC-SDK-iOS/tree/sim)

@@ -31,7 +31,6 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-
 	<key>NSCameraUsageDescription</key>
 	<string>App needs to access camera to scan your document and provide you with accurate result</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

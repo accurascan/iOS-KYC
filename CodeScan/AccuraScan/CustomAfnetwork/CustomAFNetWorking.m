@@ -23,7 +23,7 @@
             [manager.requestSerializer setValue:@"dUfNhktz2Tcl32pGgbPTZ57QujOQBluh" forHTTPHeaderField:@"X-App-Token"];
         }
       
-        [manager POST:request parameters:parameter progress:nil success:^(NSURLSessionTask *task, id responseObject)
+        [manager POST:request parameters:parameter headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject)
         {
             [self.delegate customURLConnectionDidFinishLoading:self withTag:self.tag withResponse:responseObject];
         }
@@ -47,7 +47,7 @@
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager.requestSerializer setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [manager.requestSerializer setValue:@"dUfNhktz2Tcl32pGgbPTZ57QujOQBluh" forHTTPHeaderField:@"X-App-Token"];
-        [manager GET:request parameters:parameter progress:nil success:^(NSURLSessionTask *task, id responseObject)
+        [manager GET:request parameters:parameter headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject)
          {
              [self.delegate customURLConnectionDidFinishLoading:self withTag:cTag withResponse:responseObject];
          }
@@ -171,7 +171,7 @@
         manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
        
-        [manager POST:request parameters:parameter progress:nil success:^(NSURLSessionTask *task, id responseObject)
+        [manager POST:request parameters:parameter headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject)
          {
              [self.delegate customURLConnectionDidFinishLoading:self withTag:cTag withResponse:responseObject];
          }
@@ -196,7 +196,7 @@
         manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         
-        [manager POST:request parameters:parameter progress:nil success:^(NSURLSessionTask *task, id responseObject)
+        [manager POST:request parameters:parameter headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject)
          {
              [self.delegate customURLConnectionDidFinishLoading:self withTag:cTag withResponse:responseObject];
          }
@@ -223,7 +223,7 @@
     
         [manager.requestSerializer setValue:[NSString stringWithFormat:@"application/json"]forHTTPHeaderField:@"Content-Type"];
         
-        [manager PUT:request parameters:parameter success:^(NSURLSessionTask *task, id responseObject)
+        [manager PUT:request parameters:parameter headers:nil success:^(NSURLSessionTask *task, id responseObject)
          {
              [self.delegate customURLConnectionDidFinishLoading:self withTag:cTag withResponse:responseObject];
          }
@@ -253,7 +253,7 @@
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager.requestSerializer setValue:[NSString stringWithFormat:@"application/json"]forHTTPHeaderField:@"Content-Type"];
         
-        [manager GET:request parameters:parameter progress:nil success:^(NSURLSessionTask *task, id responseObject)
+        [manager GET:request parameters:parameter headers:nil progress:nil success:^(NSURLSessionTask *task, id responseObject)
          {
              [self.delegate customURLConnectionDidFinishLoading:self withTag:cTag withResponse:responseObject];
          }
@@ -284,7 +284,7 @@
         [manager.requestSerializer setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [manager.requestSerializer setValue:@"dUfNhktz2Tcl32pGgbPTZ57QujOQBluh" forHTTPHeaderField:@"X-App-Token"];
 
-        [manager DELETE:request parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [manager DELETE:request parameters:nil headers:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             [self.delegate customURLConnectionDidFinishLoading:self withTag:cTag withResponse:responseObject];
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"%@",[error description]);

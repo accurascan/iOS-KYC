@@ -1,6 +1,6 @@
 
 import UIKit
-import SVProgressHUD
+import ProgressHUD
 import AccuraOCR
 
 //Define Global Key
@@ -1674,7 +1674,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         picker.dismiss(animated: true, completion: nil)
         isFLpershow = true
-        SVProgressHUD.show(withStatus: "Loading...")
+        ProgressHUD.show("Loading...")
         DispatchQueue.global(qos: .background).async {
             guard var chosenImage:UIImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else{return}
             
@@ -1759,7 +1759,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     }
                 }
                 self.tblResult.reloadData()
-                SVProgressHUD.dismiss()
+                ProgressHUD.dismiss()
             })
         }
     }
@@ -1791,7 +1791,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     //MARK:-  customURLConnection Delegate
     func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, withResponse response: Any!) {
-        SVProgressHUD.dismiss()
+        ProgressHUD.dismiss()
         if tagCon == LivenessTag{
             let dictResponse: NSDictionary = response as? NSDictionary ?? NSDictionary()
             // print(response as Any)
@@ -1825,7 +1825,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didFailWithError error: Error!) {
-        SVProgressHUD.dismiss()
+        ProgressHUD.dismiss()
     }
     
     func customURLConnection(_ connection: CustomAFNetWorking!, with exception: NSException!, withTag tagCon: Int32) {
