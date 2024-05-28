@@ -1,6 +1,5 @@
 
 import UIKit
-import ProgressHUD
 import AccuraOCR
 
 //Define Global Key
@@ -26,7 +25,7 @@ struct Objects {
     
 }
 
-class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, LivenessData, FacematchData {
+class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, LivenessData, FacematchData {
     //MARK:- Outlet
     @IBOutlet weak var img_height: NSLayoutConstraint!
     @IBOutlet weak var lblLinestitle: UILabel!
@@ -312,7 +311,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        liveness.setLivenessURL("YourURL")
+        liveness.setLivenessURL("yourURL")
         liveness.setBackGroundColor("#C4C4C5")
         liveness.setCloseIconColor("#000000")
         liveness.setFeedbackBackGroundColor("#C4C4C5")
@@ -333,7 +332,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 
         // Set min and max percentage for glare
         liveness.setGlarePercentage(-1, -1) //set glaremin -1 to remove this filter
-        liveness.evaluateServerTrustWIthSSLPinning(true)
+        liveness.evaluateServerTrustWIthSSLPinning(false)
         
         
         
@@ -1181,19 +1180,19 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     cell.lblName.text = objDataKey
                     cell.lblValue.text = objDataValue
                     cell.imageViewSignHeight.constant = 0
-                    if !arrOCRTypeData.isEmpty {
-                        if (arrOCRTypeData[indexPath.row] == "2") {
-                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters)
-                        {
-                            let image = UIImage(data: decodedData)
-                            cell.imageViewSignHeight.constant = 51
-                            cell.imageViewSign.image = image
-                            cell.lblValue.text = ""
-
-                        }
-                        
-                    }
-                }
+//                    if !arrOCRTypeData.isEmpty {
+//                        if (arrOCRTypeData[indexPath.row] == "2") {
+//                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters)
+//                        {
+//                            let image = UIImage(data: decodedData)
+//                            cell.imageViewSignHeight.constant = 51
+//                            cell.imageViewSign.image = image
+//                            cell.lblValue.text = ""
+//
+//                        }
+//                        
+//                    }
+//                }
                 }
                 return cell
             }
@@ -1674,7 +1673,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         picker.dismiss(animated: true, completion: nil)
         isFLpershow = true
-        ProgressHUD.show("Loading...")
         DispatchQueue.global(qos: .background).async {
             guard var chosenImage:UIImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else{return}
             
@@ -1759,7 +1757,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     }
                 }
                 self.tblResult.reloadData()
-                ProgressHUD.dismiss()
             })
         }
     }
@@ -1789,64 +1786,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         return image1
     }
     
-    //MARK:-  customURLConnection Delegate
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, withResponse response: Any!) {
-        ProgressHUD.dismiss()
-        if tagCon == LivenessTag{
-            let dictResponse: NSDictionary = response as? NSDictionary ?? NSDictionary()
-            // print(response as Any)
-            let dictFinalResponse: NSDictionary = dictResponse["data"] as! NSDictionary
-            if let livenseeScore: String = dictFinalResponse["livenessResult"] as? String{
-                stLivenessResult = livenseeScore
-            }
-            if let livenessScore: Double = dictFinalResponse["livenessScore"] as? Double{
-                // print(livenessScore)
-                isFLpershow = true
-                self.removeOldValue("LIVENESS SCORE : ")
-                self.removeOldValue1("0 %")
-                isCheckLiveNess = true
-                let twoDecimalPlaces = String(format: "%.2f", livenessScore)
-                // print(twoDecimalPlaces)
-                if pageType != .ScanOCR{
-                    let dict = [KEY_VALUE_FACE_MATCH: "\((twoDecimalPlaces))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
-                    arrDocumentData.insert(dict, at: 1)
-                }else{
-                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
-                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-                }
-                
-                self.tblResult.reloadData()
-            }
-        }
-    }
     
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive response: URLResponse!) {
-        
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didFailWithError error: Error!) {
-        ProgressHUD.dismiss()
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, with exception: NSException!, withTag tagCon: Int32) {
-        
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive data: Data!) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!, from url: URL!) {
-        
-    }
+
     
     //MARK:- Custom
     func date(toFormatedDate dateStr: String?) -> String? {

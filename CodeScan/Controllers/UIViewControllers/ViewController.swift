@@ -19,6 +19,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var viewStatusBar: UIView!
     @IBOutlet weak var viewNavigationBar: UIView!
     
+    var activityIndicator: UIActivityIndicatorView!
+    var backgroundView: UIView!
+    
     var accuraCameraWrapper: AccuraCameraWrapper? = nil
     
     var shareScanningListing: NSMutableDictionary = [:]
@@ -92,6 +95,22 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Create background view
+        backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100)) // Increase the size as needed
+        backgroundView.backgroundColor = UIColor.white
+        backgroundView.alpha = 0.5 // Adjust transparency as needed
+        backgroundView.layer.cornerRadius = 10 // Adjust corner radius as needed
+        backgroundView.center = view.center
+        view.addSubview(backgroundView)
+        backgroundView.isHidden = true
+        
+        // Create activity indicator
+        let indicatorSize: CGFloat = 120 // Increase the size as needed
+        activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        activityIndicator.color = UIColor.black // Set color
+        activityIndicator.frame = CGRect(x: (backgroundView.bounds.size.width - indicatorSize) / 2, y: (backgroundView.bounds.size.height - indicatorSize) / 2, width: indicatorSize, height: indicatorSize)
+        backgroundView.addSubview(activityIndicator)
         
         // Do any additional setup after loading the view.
         
@@ -318,6 +337,18 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    
+    func startActivityIndicator() {
+        backgroundView.isHidden = false // Show the background view
+        activityIndicator.startAnimating()
+    }
+    
+    func stopActivityIndicator() {
+        activityIndicator.stopAnimating()
+        backgroundView.isHidden = true
+    }
+    
 }
 
 extension ViewController: VideoCameraWrapperDelegate {
@@ -503,27 +534,145 @@ extension ViewController: VideoCameraWrapperDelegate {
         isFront = f
     }
     
+    func postMethodForArabicOCR(parameters: [String: Any], image: UIImage, completion: @escaping ([String:Any]) -> Void) {
+        let url = URL(string: "http://110.5.77.162:8005/api_all.php")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.timeoutInterval = .infinity
+
+        // Add the API-Key header if needed
+        // request.addValue("1647411108z2jNE2Uqq06CRbSjOXEl8qkhlbMA68Tj6A7IEr6R", forHTTPHeaderField: "API-Key")
+
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        var body = Data()
+
+        // Append parameters to the body
+        for (key, value) in parameters {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
+        }
+
+        // Append image data to the body
+        if let imageData = image.jpegData(compressionQuality: 1.0) {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"file\"; filename=\"file.jpg\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        request.httpBody = body
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error \(error.localizedDescription)")
+                    return
+                }
+
+                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    if let data = data {
+                        do {
+                            if let responseObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] {
+                                print("Parsed response: \(responseObject)")
+                                completion(responseObject)
+                            } else {
+                                print("Failed to cast response to NSMutableDictionary")
+                            }
+                        } catch {
+                            print("JSON parsing error: \(error.localizedDescription)")
+                            if let responseString = String(data: data, encoding: .utf8) {
+                                print("Response data: \(responseString)")
+                            }
+                        }
+                    }
+                } else {
+                    // Handle non-200 status code
+                    let errorDescription = HTTPURLResponse.localizedString(forStatusCode: (response as? HTTPURLResponse)?.statusCode ?? 0)
+                    print("Error \(errorDescription)")
+                }
+            }
+        }
+
+        task.resume()
+    }
     
     func passDataOtherViewController(){
-        let vc : ShowResultVC = self.storyboard?.instantiateViewController(withIdentifier: "ShowResultVC") as! ShowResultVC
-        vc.imgViewCountryCard = self.imgViewCard
-        vc.imgViewBack = self.imgViewCard
-        vc.imgViewFront = self.imgViewCardFront
-        vc.dictScanningData = self.dictScanningData
-        vc.pageType = .ScanOCR
-        vc.imagePhoto = self.imgPhoto
-        vc.scannedData = dictScanningMRZData
-        vc.stCountryCardName = stCountryCardName
-        vc.imageCountryCard = cardImage
-        vc.dictFaceData = dictFaceDataFront
-        vc.dictSecurityData = dictSecuretyData
-        vc.dictFaceBackData = dictFaceDataBack
-        vc.arrDataForntKey = arrFrontResultKey
-        vc.arrDataForntValue = arrFrontResultValue
-        vc.arrDataBackKey = arrBackResultKey
-        vc.arrDataBackValue = arrBackResultValue
-        vc.dictOCRTypeData = dictOCRTypeData
-        self.navigationController?.pushViewController(vc, animated: true)
+        var code = "KWT"
+        
+        if countryid == 9 {
+            code = "KWT"
+        }
+        if countryid == 26 {
+            code = "BHR"
+        }
+        let parameters: [String: Any] = [
+            "country_code": code
+        ]
+        if countryid == 9 || countryid == 26 {
+            startActivityIndicator()
+            postMethodForArabicOCR(parameters: parameters, image: imgViewCardFront!) { response in
+                // Handle the response
+//                print("Response: \(response["data"])")
+                self.stopActivityIndicator()
+                if let data = response["data"] as? [String:Any]
+                {
+                    if let ocrData = data["OCRdata"] as? [String:String] {
+                        if !ocrData.keys.isEmpty {
+                            let dataKey: [String] = (ocrData.keys.map { String($0) })
+                            let dataValue: [String] = (ocrData.values.map { String($0) })
+                            
+                            self.arrFrontResultKey = self.arrFrontResultKey + dataKey
+                            self.arrFrontResultValue = self.arrFrontResultValue + dataValue
+                        }
+                    }
+                }
+                
+                let vc : ShowResultVC = self.storyboard?.instantiateViewController(withIdentifier: "ShowResultVC") as! ShowResultVC
+                vc.imgViewCountryCard = self.imgViewCard
+                vc.imgViewBack = self.imgViewCard
+                vc.imgViewFront = self.imgViewCardFront
+                vc.dictScanningData = self.dictScanningData
+                vc.pageType = .ScanOCR
+                vc.imagePhoto = self.imgPhoto
+                vc.scannedData = self.dictScanningMRZData
+                vc.stCountryCardName = self.stCountryCardName
+                vc.imageCountryCard = self.cardImage
+                vc.dictFaceData = self.dictFaceDataFront
+                vc.dictSecurityData = self.dictSecuretyData
+                vc.dictFaceBackData = self.dictFaceDataBack
+                vc.arrDataForntKey = self.arrFrontResultKey
+                vc.arrDataForntValue = self.arrFrontResultValue
+                vc.arrDataBackKey = self.arrBackResultKey
+                vc.arrDataBackValue = self.arrBackResultValue
+                vc.dictOCRTypeData = self.dictOCRTypeData
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }else{
+                let vc : ShowResultVC = self.storyboard?.instantiateViewController(withIdentifier: "ShowResultVC") as! ShowResultVC
+                vc.imgViewCountryCard = self.imgViewCard
+                vc.imgViewBack = self.imgViewCard
+                vc.imgViewFront = self.imgViewCardFront
+                vc.dictScanningData = self.dictScanningData
+                vc.pageType = .ScanOCR
+                vc.imagePhoto = self.imgPhoto
+                vc.scannedData = self.dictScanningMRZData
+                vc.stCountryCardName = self.stCountryCardName
+                vc.imageCountryCard = self.cardImage
+                vc.dictFaceData = self.dictFaceDataFront
+                vc.dictSecurityData = self.dictSecuretyData
+                vc.dictFaceBackData = self.dictFaceDataBack
+                vc.arrDataForntKey = self.arrFrontResultKey
+                vc.arrDataForntValue = self.arrFrontResultValue
+                vc.arrDataBackKey = self.arrBackResultKey
+                vc.arrDataBackValue = self.arrBackResultValue
+                vc.dictOCRTypeData = self.dictOCRTypeData
+                self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func imageRotation(rotation: String) {
@@ -619,6 +768,13 @@ extension ViewController: VideoCameraWrapperDelegate {
         default:
             break
             
+        }
+    }
+}
+extension Data {
+    mutating func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
         }
     }
 }

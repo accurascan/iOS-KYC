@@ -1,6 +1,5 @@
 
 import UIKit
-import ProgressHUD
 import AccuraOCR
 
 
@@ -53,13 +52,10 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             buttonOrtientation.isSelected = true
         }
 
-        ProgressHUD.show("Loading...")
         lablelDataNotFound.isHidden = true
         viewStatusBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         accuraCameraWrapper = AccuraCameraWrapper.init()
-        accuraCameraWrapper?.setDefaultDialogs(true)
-        accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let sdkModel = self.accuraCameraWrapper?.loadEngine(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String)
             if(sdkModel != nil)
@@ -103,7 +99,13 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             if(countryListStr != nil)
             {
                 for i in countryListStr!{
-                    self.arrCountryList.add(i)
+                    let v = i as? [String:Any]
+                    if v?["country_name"] as? String == "Saint Kitts and Nevis" {
+                        self.arrCountryList.insert("Schengen Visa", at: 0) //add("Schengen Visa")
+                    }else{
+                        self.arrCountryList.add(i)
+                    }
+                    
                 }
             }
             else{
@@ -126,7 +128,6 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             self.tblViewCountryList.delegate = self
             self.tblViewCountryList.dataSource = self
             self.tblViewCountryList.reloadData()
-            ProgressHUD.dismiss()
         }
     }
     
@@ -213,14 +214,24 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                 let vc: ViewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
                 if(stringCell == "Passport MRZ") {
                     vc.MRZDocType = 1
+                    vc.isCheckScanOCR = false
                 } else if(stringCell == "ID card MRZ") {
                     vc.MRZDocType = 2
+                    vc.isCheckScanOCR = false
                 } else if(stringCell == "VISA MRZ") {
                     vc.MRZDocType = 3
-                } else {
+                    vc.isCheckScanOCR = false
+                } else if(stringCell == "Schengen Visa"){
+                    vc.cardid = 676
+                    vc.docName = "Schengen Visa"
+                    vc.countryid = 159
+                    vc.isCheckScanOCR = true
+                    vc.cardType = 0
+                }else {
                     vc.MRZDocType = 0
+                    vc.isCheckScanOCR = false
                 }
-                vc.isCheckScanOCR = false
+                
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }

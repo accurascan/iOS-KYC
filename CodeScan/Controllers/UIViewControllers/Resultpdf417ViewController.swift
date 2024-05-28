@@ -1,9 +1,8 @@
 
 import UIKit
-import ProgressHUD
 import AccuraOCR
 
-class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate ,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate,LivenessData,FacematchData {
+class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate ,UIImagePickerControllerDelegate, UINavigationControllerDelegate,LivenessData,FacematchData {
     
    
     //MARK:- Outlet
@@ -646,7 +645,6 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         
             picker.dismiss(animated: true, completion: nil)
             isFLpershow = true
-            ProgressHUD.show("Loading...")
 //            DispatchQueue.global(qos: .background).async {
                 guard var chosenImage:UIImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else{return}
                 
@@ -730,7 +728,6 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
                     }
                     self.tblResult.reloadData()
                     
-                    ProgressHUD.dismiss()
 //                })
 //            }
         }
@@ -759,58 +756,7 @@ class Resultpdf417ViewController: UIViewController,UITableViewDataSource,UITable
         let image1: UIImage = UIImage(cgImage: imageRef)
         return image1
     }
-        
-        //MARK:-  customURLConnection Delegate
-        func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, withResponse response: Any!) {
-            ProgressHUD.dismiss()
-            if tagCon == LivenessTag{
-                let dictResponse: NSDictionary = response as? NSDictionary ?? NSDictionary()
-                // print(response as Any)
-                let dictFinalResponse: NSDictionary = dictResponse["data"] as! NSDictionary
-                if let livenseeScore: String = dictFinalResponse["livenessResult"] as? String{
-                    stLivenessResult = livenseeScore
-                }
-                if let livenessScore: Double = dictFinalResponse["livenessScore"] as? Double{
-                    isFLpershow = true
-                    self.removeOldValue("LIVENESS SCORE : ")
-                    self.removeOldValue1("0 %")
-                    isCheckLiveNess = true
-                    let twoDecimalPlaces = String(format: "%.2f", livenessScore)
-                   let dict = [KEY_VALUE_FACE_MATCH: "\((twoDecimalPlaces))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
-                   arrDocumentData.insert(dict, at: 1)
-                   self.tblResult.reloadData()
-                }
-            }
-        }
-        
-        func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive response: URLResponse!) {
             
-        }
-        
-        func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didFailWithError error: Error!) {
-            ProgressHUD.dismiss()
-        }
-        
-        func customURLConnection(_ connection: CustomAFNetWorking!, with exception: NSException!, withTag tagCon: Int32) {
-            
-        }
-        
-        func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive data: Data!) {
-            
-        }
-        
-        func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32) {
-            
-        }
-        
-        func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!) {
-            
-        }
-        
-        func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!, from url: URL!) {
-            
-        }
-        
         //MARK:- Custom
         func date(toFormatedDate dateStr: String?) -> String? {
             let dateFormatter = DateFormatter()
