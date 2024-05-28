@@ -13,36 +13,16 @@ Below steps to setup Accura SDK's in your project.
 2. Add below pod in podfile
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC', '3.2.7'
-
-    # not require below pods if you are installing AccuraKYC pod
-
-    # install the AccuraOCR pod for AccuraOCR only.
-    pod 'AccuraOCR', '3.2.2'
-    
-    # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
-    pod 'AccuraLiveness_FM', '4.2.7'
+    pod 'AccuraKYC', '4.0.5'
 ```
-  Note:-If you want to use Framework instead of pods, you can use the below git link, You can clone the project and take the respective .framework file
-  * [Accura KYC](https://github.com/accurascan/KYC-SDK-iOS)
-  * [Accura OCR](https://github.com/accurascan/AccuraOCR-SDK-iOS/tree/master)
-  * [Accura Liveness and Face Match](https://github.com/accurascan/Accura-iOS-SDK-FM-Liveness)
-  
-  Note:- If you are using frameworks, you need to add the pods present in their respective .podspec file (e.g spec.dependency 'SVProgressHUD' as pod 'SVProgressHUD')
 
 3. Run `pod install`
 
 Note :- after pod install, make sure to check the pod size as mentioned below </br>
 * If you are using `AccuraKYC` pod </br>
     `your Project's root dicrectory/Pods/AccuraKYC/Framework/AccuraOCR.framework` </br>
-    the `AccuraOCR.framework` size should be around 420 MB
-            
-* If you are using `AccuraOCR` pod </br>
-   ` your Project's root dicrectory/Pods/AccuraOCR/Framework/AccuraOCR.framework` </br>
-    the `AccuraOCR.framework` size should be around 310 MB
-* If you are using `AccuraLiveness_FM` pod </br>
-   ` your Project's root dicrectory/Pods/AccuraLiveness_FM/Framework/AccuraLiveness_FM.framework` </br>
-    the `AccuraLiveness_FM.framework` size should be around 160 MB
+    the `AccuraOCR.framework` size should be around 110 MB
+
     
     
             
@@ -56,22 +36,8 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
  Note:- Comment the previous pods and use the below pods to run the app in simulator. </br>
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC_Sim', '3.2.7'
-
-    # not require below pods if you are installing AccuraKYC pod
-
-    # install the AccuraOCR pod for AccuraOCR only.
-    pod 'AccuraOCR_Sim', '3.2.3'
-    
-    # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
-    pod 'AccuraLiveness_FM_Sim', '4.2.7'
+    pod 'AccuraKYC_Sim', '3.0.5'
 ```
-  Note:-If you want to use Framework instead of pods, you can use the below git link. You can clone the project and take the respective .framework file
-  * [Accura KYC Simulator](https://github.com/accurascan/KYC-SDK-iOS/tree/sim)
-  * [Accura OCR Simulator](https://github.com/accurascan/AccuraOCR-SDK-iOS/tree/sim)
-  * [Accura Liveness and Face Match Simulator](https://github.com/accurascan/Accura-iOS-SDK-FM-Liveness/tree/sim)
-  
-  Note:- If you are using frameworks, you need to add the pods present in their respective .podspec file (e.g spec.dependency 'SVProgressHUD' as pod 'SVProgressHUD')
 
 ## 1. Setup Accura OCR
 
@@ -387,6 +353,84 @@ func reco_titleMessage(_ messageCode: Int32) {
 }
 ```
 
+#### Step 4: Api calling Part for Kuwait and Bahrain card
+
+```
+//Function for API calling
+
+    func postMethodForArabicOCR(parameters: [String: Any], image: UIImage, completion: @escaping ([String:Any]) -> Void) {
+        let url = URL(string: "Your API")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.timeoutInterval = .infinity
+
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        var body = Data()
+
+        // Append parameters to the body
+        for (key, value) in parameters {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
+        }
+
+        // Append image data to the body
+        if let imageData = image.jpegData(compressionQuality: 1.0) {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"file\"; filename=\"file.jpg\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        request.httpBody = body
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error \(error.localizedDescription)")
+                    return
+                }
+
+                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    if let data = data {
+                        do {
+                            if let responseObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] {
+                                print("Parsed response: \(responseObject)")
+                                completion(responseObject)
+                            } else {
+                                print("Failed to cast response to NSMutableDictionary")
+                            }
+                        } catch {
+                            print("JSON parsing error: \(error.localizedDescription)")
+                            if let responseString = String(data: data, encoding: .utf8) {
+                                print("Response data: \(responseString)")
+                            }
+                        }
+                    }
+                } else {
+                    // Handle non-200 status code
+                    let errorDescription = HTTPURLResponse.localizedString(forStatusCode: (response as? HTTPURLResponse)?.statusCode ?? 0)
+                    print("Error \(errorDescription)")
+                }
+            }
+        }
+
+        task.resume()
+    }
+```
+
+```
+//How to call it
+
+postMethodForArabicOCR(parameters: parameters, image: carImage) { response in
+	print("Response: \(response)")
+}
+```
+
 ## 2. Setup Accura liveness
 
 Contact to  [connect@accurascan.com](mailto:connect@accurascan.com)  to get Url for liveness </br>
@@ -440,7 +484,6 @@ func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Boo
 func livenessViewDisappear() {
 }
 ```
-
 
 ## 3. Setup Accura Face Match
 
