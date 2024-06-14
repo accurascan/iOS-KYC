@@ -36,7 +36,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
  Note:- Comment the previous pods and use the below pods to run the app in simulator. </br>
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC_Sim', '3.0.5'
+    pod 'AccuraKYC_Sim', '4.0.5'
 ```
 
 ## 1. Setup Accura OCR
@@ -45,7 +45,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
 
 `key.license`
 
-Generate your Accura license from https://accurascan.com/developer/dashboard <br/>
+Generate your Accura license from https://sandbox.accurascan.com/
 
 #### Step 2: To initialize sdk on app start:
 ```
