@@ -79,7 +79,7 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
 
 `key.license`
 
-Generate your Accura license from https://sandbox.accurascan.com/ <br/>
+To generate your Accura license contact sales@accurascan.com <br/>
 
 #### Step 2: To initialize sdk on app start:
 ```
