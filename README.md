@@ -428,6 +428,9 @@ liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove t
 // if you want to enable SSL certificate pinning for Liveness API set it true. 
 // if 'evaluateServerTrustWIthSSLPinning()' is true must have to add SSL Certificate of Your liveness API Server in Your Proeject's Root directory
 liveness.evaluateServerTrustWIthSSLPinning(true)
+
+// If an API key is required, call the following method to set it
+liveness.setApiKey("Your Api-Key");
 ```
 
 Step 2: Handle Accura liveness Result
