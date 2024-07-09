@@ -14,18 +14,72 @@ Below steps to setup Accura SDK's in your project.
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
     pod 'AccuraKYC', '4.0.6'
+
+    # not require below pods if you are installing AccuraKYC pod
+
+    # install the AccuraOCR pod for AccuraOCR only.
+    pod 'AccuraOCR', '4.0.0'
+    
+    # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
+    pod 'AccuraLiveness_FM', '4.3.2'
 ```
+  Note:-If you want to use Framework instead of pods, you can use the below git link, You can clone the project and take the respective .framework file
+  * [Accura KYC](https://github.com/accurascan/KYC-SDK-iOS)
+  * [Accura OCR](https://github.com/accurascan/AccuraOCR-SDK-iOS/tree/master)
+  * [Accura Liveness and Face Match](https://github.com/accurascan/Accura-iOS-SDK-FM-Liveness)
+  
 
 3. Run `pod install`
+
+Note :- after pod install, make sure to check the pod size as mentioned below </br>
+* If you are using `AccuraKYC` pod </br>
+    `your Project's root dicrectory/Pods/AccuraKYC/Framework/AccuraOCR.framework` </br>
+    the `AccuraOCR.framework` size should be around 110 MB
             
+* If you are using `AccuraOCR` pod </br>
+   ` your Project's root dicrectory/Pods/AccuraOCR/Framework/AccuraOCR.framework` </br>
+    the `AccuraOCR.framework` size should be around 101 MB
+* If you are using `AccuraLiveness_FM` pod </br>
+   ` your Project's root dicrectory/Pods/AccuraLiveness_FM/Framework/AccuraLiveness_FM.framework` </br>
+    the `AccuraLiveness_FM.framework` size should be around 29 MB
+    
+    
+            
+
+ 4. Solving pod issue (follow this step only if pod size doesnt match as said in point 3) </br>
+     i.   Clean the pod using `pod clean` command </br>
+     ii.  install Git LFS using `install git-lfs` command </br>
+     iii. Run `pod install` </br>
+
+ 5. Run the App in Simulator.  ( Optional )</br>
+ Note:- Comment the previous pods and use the below pods to run the app in simulator. </br>
+```
+    # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
+    pod 'AccuraKYC_Sim', '4.0.5'
+
+    # not require below pods if you are installing AccuraKYC pod
+
+    # install the AccuraOCR pod for AccuraOCR only.
+    pod 'AccuraOCR_Sim', '4.0.0'
+    
+    # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
+    pod 'AccuraLiveness_FM_Sim', '4.3.2'
+```
+  Note:-If you want to use Framework instead of pods, you can use the below git link. You can clone the project and take the respective .framework file
+  * [Accura KYC Simulator](https://github.com/accurascan/KYC-SDK-iOS/tree/sim)
+  * [Accura OCR Simulator](https://github.com/accurascan/AccuraOCR-SDK-iOS/tree/sim)
+  * [Accura Liveness and Face Match Simulator](https://github.com/accurascan/Accura-iOS-SDK-FM-Liveness/tree/sim)
+  
+
 ## 1. Setup Accura OCR
 
 #### Step 1: Add license file in to your project.
 
 `key.license`
 
+To generate your Accura license contact sales@accurascan.com <br/>
 
-#### Step 2a: To initialize sdk on app start:
+#### Step 2: To initialize sdk on app start:
 ```
 import AccuraOCR
 var accuraCameraWrapper: AccuraCameraWrapper? = nil
@@ -61,44 +115,15 @@ accuraCameraWrapper = AccuraCameraWrapper.init()
 	arrCountryList to get value(forKey: "country_id") //get country id
 	arrCountryList to get value(forKey: "card_id") //get card id
 ```
-#### Step 2b: To initialize dynamic license in your App:
+  
+#### Optional: Load License File Dynamically
+If you prefer to place the license file dynamically, you can use the following function. This method allows you to specify the license file path at runtime
 ```
-import AccuraOCR
-var accuraCameraWrapper: AccuraCameraWrapper? = nil
-var arrCountryList = NSMutableArray()
-accuraCameraWrapper = AccuraCameraWrapper.init()
-	let sdkModel = accuraCameraWrapper.loadEngine(Your License Path,documentDirectory:PathForDirectories)
+let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
 
-	if (sdkModel.i > 0) {
-		if(sdkModel!.isBankCardEnable) {
-			self.arrCountryList.add("Bank Card")
-		}
-		if(sdkModel!.isMRZEnable) {
-			self.arrCountryList.add("All MRZ")
-			// ID MRZ
-			// Visa MRZ
-			// Passport MRZ
-			// All MRZ
-		}
-		
-		// if sdkModel.isOCREnable then get card data
-
-		if (sdkModel.isOCREnable) let countryListStr = self.videoCameraWrapper?.getOCRList();
-			if (countryListStr != null) {
-				for i in countryListStr!{
-					self.arrCountryList.add(i)
-				}
-			}
-		}
-		if(sdkModel!.isBarcodeEnable) {
-			self.arrCountryList.add("Barcode")
-		}
-	}
-	arrCountryList to get value(forKey: "card_name") //get card Name
-	arrCountryList to get value(forKey: "country_id") //get country id
-	arrCountryList to get value(forKey: "card_id") //get card id
-
+let sdkModel = accuraCameraWrapper?.loadEngine("Your License Path", documentDirectory: documentDirectory)
 ```
+* Note:- For a demo of dynamic licensing, please refer to the branch "dynamic_license_demo".
 
 ##### Update filters config like below.
 
@@ -160,6 +185,11 @@ accuraCameraWrapper?.switchCamera()
 * Set Front/Back Side Scan
 ```
 accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
+```
+
+* Enable Print logs in OCR and Liveness SDK
+```
+accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
 ```
 
 #### Step 3: Set CameraView
@@ -404,6 +434,9 @@ liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove t
 // if you want to enable SSL certificate pinning for Liveness API set it true. 
 // if 'evaluateServerTrustWIthSSLPinning()' is true must have to add SSL Certificate of Your liveness API Server in Your Proeject's Root directory
 liveness.evaluateServerTrustWIthSSLPinning(true)
+
+// If an API key is required, call the following method to set it
+liveness.setApiKey("Your Api-Key");
 ```
 
 Step 2: Handle Accura liveness Result
@@ -425,6 +458,7 @@ Step 1: Add licence file in to your project.<br />
 
 - `accuraface.license` for Accura Face Match <br />
 
+To Generate Accura Face License please contact sales@accurascan.com
 
 Step 2: Add `FaceView.swift` file in your project.
 
@@ -489,10 +523,18 @@ override func viewDidLoad() {
 		 * FaceMatch SDK method initiate SDK engine
 		 */
 		EngineWrapper.faceEngineInit()
-		//Dynamic License  EngineWrapper.faceEngineInit(Face License Path)
 	}
 }
+```
 
+## Optional: Dynamically Place License File
+If you prefer to place the license file dynamically, you can use the following method. This allows you to specify the license file path at runtime.
+```
+EngineWrapper.faceEngineInit("Face License Path")
+```
+
+## 
+```
 override func viewDidAppear(_ animated: Bool) {
 	super.viewDidAppear(animated)
 	/*
