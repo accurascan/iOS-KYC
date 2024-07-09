@@ -123,7 +123,7 @@ If you prefer to place the license file dynamically, you can use the following f
 ```
 let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
 
-accuraCameraWrapper?.loadEngine("Your License Path", documentDirectory: documentDirectory)
+let sdkModel = accuraCameraWrapper?.loadEngine("Your License Path", documentDirectory: documentDirectory)
 ```
 
 ##### Update filters config like below.
@@ -526,6 +526,13 @@ override func viewDidLoad() {
 		EngineWrapper.faceEngineInit()
 	}
 }
+
+## Optional: Dynamically Place License File
+If you prefer to place the license file dynamically, you can use the following method. This allows you to specify the license file path at runtime.
+```
+EngineWrapper.faceEngineInit("Face License Path")
+```
+
 
 override func viewDidAppear(_ animated: Bool) {
 	super.viewDidAppear(animated)
