@@ -187,11 +187,6 @@ accuraCameraWrapper?.switchCamera()
 accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
 ```
 
-* Enable Print logs in OCR and Liveness SDK
-```
-accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
-```
-
 #### Step 3: Set CameraView
 
 Important Grant Camera and storage Permission.</br>
