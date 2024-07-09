@@ -118,6 +118,13 @@ accuraCameraWrapper = AccuraCameraWrapper.init()
 	arrCountryList to get value(forKey: "card_id") //get card id
 ```
   
+#### Optional: Load License File Dynamically
+If you prefer to place the license file dynamically, you can use the following function. This method allows you to specify the license file path at runtime
+```
+let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+
+accuraCameraWrapper?.loadEngine("Your License Path", documentDirectory: documentDirectory)
+```
 
 ##### Update filters config like below.
 
