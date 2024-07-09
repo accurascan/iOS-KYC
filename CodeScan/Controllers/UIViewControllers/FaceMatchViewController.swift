@@ -1,6 +1,5 @@
 
 import UIKit
-import ProgressHUD
 import Photos
 import AccuraOCR
 import PhotosUI
@@ -36,14 +35,23 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
          FaceMatch SDK method to check if engine is initiated or not
          Return: true or false
          */
+        var facePath = UserDefaults.standard.string(forKey: "accuraFacepath")
+        
+        // Check if the stored value exists, otherwise set a default value
+        if facePath == nil {
+            facePath = Bundle.main.path(forResource: "accuraface", ofType: "license")
+
+            // Save the default value to UserDefaults
+            UserDefaults.standard.set(facePath, forKey: "defaulAccuraVersion")
+            UserDefaults.standard.synchronize()
+        }
+        
         let fmInit = EngineWrapper.isEngineInit()
         if !fmInit{
-            /*
-             FaceMatch SDK method initiate SDK engine
-             */
-            
-            EngineWrapper.faceEngineInit()
+
+            EngineWrapper.faceEngineInit(facePath)
         }
+        
         imagePicker.delegate = self
         
         lableMatchRate.text = "Match Score : 0 %";
@@ -231,7 +239,6 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
         
         
         dismiss(animated: true, completion: nil)
-        ProgressHUD.show("Loading...")
         DispatchQueue.global(qos: .background).async {
             guard var originalImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else { return }
             
@@ -243,7 +250,6 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
             let compressData = UIImage(data: originalImage.jpegData(compressionQuality: 1.0)!)
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                 self.setFaceRegion(compressData!)//Set FaceMatch score
-                ProgressHUD.dismiss()
             })
         }
         
@@ -264,7 +270,6 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
                         let compressData = UIImage(data: originalImage.jpegData(compressionQuality: 1.0)!)
                         
                         self.setFaceRegion(compressData!)//Set FaceMatch score
-                        ProgressHUD.dismiss()
                         print("Selected image: \(image)")
                     }
                 }
@@ -274,7 +279,6 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
     
     
     func facematchData(_ FaceImage: UIImage!) {
-        ProgressHUD.show("Loading...")
         DispatchQueue.global(qos: .background).async {
             var originalImage = FaceImage
             
@@ -286,7 +290,6 @@ class FaceMatchViewController: UIViewController,UIImagePickerControllerDelegate,
             let compressData = UIImage(data: FaceImage.jpegData(compressionQuality: 1.0)!)
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                 self.setFaceRegion(compressData!)//Set FaceMatch score
-                ProgressHUD.dismiss()
             })
         }
     }

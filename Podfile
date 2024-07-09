@@ -6,14 +6,6 @@ target 'AccuraSDK' do
   use_frameworks!
   
   # Pods for CodeScan
-  pod 'AccuraKYC','3.2.7'
-#pod 'AccuraKYC_Sim', '3.2.7'
-
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
-    end
-  end
-end
+pod 'AccuraKYC', '4.0.6'
+pod 'ProgressHUD'
 end

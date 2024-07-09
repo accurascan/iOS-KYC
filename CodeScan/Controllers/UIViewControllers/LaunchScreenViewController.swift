@@ -1,6 +1,8 @@
 
 import UIKit
 
+var pathLicense = ""
+
 class LaunchScreenViewController: UIViewController {
 
     @IBOutlet weak var viewLoader: UIView!

@@ -1,6 +1,5 @@
 
 import UIKit
-import ProgressHUD
 import AccuraOCR
 
 //Define Global Key
@@ -26,7 +25,7 @@ struct Objects {
     
 }
 
-class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, LivenessData, FacematchData {
+class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate,LivenessData, FacematchData {
     //MARK:- Outlet
     @IBOutlet weak var img_height: NSLayoutConstraint!
     @IBOutlet weak var lblLinestitle: UILabel!
@@ -47,7 +46,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     var uniqStr = ""
     var mrz_val = ""
-    
+    var isLiveness = false
     var imgDoc: UIImage?
     var retval: Int = 0
     var lines = ""
@@ -160,6 +159,20 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
          FaceMatch SDK method to check if engine is initiated or not
          Return: true or false
          */
+        var facePath = UserDefaults.standard.string(forKey: "accuraFaceKey")
+        
+        // Check if the stored value exists, otherwise set a default value
+        if facePath == nil {
+            facePath = Bundle.main.path(forResource: "accuraface", ofType: "license")
+
+            // Save the default value to UserDefaults
+            UserDefaults.standard.set(facePath, forKey: "defaulAccuraVersion")
+            UserDefaults.standard.synchronize()
+        }else{
+            let faseP = facePath?.components(separatedBy: ".")
+            facePath = Bundle.main.path(forResource: faseP?[0], ofType: "license")
+        }
+        
         let fmInit = EngineWrapper.isEngineInit()
         if !fmInit{
             
@@ -167,7 +180,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
              FaceMatch SDK method initiate SDK engine
              */
             
-            EngineWrapper.faceEngineInit()
+            EngineWrapper.faceEngineInit(facePath)
         }
         
         /*
@@ -333,9 +346,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 
         // Set min and max percentage for glare
         liveness.setGlarePercentage(-1, -1) //set glaremin -1 to remove this filter
-        liveness.evaluateServerTrustWIthSSLPinning(true)
-        
-        
+        liveness.evaluateServerTrustWIthSSLPinning(false)
         
 
         facematch.setBackGroundColor("#C4C4C5")
@@ -1674,7 +1685,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         picker.dismiss(animated: true, completion: nil)
         isFLpershow = true
-        ProgressHUD.show("Loading...")
         DispatchQueue.global(qos: .background).async {
             guard var chosenImage:UIImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else{return}
             
@@ -1759,7 +1769,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     }
                 }
                 self.tblResult.reloadData()
-                ProgressHUD.dismiss()
             })
         }
     }
@@ -1787,65 +1796,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         let imageRef: CGImage = contextImage.cgImage!.cropping(to: rect)!
         let image1: UIImage = UIImage(cgImage: imageRef)
         return image1
-    }
-    
-    //MARK:-  customURLConnection Delegate
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, withResponse response: Any!) {
-        ProgressHUD.dismiss()
-        if tagCon == LivenessTag{
-            let dictResponse: NSDictionary = response as? NSDictionary ?? NSDictionary()
-            // print(response as Any)
-            let dictFinalResponse: NSDictionary = dictResponse["data"] as! NSDictionary
-            if let livenseeScore: String = dictFinalResponse["livenessResult"] as? String{
-                stLivenessResult = livenseeScore
-            }
-            if let livenessScore: Double = dictFinalResponse["livenessScore"] as? Double{
-                // print(livenessScore)
-                isFLpershow = true
-                self.removeOldValue("LIVENESS SCORE : ")
-                self.removeOldValue1("0 %")
-                isCheckLiveNess = true
-                let twoDecimalPlaces = String(format: "%.2f", livenessScore)
-                // print(twoDecimalPlaces)
-                if pageType != .ScanOCR{
-                    let dict = [KEY_VALUE_FACE_MATCH: "\((twoDecimalPlaces))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
-                    arrDocumentData.insert(dict, at: 1)
-                }else{
-                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
-                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-                }
-                
-                self.tblResult.reloadData()
-            }
-        }
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive response: URLResponse!) {
-        
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didFailWithError error: Error!) {
-        ProgressHUD.dismiss()
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, with exception: NSException!, withTag tagCon: Int32) {
-        
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive data: Data!) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!, from url: URL!) {
-        
     }
     
     //MARK:- Custom
@@ -1900,7 +1850,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         orientation = .portrait
     }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-    facematch.setFacematch(self)
+        isLiveness = false
+        facematch.setFacematch(self)
 
     }
     
@@ -1916,6 +1867,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
     liveness.setLiveness(self)
+//        isLiveness = true
+//        facematch.setFacematch(self)
     
         
     }
@@ -1927,13 +1880,20 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 //            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
 //        }
         
+        var livenessVlu = Float(stLivenessValue) ?? 0.0
+        var stLivenessValue1 = String(format: "%.2f", livenessVlu)
+        var finalLivenessValue = stLivenessValue1 + " %"
         isFLpershow = true
-        self.livenessValue = stLivenessValue
+        self.livenessValue = finalLivenessValue
         self.imgCamaraFace = livenessImage
         if status == false{
             GlobalMethods.showAlertView("Please try again", with: self)
         }
-        
+        if self.photoImage != nil{
+            self.faceRegion = EngineWrapper.detectSourceFaces(self.photoImage)
+        }else{
+            self.faceRegion = EngineWrapper.detectSourceFaces(self.faceImage)
+        }
         if (faceRegion != nil)
         {
             /*
@@ -1978,7 +1938,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 dictParam["liveness"] = "True"
                 dictParam["face_match_score"] = "\(faceScoreData)"
 
-                dictParam["liveness_score"] = stLivenessValue
+                dictParam["liveness_score"] = finalLivenessValue
                 dictParam["facematch_image"] = stFaceImage
                 dictParam["liveness_image"] = stLivenessInage
                 
@@ -1996,25 +1956,33 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func livenessViewDisappear() {
-        if(orientation == .landscapeLeft) {
-            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-        } else if orientation == .landscapeRight {
-            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        DispatchQueue.main.async() {
+            if(self.orientation == .landscapeLeft) {
+                AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+            } else if self.orientation == .landscapeRight {
+                AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+            }
         }
     }
     
     func facematchViewDisappear() {
-        if(orientation == .landscapeLeft) {
-            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-        } else if orientation == .landscapeRight {
-            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        DispatchQueue.main.async() {
+            if(self.orientation == .landscapeLeft) {
+                AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+            } else if self.orientation == .landscapeRight {
+                AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+            }
         }
     }
     func facematchData(_ FaceImage: UIImage!) {
         isFLpershow = true
         self.imgCamaraFace = FaceImage
         self.livenessValue = "0.00 %"
-        
+        if self.photoImage != nil{
+            self.faceRegion = EngineWrapper.detectSourceFaces(self.photoImage)
+        }else{
+            self.faceRegion = EngineWrapper.detectSourceFaces(self.faceImage)
+        }
         if (faceRegion != nil)
         {
             /*

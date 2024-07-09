@@ -58,75 +58,8 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
         viewStatusBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         accuraCameraWrapper = AccuraCameraWrapper.init()
-        accuraCameraWrapper?.setDefaultDialogs(true)
-        accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let sdkModel = self.accuraCameraWrapper?.loadEngine(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String)
-            if(sdkModel != nil)
-            {
-//                if(sdkModel!.i < 0){
-//                    GlobalMethods.showAlertView("Invalid license", with: self)
-//                }
-                if(sdkModel!.isMRZEnable)
-                {
-                    self.isMRZCell = true
-                }
-                else{
-                    self.isMRZCell = false
-                }
-                if(sdkModel!.isBankCardEnable) {
-                    self.isBankCard = true
-                } else {
-                    self.isBankCard = false
-                }
-                if(sdkModel!.isBarcodeEnable) {
-                    self.isBarcode = true
-                } else {
-                    self.isBarcode = false
-                }
-            }
-            if(self.isMRZCell)
-            {
-                self.arrCountryList.add("Passport MRZ")
-                self.arrCountryList.add("ID card MRZ")
-                self.arrCountryList.add("VISA MRZ")
-                self.arrCountryList.add("All MRZ")
-            }
-            if(self.isBankCard) {
-                self.arrCountryList.add("Bank Card")
-               
-            }
-            if(self.isBarcode) {
-                self.arrCountryList.add("Barcode")
-            }
-            let countryListStr = self.accuraCameraWrapper?.getOCRList()
-            if(countryListStr != nil)
-            {
-                for i in countryListStr!{
-                    self.arrCountryList.add(i)
-                }
-            }
-            else{
-//                GlobalMethods.showAlertView("", with: self)
-            }
-            
-             if(sdkModel != nil){
-             if sdkModel!.i > 0{
-                self.accuraCameraWrapper?.setFaceBlurPercentage(80)
-                self.accuraCameraWrapper?.setHologramDetection(true)
-                self.accuraCameraWrapper?.setLowLightTolerance(10)
-                 self.accuraCameraWrapper?.setMotionThreshold(25)
-                self.accuraCameraWrapper?.setGlarePercentage(6, intMax: 99)
-                self.accuraCameraWrapper?.setBlurPercentage(60)
-                self.accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
-//                self.accuraCameraWrapper?.setCheckPhotoCopy(false, stCheckPhotoMessage: "")
-             }
-            }
-            
-            self.tblViewCountryList.delegate = self
-            self.tblViewCountryList.dataSource = self
-            self.tblViewCountryList.reloadData()
-            ProgressHUD.dismiss()
+        DispatchQueue.global(qos: .default).async {
+            self.getKeyValue(urlLicense: "https://dev.accurascan.com/mahdiedit/", pathLicense: "accura-config.json")
         }
     }
     
@@ -160,6 +93,245 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
         }
         
+    }
+
+    func completion(path: String){
+        DispatchQueue.main.async{
+
+        let sdkModel = self.accuraCameraWrapper?.loadEngine(path,documentDirectory:NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String)
+        if(sdkModel != nil)
+        {
+            //                if(sdkModel!.i < 0){
+            //                    GlobalMethods.showAlertView("Invalid license", with: self)
+            //                }
+            
+            if(sdkModel!.isMRZEnable)
+            {
+                self.isMRZCell = true
+            }
+            else{
+                self.isMRZCell = false
+            }
+            if(sdkModel!.isBankCardEnable) {
+                self.isBankCard = true
+            } else {
+                self.isBankCard = false
+            }
+            if(sdkModel!.isBarcodeEnable) {
+                self.isBarcode = true
+            } else {
+                self.isBarcode = false
+            }
+        }
+        if(self.isMRZCell)
+        {
+            self.arrCountryList.add("Passport MRZ")
+            self.arrCountryList.add("ID card MRZ")
+            self.arrCountryList.add("VISA MRZ")
+            self.arrCountryList.add("All MRZ")
+        }
+        if(self.isBankCard) {
+            self.arrCountryList.add("Bank Card")
+            
+        }
+        if(self.isBarcode) {
+            self.arrCountryList.add("Barcode")
+        }
+        let countryListStr = self.accuraCameraWrapper?.getOCRList()
+        if(countryListStr != nil)
+        {
+            for i in countryListStr!{
+                self.arrCountryList.add(i)
+            }
+        }
+        else{
+            //                GlobalMethods.showAlertView("", with: self)
+        }
+        
+        if(sdkModel != nil){
+            if sdkModel!.i > 0{
+                self.accuraCameraWrapper?.setFaceBlurPercentage(80)
+                self.accuraCameraWrapper?.setHologramDetection(true)
+                self.accuraCameraWrapper?.setLowLightTolerance(10)
+                self.accuraCameraWrapper?.setMotionThreshold(25)
+                self.accuraCameraWrapper?.setGlarePercentage(6, intMax: 99)
+                self.accuraCameraWrapper?.setBlurPercentage(60)
+                self.accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
+            }
+        }
+            self.tblViewCountryList.delegate = self
+            self.tblViewCountryList.dataSource = self
+            self.tblViewCountryList.reloadData()
+        }
+
+        ProgressHUD.dismiss()
+
+    }
+    
+    func getKeyValue(urlLicense: String, pathLicense: String){
+        // Retrieve the stored value from UserDefaults
+        var defaultVer = UserDefaults.standard.string(forKey: "defaulAccuraVersion")
+        
+        // Check if the stored value exists, otherwise set a default value
+        if defaultVer == nil {
+            defaultVer = "0.0"
+            
+            // Save the default value to UserDefaults
+            UserDefaults.standard.set(defaultVer, forKey: "defaulAccuraVersion")
+            UserDefaults.standard.synchronize()
+        }
+
+        let sema = DispatchSemaphore(value: 0)
+        let serverUrl = "\(urlLicense)\(pathLicense)"
+        
+        if let url = URL(string: serverUrl) {
+            var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 10.0)
+            request.httpMethod = "GET"
+            
+            let session = URLSession.shared
+            
+            let dataTask = session.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    print(error)
+                    sema.signal()
+                    
+//                    DispatchQueue.main.async {
+                        let path = Bundle.main.path(forResource: "key", ofType: "license")
+                    self.completion(path: path!)
+//                    }
+                } else {
+                    if let httpResponse = response as? HTTPURLResponse {
+                        do {
+                            if let responseDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+                                if responseDictionary.isEmpty {
+                                    let path = Bundle.main.path(forResource: "key", ofType: "license")
+                                    self.completion(path: path!)
+                                } else {
+                                    if let version = responseDictionary["version"] as? String {
+                                        if version.isEmpty {
+                                            let path = Bundle.main.path(forResource: "key", ofType: "license")
+                                            self.completion(path: path!)
+                                        } else {
+                                            if let platForm1 = responseDictionary["iOS"] as? [String: Any]{
+//                                               let cardParams = platForm1["card_params"] as? [String: Any] {
+                                                // ...
+
+//                                                DispatchQueue.main.async {
+                                                    var path: String?
+
+                                                    if version == defaultVer {
+                                                        if version == "0.0" {
+                                                            path = Bundle.main.path(forResource: "key", ofType: "license")
+                                                            UserDefaults.standard.set("key.license", forKey: "accuraKey")
+                                                            UserDefaults.standard.set("accuraface.license", forKey: "accuraFaceKey")
+                                                            UserDefaults.standard.set(path, forKey: "accurapath")
+                                                            self.completion(path: path!)
+                                                        } else {
+                                                            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+                                                            let documentsDirectory = paths[0]
+                                                            path = "\(documentsDirectory)/\(UserDefaults.standard.string(forKey: "accuraKey") ?? "")"
+                                                            self.completion(path: path!)
+                                                        }
+                                                    } else {
+                                                        // Assuming this code is within the completion block after parsing the version
+//                                                        DispatchQueue.global(qos: .default).async {
+                                                            print("Downloading Started")
+                                                            guard let platForm = responseDictionary["iOS"] as? [String: Any],
+                                                                  let ocrLicense = platForm["ocr_license"] as? String,
+                                                                  let faceLicense = platForm["face_license"] as? String else {
+//                                                                DispatchQueue.main.async {
+                                                                    let path = Bundle.main.path(forResource: "key", ofType: "license")
+                                                                self.completion(path: path!)
+//                                                                }
+                                                                return
+                                                            }
+
+                                                            UserDefaults.standard.set(version, forKey: "accuraVersion")
+                                                            UserDefaults.standard.set(ocrLicense, forKey: "accuraKey")
+                                                            UserDefaults.standard.set(faceLicense, forKey: "accuraFaceKey")
+
+                                                            let urlToDownload = urlLicense + ocrLicense
+                                                            let urlToDownloadFace = urlLicense + faceLicense
+
+                                                            guard let url = URL(string: urlToDownload),
+                                                                  let urlFace = URL(string: urlToDownloadFace) else {
+//                                                                DispatchQueue.main.async {
+                                                                    let path = Bundle.main.path(forResource: "key", ofType: "license")
+                                                                self.completion(path: path!)
+//                                                                }
+                                                                return
+                                                            }
+
+                                                            do {
+                                                                let urlData = try Data(contentsOf: url)
+
+                                                                if let urlDataFace = try? Data(contentsOf: urlFace) {
+                                                        //            GL.setNo("1")
+
+                                                                    let pathsFace = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+                                                                    let documentsDirectoryFace = pathsFace[0]
+                                                                    let pathFace = documentsDirectoryFace.appendingPathComponent(faceLicense)
+                                                                    UserDefaults.standard.set(pathFace.path, forKey: "accuraFacepath")
+
+//                                                                    DispatchQueue.main.async {
+                                                                        do {
+                                                                            try urlDataFace.write(to: pathFace, options: .atomic)
+                                                                        } catch {
+                                                                            print("Error writing face license file: \(error)")
+                                                                        }
+//                                                                    }
+                                                                }
+
+                                                                let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+                                                                let documentsDirectory = paths[0]
+                                                                var path = documentsDirectory.appendingPathComponent(ocrLicense)
+
+//                                                                DispatchQueue.main.async {
+                                                                    do {
+                                                                        try urlData.write(to: path, options: .atomic)
+                                                                        self.completion(path: path.path)
+
+                                                                        UserDefaults.standard.set(path.path, forKey: "accurapath")
+                                                                        UserDefaults.standard.set(version, forKey: "defaulAccuraVersion")
+                                                                        UserDefaults.standard.synchronize()
+                                                                        print("File Saved!")
+                                                                    } catch {
+                                                                        DispatchQueue.main.async {
+                                                                            let path = Bundle.main.path(forResource: "key", ofType: "license")
+                                                                            self.completion(path: path!)
+                                                                        }
+                                                                    }
+//                                                                }
+                                                            } catch {
+//                                                                DispatchQueue.main.async {
+                                                                    let path = Bundle.main.path(forResource: "key", ofType: "license")
+                                                                self.completion(path: path!)
+//                                                                }
+                                                            }
+//                                                        }
+
+
+                                                    }
+//                                                }
+                                            } else {
+//                                                DispatchQueue.main.async {
+                                                self.completion(path: "")
+//                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } catch {
+                            print("Error parsing JSON: \(error)")
+                        }
+                    }
+                }
+            }
+            
+            dataTask.resume()
+            sema.wait()
+        }
     }
     
     
