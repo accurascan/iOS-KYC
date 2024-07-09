@@ -459,7 +459,7 @@ Step 1: Add licence file in to your project.<br />
 
 - `accuraface.license` for Accura Face Match <br />
 
-Generate your Accura licence from <https://accurascan.com/developer/sdk-license>
+To Generate Accura Face License please contact sales@accurascan.com
 
 Step 2: Add `FaceView.swift` file in your project.
 
@@ -526,6 +526,7 @@ override func viewDidLoad() {
 		EngineWrapper.faceEngineInit()
 	}
 }
+```
 
 ## Optional: Dynamically Place License File
 If you prefer to place the license file dynamically, you can use the following method. This allows you to specify the license file path at runtime.
