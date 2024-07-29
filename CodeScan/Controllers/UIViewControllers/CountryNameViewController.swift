@@ -1,6 +1,6 @@
 
 import UIKit
-import ProgressHUD
+//import ProgressHUD
 import AccuraOCR
 
 
@@ -53,13 +53,12 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             buttonOrtientation.isSelected = true
         }
 
-        ProgressHUD.show("Loading...")
+//        ProgressHUD.show("Loading...")
         lablelDataNotFound.isHidden = true
         viewStatusBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         accuraCameraWrapper = AccuraCameraWrapper.init()
-        accuraCameraWrapper?.setDefaultDialogs(true)
-        accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let sdkModel = self.accuraCameraWrapper?.loadEngine(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String)
             if(sdkModel != nil)
@@ -126,7 +125,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             self.tblViewCountryList.delegate = self
             self.tblViewCountryList.dataSource = self
             self.tblViewCountryList.reloadData()
-            ProgressHUD.dismiss()
+//            ProgressHUD.dismiss()
         }
     }
     

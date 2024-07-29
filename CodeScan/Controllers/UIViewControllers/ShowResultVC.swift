@@ -1,6 +1,6 @@
 
 import UIKit
-import ProgressHUD
+//import ProgressHUD
 import AccuraOCR
 
 //Define Global Key
@@ -26,7 +26,7 @@ struct Objects {
     
 }
 
-class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, LivenessData, FacematchData {
+class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, FacematchData {
     //MARK:- Outlet
     @IBOutlet weak var img_height: NSLayoutConstraint!
     @IBOutlet weak var lblLinestitle: UILabel!
@@ -47,7 +47,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     var uniqStr = ""
     var mrz_val = ""
-    
+    var isLiveness = false
     var imgDoc: UIImage?
     var retval: Int = 0
     var lines = ""
@@ -142,7 +142,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var livenessValue: String = ""
     var intID: Int?
     var orientation: UIInterfaceOrientationMask?
-    var liveness = Liveness()
     var facematch = Facematch()
     
     //MARK:- UIViewContoller Methods
@@ -312,32 +311,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        liveness.setLivenessURL("YourURL")
-        liveness.setBackGroundColor("#C4C4C5")
-        liveness.setCloseIconColor("#000000")
-        liveness.setFeedbackBackGroundColor("#C4C4C5")
-        liveness.setFeedbackTextColor("#000000")
-        liveness.setFeedbackTextSize(Float(18.0))
-        liveness.setFeedBackframeMessage("Frame Your Face")
-        liveness.setFeedBackAwayMessage("Move Phone Away")
-        liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
-        liveness.setFeedBackCloserMessage("Move Phone Closer")
-        liveness.setFeedBackCenterMessage("Center Your Face")
-        liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
-        liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
-        liveness.setFeedBackLowLightMessage("Low light detected")
-        liveness.setFeedBackBlurFaceMessage("Blur detected over face")
-        liveness.setFeedBackGlareFaceMessage("Glare detected")
-        // 0 for clean face and 100 for Blurry face
-        liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
-
-        // Set min and max percentage for glare
-        liveness.setGlarePercentage(-1, -1) //set glaremin -1 to remove this filter
-        liveness.evaluateServerTrustWIthSSLPinning(true)
         
-        
-        
-
         facematch.setBackGroundColor("#C4C4C5")
         facematch.setCloseIconColor("#000000")
         facematch.setFeedbackBackGroundColor("#C4C4C5")
@@ -1674,7 +1648,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         picker.dismiss(animated: true, completion: nil)
         isFLpershow = true
-        ProgressHUD.show("Loading...")
+//        ProgressHUD.show("Loading...")
         DispatchQueue.global(qos: .background).async {
             guard var chosenImage:UIImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else{return}
             
@@ -1759,10 +1733,92 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     }
                 }
                 self.tblResult.reloadData()
-                ProgressHUD.dismiss()
+//                ProgressHUD.dismiss()
             })
         }
     }
+    
+    @objc func postMethodWithParamsAndImage(parameters: [String: String],
+                                             forMethod: String,
+                                             images: UIImage,
+                                             faceImg: UIImage?,
+                                             success: @escaping (AnyObject) -> Void,
+                                             fail: @escaping (AnyObject) -> Void) {
+        // Create the URL from the provided string
+        guard let url = URL(string: forMethod) else {
+            fail("Invalid URL" as AnyObject)
+            return
+        }
+        let boundary = "Boundary-\(UUID().uuidString)"
+
+        // Create the URLRequest
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue("1665643270dxsh1OYnRCcZvvCx79cgUe4zlArVVwKbrhSjucOw", forHTTPHeaderField: "Api-Key")
+
+        // Boundary for multipart/form-data
+        
+        // Create the HTTP body
+        let body = NSMutableData()
+
+        // Append parameters
+        for (key, value) in parameters {
+            body.appendString("--\(boundary)\r\n")
+            body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+            body.appendString("\(value)\r\n")
+        }
+        
+        // Append images
+//        for (index, image) in images.enumerated() {
+            if let imageData = images.pngData() {
+                body.appendString("--\(boundary)\r\n")
+                body.appendString("Content-Disposition: form-data; name=\"liveness_image\"; filename=\"liveness_image\(index).jpg\"\r\n")
+                body.appendString("Content-Type: image/jpg\r\n\r\n")
+                body.append(imageData)
+                body.appendString("\r\n")
+            }
+//        }
+
+        // Append face image if present
+        if let faceImg = faceImg, let faceImgData = faceImg.pngData() {
+            body.appendString("--\(boundary)\r\n")
+            body.appendString("Content-Disposition: form-data; name=\"face_image\"; filename=\"face_image.jpg\"\r\n")
+            body.appendString("Content-Type: image/jpg\r\n\r\n")
+            body.append(faceImgData)
+            body.appendString("\r\n")
+        }
+
+        // Append the final boundary
+        body.appendString("--\(boundary)--\r\n")
+        
+        // Set the body to the request
+        request.httpBody = body as Data
+
+        // Create the URLSession task
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                fail(error.localizedDescription as AnyObject)
+                return
+            }
+
+            guard let data = data else {
+                fail("No data" as AnyObject)
+                return
+            }
+
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                success(json as AnyObject)
+            } catch {
+                fail(error.localizedDescription as AnyObject)
+            }
+        }
+        task.resume()
+    }
+
+
+
     
      func resizeImage(image: UIImage, targetSize: CGRect) -> UIImage {
         let contextImage: UIImage = UIImage(cgImage: image.cgImage!)
@@ -1791,7 +1847,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     //MARK:-  customURLConnection Delegate
     func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, withResponse response: Any!) {
-        ProgressHUD.dismiss()
+//        ProgressHUD.dismiss()
         if tagCon == LivenessTag{
             let dictResponse: NSDictionary = response as? NSDictionary ?? NSDictionary()
             // print(response as Any)
@@ -1825,7 +1881,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didFailWithError error: Error!) {
-        ProgressHUD.dismiss()
+//        ProgressHUD.dismiss()
     }
     
     func customURLConnection(_ connection: CustomAFNetWorking!, with exception: NSException!, withTag tagCon: Int32) {
@@ -1899,6 +1955,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     } else {
         orientation = .portrait
     }
+        isLiveness = false
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
     facematch.setFacematch(self)
 
@@ -1915,7 +1972,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         orientation = .portrait
     }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-    liveness.setLiveness(self)
+//    liveness.setLiveness(self)
+        isLiveness = true
+        facematch.setFacematch(self)
     
         
     }
@@ -2014,7 +2073,24 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         isFLpershow = true
         self.imgCamaraFace = FaceImage
         self.livenessValue = "0.00 %"
-        
+        if isLiveness {
+            postMethodWithParamsAndImage(parameters: [:], forMethod: "http://api.accurascan.com:8005/upload.php", images: FaceImage, faceImg: nil, success: { (response) in
+                
+                let responses = response as? [String:Any]
+                
+                if let score = responses?["score"] {
+                    self.livenessValue = "\(score)"
+                    self.imgCamaraFace = FaceImage
+                    
+                    DispatchQueue.main.async {
+                        self.tblResult.reloadData()
+                    }
+                }
+                
+            }) { (error) in
+                print(error)
+            }
+        }
         if (faceRegion != nil)
         {
             /*
@@ -2068,4 +2144,13 @@ fileprivate func convertToUIImagePickerControllerInfoKeyDictionary(_ input: [Str
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
     return input.rawValue
+}
+
+// Helper function to append strings to NSMutableData
+extension NSMutableData {
+    func appendString(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
+        }
+    }
 }

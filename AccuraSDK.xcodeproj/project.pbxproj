@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -820,7 +820,7 @@
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = and.test.accura;
+				PRODUCT_BUNDLE_IDENTIFIER = com.accurascan;
 				PRODUCT_NAME = "Accura SDK";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -906,7 +906,7 @@
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = and.test.accura;
+				PRODUCT_BUNDLE_IDENTIFIER = com.accurascan;
 				PRODUCT_NAME = "Accura SDK";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
