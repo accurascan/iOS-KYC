@@ -1755,7 +1755,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue("1665643270dxsh1OYnRCcZvvCx79cgUe4zlArVVwKbrhSjucOw", forHTTPHeaderField: "Api-Key")
 
         // Boundary for multipart/form-data
         
@@ -1773,7 +1772,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 //        for (index, image) in images.enumerated() {
             if let imageData = images.pngData() {
                 body.appendString("--\(boundary)\r\n")
-                body.appendString("Content-Disposition: form-data; name=\"liveness_image\"; filename=\"liveness_image\(index).jpg\"\r\n")
+                body.appendString("Content-Disposition: form-data; name=\"liveness_image\"; filename=\"liveness_image.jpg\"\r\n")
                 body.appendString("Content-Type: image/jpg\r\n\r\n")
                 body.append(imageData)
                 body.appendString("\r\n")
@@ -1979,89 +1978,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
     }
     
-    func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool) {
-//        if(orientation == .landscapeLeft) {
-//            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-//        } else if orientation == .landscapeRight {
-//            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
-//        }
-        
-        isFLpershow = true
-        self.livenessValue = stLivenessValue
-        self.imgCamaraFace = livenessImage
-        if status == false{
-            GlobalMethods.showAlertView("Please try again", with: self)
-        }
-        
-        if (faceRegion != nil)
-        {
-            /*
-             FaceMatch SDK method call to detect Face in back image
-             @Params: BackImage, Front Face Image faceRegion
-             @Return: Face Image Frame
-             */
-            
-            let face2 = EngineWrapper.detectTargetFaces(livenessImage, feature1: faceRegion?.feature)
-            let face11 = faceRegion?.image
-            /*
-             FaceMatch SDK method call to get FaceMatch Score
-             @Params: FrontImage Face, BackImage Face
-             @Return: Match Score
-             
-             */
-            
-            let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
-            if(fm_Score != 0.0){
-            let data = face2?.bound
-            let image = self.resizeImage(image: livenessImage, targetSize: data!)
-            imgCamaraFace = image
-            let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
-                faceScoreData = twoDecimalPlaces
-            self.removeOldValue("FACEMATCH SCORE : ")
-            self.removeOldValue1("0 %")
-            isCheckLiveNess = true
-                if self.pageType != .ScanOCR{
-                    let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
-                    self.arrDocumentData.insert(dict, at: 1)
-                }else{
-                    let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
-                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-                }
-                
-                let stFaceImage = convertImageToBase64(image: image)
-                let stLivenessInage = convertImageToBase64(image: livenessImage)
-//                print(intID as Any)
-                var dictParam: [String: String] = [String: String]()
-                dictParam["kyc_id"] = "\(intID ?? 0)"
-                dictParam["face_match"] = "True"
-                dictParam["liveness"] = "True"
-                dictParam["face_match_score"] = "\(faceScoreData)"
-
-                dictParam["liveness_score"] = stLivenessValue
-                dictParam["facematch_image"] = stFaceImage
-                dictParam["liveness_image"] = stLivenessInage
-                
-                // print(twoDecimalPlaces)
-//                if pageType != .ScanOCR{
-//                    let dict = [KEY_VALUE_FACE_MATCH: "\((stLivenessValue))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
-//                    arrDocumentData.insert(dict, at: 1)
-//                }else{
-//                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
-//                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-//                }
-        }
-            tblResult.reloadData()
-        }
-    }
-    
-    func livenessViewDisappear() {
-        if(orientation == .landscapeLeft) {
-            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-        } else if orientation == .landscapeRight {
-            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
-        }
-    }
-    
     func facematchViewDisappear() {
         if(orientation == .landscapeLeft) {
             AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
@@ -2074,12 +1990,12 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         self.imgCamaraFace = FaceImage
         self.livenessValue = "0.00 %"
         if isLiveness {
-            postMethodWithParamsAndImage(parameters: [:], forMethod: "http://api.accurascan.com:8005/upload.php", images: FaceImage, faceImg: nil, success: { (response) in
+            postMethodWithParamsAndImage(parameters: [:], forMethod: "Your API", images: FaceImage, faceImg: nil, success: { (response) in
                 
                 let responses = response as? [String:Any]
                 
                 if let score = responses?["score"] {
-                    self.livenessValue = "\(score)"
+                    self.livenessValue = "\(score) %"
                     self.imgCamaraFace = FaceImage
                     
                     DispatchQueue.main.async {
