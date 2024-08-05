@@ -115,7 +115,20 @@ accuraCameraWrapper = AccuraCameraWrapper.init()
 	arrCountryList to get value(forKey: "country_id") //get country id
 	arrCountryList to get value(forKey: "card_id") //get card id
 ```
-  
+
+#### Step 2A: To initialize Doc Liveness:
+
+```
+	 self.accuraCameraWrapper?.isApiCallingEnable(true) //Enable Disable Doc Liveness
+
+	 self.accuraCameraWrapper?.apiurl("Your URL")	//Add Your Doc Liveness URL
+
+	 self.accuraCameraWrapper?.setProgressDialogue("API loading...") //Change the Progress Dialogue
+
+	 self.accuraCameraWrapper?.apiTimer(100.0)  //Update the Api Timer
+
+```
+
 #### Optional: Load License File Dynamically
 If you prefer to place the license file dynamically, you can use the following function. This method allows you to specify the license file path at runtime
 ```
