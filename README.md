@@ -243,7 +243,12 @@ extension ViewController: VideoCameraWrapperDelegate{
     func isBothSideAvailable(_ isBothAvailable: Bool) {
         accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
     }
-	
+
+    func onAPIError(_ error: String!) {
+        DispatchQueue.main.async {
+            GlobalMethods.showAlertView(error, with: self)
+        }
+    }
 	//it calls when scan barcode an PDF417 Driving license
     func recognizeSucceedBarcode(_ message: String!, back BackSideImage: UIImage!, frontImage FrontImage: UIImage!, face FaceImage: UIImage!) {
           //message :- Barcode Data
