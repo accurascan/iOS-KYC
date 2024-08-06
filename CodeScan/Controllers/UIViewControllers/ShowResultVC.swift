@@ -1,6 +1,5 @@
 
 import UIKit
-//import ProgressHUD
 import AccuraOCR
 
 //Define Global Key
@@ -26,7 +25,7 @@ struct Objects {
     
 }
 
-class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, FacematchData {
+class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, LivenessData, FacematchData {
     //MARK:- Outlet
     @IBOutlet weak var img_height: NSLayoutConstraint!
     @IBOutlet weak var lblLinestitle: UILabel!
@@ -47,7 +46,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     var uniqStr = ""
     var mrz_val = ""
-    var isLiveness = false
+    var documentLive = ""
+    var documentBLiv = ""
+    
     var imgDoc: UIImage?
     var retval: Int = 0
     var lines = ""
@@ -142,6 +143,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var livenessValue: String = ""
     var intID: Int?
     var orientation: UIInterfaceOrientationMask?
+    var liveness = Liveness()
     var facematch = Facematch()
     
     //MARK:- UIViewContoller Methods
@@ -311,7 +313,32 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        liveness.setLivenessURL("Your URL")
+        liveness.setBackGroundColor("#C4C4C5")
+        liveness.setCloseIconColor("#000000")
+        liveness.setFeedbackBackGroundColor("#C4C4C5")
+        liveness.setFeedbackTextColor("#000000")
+        liveness.setFeedbackTextSize(Float(18.0))
+        liveness.setFeedBackframeMessage("Frame Your Face")
+        liveness.setFeedBackAwayMessage("Move Phone Away")
+        liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+        liveness.setFeedBackCloserMessage("Move Phone Closer")
+        liveness.setFeedBackCenterMessage("Center Your Face")
+        liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
+        liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+        liveness.setFeedBackLowLightMessage("Low light detected")
+        liveness.setFeedBackBlurFaceMessage("Blur detected over face")
+        liveness.setFeedBackGlareFaceMessage("Glare detected")
+        // 0 for clean face and 100 for Blurry face
+        liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
+
+        // Set min and max percentage for glare
+        liveness.setGlarePercentage(-1, -1) //set glaremin -1 to remove this filter
+        liveness.evaluateServerTrustWIthSSLPinning(false)
         
+        
+        
+
         facematch.setBackGroundColor("#C4C4C5")
         facematch.setCloseIconColor("#000000")
         facematch.setFeedbackBackGroundColor("#C4C4C5")
@@ -367,6 +394,17 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     //MARK:- Custom Methods
     func scanMRZData(){
+        
+        if let strline: String =  dictScanningData["Document Liveness"] as? String {
+            self.documentLive = strline
+        }
+        
+        if let strline: String =  dictScanningData["Document Back Liveness"] as? String {
+            self.documentBLiv = strline
+        }
+        
+        
+        
         if let strline: String =  dictScanningData["lines"] as? String {
             self.lines = strline
         }
@@ -458,7 +496,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func setOnlyMRZData(){
-        for index in 0..<23{
+        for index in 0..<24{
             var dict: [String:AnyObject] = [String:AnyObject]()
             switch index {
             case 0:
@@ -646,6 +684,16 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     dict = [KEY_VALUE: departmentNumber,KEY_TITLE:"Department No."] as [String : AnyObject]
                     arrDocumentData.append(dict)
                 }
+            case 23:
+                if documentLive != ""{
+                    dict = [KEY_VALUE: documentLive,KEY_TITLE:"Document Liveness"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+            case 24:
+                if documentBLiv != ""{
+                    dict = [KEY_VALUE: documentBLiv,KEY_TITLE:"Document Back Liveness"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
                 break
             default:
                 break
@@ -661,7 +709,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
      */
     func setData(){
         //Set tableView Data
-        for index in 0..<26 + appDocumentImage.count{
+        for index in 0..<28 + appDocumentImage.count{
             var dict: [String:AnyObject] = [String:AnyObject]()
             switch index {
             case 0:
@@ -870,11 +918,22 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     arrDocumentData.append(dict)
                 }
                 break
+
             case 25:
+                if documentLive != ""{
+                    dict = [KEY_VALUE: documentLive,KEY_TITLE:"Document Liveness"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+            case 26:
+                if documentBLiv != ""{
+                    dict = [KEY_VALUE: documentBLiv,KEY_TITLE:"Document Back Liveness"] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+            case 27:
                 dict = [KEY_DOC1_IMAGE: !appDocumentImage.isEmpty ? appDocumentImage[0] : nil] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
-            case 26:
+            case 28:
                 dict = [KEY_DOC2_IMAGE: appDocumentImage.count == 2 ? appDocumentImage[1] : nil] as [String : AnyObject]
                 arrDocumentData.append(dict)
                 break
@@ -1155,19 +1214,28 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     cell.lblName.text = objDataKey
                     cell.lblValue.text = objDataValue
                     cell.imageViewSignHeight.constant = 0
-                    if !arrOCRTypeData.isEmpty {
-                        if (arrOCRTypeData[indexPath.row] == "2") {
-                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters)
-                        {
+                    
+                    if objDataKey.contains("Sign") || objDataKey.contains("SIGN") || objDataKey.contains("Signature") || objDataKey.contains("signature"){
+                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters) {
                             let image = UIImage(data: decodedData)
                             cell.imageViewSignHeight.constant = 51
                             cell.imageViewSign.image = image
                             cell.lblValue.text = ""
-
                         }
-                        
                     }
-                }
+//                    if !arrOCRTypeData.isEmpty {
+//                        if (arrOCRTypeData[indexPath.row] == "2") {
+//                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters)
+//                        {
+//                            let image = UIImage(data: decodedData)
+//                            cell.imageViewSignHeight.constant = 51
+//                            cell.imageViewSign.image = image
+//                            cell.lblValue.text = ""
+//
+//                        }
+//
+//                    }
+//                }
                 }
                 return cell
             }
@@ -1182,7 +1250,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     cell.lblValue.text = objDataValue
                     
                     
-                    if objDatakey.contains("Sign") || objDatakey.contains("SIGN"){
+                    if objDatakey.contains("Sign") || objDatakey.contains("SIGN") || objDatakey.contains("Signature") || objDatakey.contains("signature"){
                         if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters) {
                             let image = UIImage(data: decodedData)
                             cell.imageViewSignHeight.constant = 51
@@ -1738,87 +1806,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    @objc func postMethodWithParamsAndImage(parameters: [String: String],
-                                             forMethod: String,
-                                             images: UIImage,
-                                             faceImg: UIImage?,
-                                             success: @escaping (AnyObject) -> Void,
-                                             fail: @escaping (AnyObject) -> Void) {
-        // Create the URL from the provided string
-        guard let url = URL(string: forMethod) else {
-            fail("Invalid URL" as AnyObject)
-            return
-        }
-        let boundary = "Boundary-\(UUID().uuidString)"
-
-        // Create the URLRequest
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
-        // Boundary for multipart/form-data
-        
-        // Create the HTTP body
-        let body = NSMutableData()
-
-        // Append parameters
-        for (key, value) in parameters {
-            body.appendString("--\(boundary)\r\n")
-            body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
-            body.appendString("\(value)\r\n")
-        }
-        
-        // Append images
-//        for (index, image) in images.enumerated() {
-            if let imageData = images.pngData() {
-                body.appendString("--\(boundary)\r\n")
-                body.appendString("Content-Disposition: form-data; name=\"liveness_image\"; filename=\"liveness_image.jpg\"\r\n")
-                body.appendString("Content-Type: image/jpg\r\n\r\n")
-                body.append(imageData)
-                body.appendString("\r\n")
-            }
-//        }
-
-        // Append face image if present
-        if let faceImg = faceImg, let faceImgData = faceImg.pngData() {
-            body.appendString("--\(boundary)\r\n")
-            body.appendString("Content-Disposition: form-data; name=\"face_image\"; filename=\"face_image.jpg\"\r\n")
-            body.appendString("Content-Type: image/jpg\r\n\r\n")
-            body.append(faceImgData)
-            body.appendString("\r\n")
-        }
-
-        // Append the final boundary
-        body.appendString("--\(boundary)--\r\n")
-        
-        // Set the body to the request
-        request.httpBody = body as Data
-
-        // Create the URLSession task
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                fail(error.localizedDescription as AnyObject)
-                return
-            }
-
-            guard let data = data else {
-                fail("No data" as AnyObject)
-                return
-            }
-
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                success(json as AnyObject)
-            } catch {
-                fail(error.localizedDescription as AnyObject)
-            }
-        }
-        task.resume()
-    }
-
-
-
-    
      func resizeImage(image: UIImage, targetSize: CGRect) -> UIImage {
         let contextImage: UIImage = UIImage(cgImage: image.cgImage!)
         var newX = targetSize.origin.x - (targetSize.size.width * 0.4)
@@ -1954,7 +1941,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     } else {
         orientation = .portrait
     }
-        isLiveness = false
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
     facematch.setFacematch(self)
 
@@ -1971,11 +1957,92 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         orientation = .portrait
     }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-//    liveness.setLiveness(self)
-        isLiveness = true
-        facematch.setFacematch(self)
+    liveness.setLiveness(self)
     
         
+    }
+    
+    func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool) {
+//        if(orientation == .landscapeLeft) {
+//            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+//        } else if orientation == .landscapeRight {
+//            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+//        }
+        
+        isFLpershow = true
+        self.livenessValue = stLivenessValue
+        self.imgCamaraFace = livenessImage
+        if status == false{
+            GlobalMethods.showAlertView("Please try again", with: self)
+        }
+        
+        if (faceRegion != nil)
+        {
+            /*
+             FaceMatch SDK method call to detect Face in back image
+             @Params: BackImage, Front Face Image faceRegion
+             @Return: Face Image Frame
+             */
+            
+            let face2 = EngineWrapper.detectTargetFaces(livenessImage, feature1: faceRegion?.feature)
+            let face11 = faceRegion?.image
+            /*
+             FaceMatch SDK method call to get FaceMatch Score
+             @Params: FrontImage Face, BackImage Face
+             @Return: Match Score
+             
+             */
+            
+            let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
+            if(fm_Score != 0.0){
+            let data = face2?.bound
+            let image = self.resizeImage(image: livenessImage, targetSize: data!)
+            imgCamaraFace = image
+            let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
+                faceScoreData = twoDecimalPlaces
+            self.removeOldValue("FACEMATCH SCORE : ")
+            self.removeOldValue1("0 %")
+            isCheckLiveNess = true
+                if self.pageType != .ScanOCR{
+                    let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
+                    self.arrDocumentData.insert(dict, at: 1)
+                }else{
+                    let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
+                    self.arrFaceLivenessScor.insert(ansData, at: 0)
+                }
+                
+                let stFaceImage = convertImageToBase64(image: image)
+                let stLivenessInage = convertImageToBase64(image: livenessImage)
+//                print(intID as Any)
+                var dictParam: [String: String] = [String: String]()
+                dictParam["kyc_id"] = "\(intID ?? 0)"
+                dictParam["face_match"] = "True"
+                dictParam["liveness"] = "True"
+                dictParam["face_match_score"] = "\(faceScoreData)"
+
+                dictParam["liveness_score"] = stLivenessValue
+                dictParam["facematch_image"] = stFaceImage
+                dictParam["liveness_image"] = stLivenessInage
+                
+                // print(twoDecimalPlaces)
+//                if pageType != .ScanOCR{
+//                    let dict = [KEY_VALUE_FACE_MATCH: "\((stLivenessValue))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
+//                    arrDocumentData.insert(dict, at: 1)
+//                }else{
+//                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
+//                    self.arrFaceLivenessScor.insert(ansData, at: 0)
+//                }
+        }
+            tblResult.reloadData()
+        }
+    }
+    
+    func livenessViewDisappear() {
+        if(orientation == .landscapeLeft) {
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        } else if orientation == .landscapeRight {
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        }
     }
     
     func facematchViewDisappear() {
@@ -1989,24 +2056,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         isFLpershow = true
         self.imgCamaraFace = FaceImage
         self.livenessValue = "0.00 %"
-        if isLiveness {
-            postMethodWithParamsAndImage(parameters: [:], forMethod: "Your API", images: FaceImage, faceImg: nil, success: { (response) in
-                
-                let responses = response as? [String:Any]
-                
-                if let score = responses?["score"] {
-                    self.livenessValue = "\(score) %"
-                    self.imgCamaraFace = FaceImage
-                    
-                    DispatchQueue.main.async {
-                        self.tblResult.reloadData()
-                    }
-                }
-                
-            }) { (error) in
-                print(error)
-            }
-        }
+        
         if (faceRegion != nil)
         {
             /*
@@ -2060,13 +2110,4 @@ fileprivate func convertToUIImagePickerControllerInfoKeyDictionary(_ input: [Str
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
     return input.rawValue
-}
-
-// Helper function to append strings to NSMutableData
-extension NSMutableData {
-    func appendString(_ string: String) {
-        if let data = string.data(using: .utf8) {
-            append(data)
-        }
-    }
 }
