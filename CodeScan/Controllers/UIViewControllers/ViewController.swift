@@ -327,6 +327,12 @@ extension ViewController: VideoCameraWrapperDelegate {
         accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
     }
     
+    func onAPIError(_ error: String!) {
+        DispatchQueue.main.async {
+            GlobalMethods.showAlertView(error, with: self)
+        }
+    }
+    
     func  onUpdateLayout(_ frameSize: CGSize, _ borderRatio: Float) {
         var width: CGFloat = 0.0
         var height: CGFloat = 0.0
