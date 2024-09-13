@@ -390,6 +390,7 @@ func reco_titleMessage(_ messageCode: Int32) {
 
 ## 2. Setup Accura liveness
 
+Contact to  [connect@accurascan.com](mailto:connect@accurascan.com)  to get Url for liveness </br>
 Step 1: Open camera for liveness Detectcion.
 
 * import the module name  `import AccuraLiveness_fm`  if you are using `AccuraLiveness_FM` pod
@@ -398,39 +399,46 @@ Step 1: Open camera for liveness Detectcion.
 * Setup auto capture Camera
 
 ```
+//set liveness url
+var liveness = Liveness()
+liveness.setLivenessURL("/*Your URL*/")
+
 // To customize your screen theme and feed back messages
-var facematch = Facematch()
-facematch.setBackGroundColor("#C4C4C5")
-facematch.setCloseIconColor("#000000")
-facematch.setFeedbackBackGroundColor("#C4C4C5")
-facematch.setFeedbackTextColor("#000000")
-facematch.setFeedbackTextSize(Float(18.0))
-facematch.setFeedBackframeMessage("Frame Your Face")
-facematch.setFeedBackAwayMessage("Move Phone Away")
-facematch.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
-facematch.setFeedBackCloserMessage("Move Phone Closer")
-facematch.setFeedBackCenterMessage("Center Your Face")
-facematch.setFeedbackMultipleFaceMessage("Multiple face detected")
-facematch.setFeedBackFaceSteadymessage("Keep Your Head Straight")
-facematch.setFeedBackLowLightMessage("Low light detected")
-facematch.setFeedBackBlurFaceMessage("Blur detected over face")
-facematch.setFeedBackGlareFaceMessage("Glare detected")
+liveness.setBackGroundColor("#C4C4C5")
+liveness.setCloseIconColor("#000000")
+liveness.setFeedbackBackGroundColor("#C4C4C5")
+liveness.setFeedbackTextColor("#000000")
+liveness.setFeedbackTextSize(Float(18.0))
+liveness.setFeedBackframeMessage("Frame Your Face")
+liveness.setFeedBackAwayMessage("Move Phone Away")
+liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+liveness.setFeedBackCloserMessage("Move Phone Closer")
+liveness.setFeedBackCenterMessage("Center Your Face")
+liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
+liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+liveness.setFeedBackLowLightMessage("Low light detected")
+liveness.setFeedBackBlurFaceMessage("Blur detected over face")
+liveness.setFeedBackGlareFaceMessage("Glare detected")
 
 // 0 for clean face and 100 for Blurry face
-facematch.setBlurPercentage(80) // set blure percentage -1 to remove this filter
+liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 
 // Set min and max percentage for glare
-facematch.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove this filter
+liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove this filter
+
+// if you want to enable SSL certificate pinning for Liveness API set it true. 
+// if 'evaluateServerTrustWIthSSLPinning()' is true must have to add SSL Certificate of Your liveness API Server in Your Proeject's Root directory
+liveness.evaluateServerTrustWIthSSLPinning(true)
 ```
 
 Step 2: Handle Accura liveness Result
 ```
-// it calls when Face image
-func facematchData(_ FaceImage: UIImage!) {
-  //Call the Liveness API with the "FaceImage"
+// it calls when get liveness result
+func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool){
 }
-// it calls when Facematch camera view dissappear
-func facematchViewDisappear() {
+
+// it calls when liveness camera view dissappear
+func livenessViewDisappear() {
 }
 ```
 
