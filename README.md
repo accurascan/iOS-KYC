@@ -426,9 +426,8 @@ liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 // Set min and max percentage for glare
 liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove this filter
 
-// if you want to enable SSL certificate pinning for Liveness API set it true. 
-// if 'evaluateServerTrustWIthSSLPinning()' is true must have to add SSL Certificate of Your liveness API Server in Your Proeject's Root directory
-liveness.evaluateServerTrustWIthSSLPinning(true)
+//To start the Liveness
+liveness.setLiveness(self)
 ```
 
 Step 2: Handle Accura liveness Result
