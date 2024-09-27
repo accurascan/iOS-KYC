@@ -41,6 +41,9 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
     var isBankCard = false
     var isBarcode = false
     var accuraCameraWrapper: AccuraCameraWrapper? = nil
+   var docHeader: [String: String] = [
+        "Accept": "application/json"
+    ]
     
     //MARK:- View Controller Method
     override func viewDidLoad() {
@@ -122,6 +125,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                  self.accuraCameraWrapper?.apiurl("Your URL")
                  self.accuraCameraWrapper?.setProgressDialogue("API loading...")
                  self.accuraCameraWrapper?.apiTimer(100.0)
+                 self.accuraCameraWrapper?.apiheader(self.docHeader)
 //                self.accuraCameraWrapper?.setCheckPhotoCopy(false, stCheckPhotoMessage: "")
              }
             }
