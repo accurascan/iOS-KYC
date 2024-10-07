@@ -1,8 +1,6 @@
 
 import UIKit
-import SVProgressHUD
 import AccuraOCR
-
 
 struct CountryName {
     let id : Int?
@@ -53,7 +51,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
             buttonOrtientation.isSelected = true
         }
 
-        SVProgressHUD.show(withStatus: "Loading...")
+//        SVProgressHUD.show(withStatus: "Loading...")
         lablelDataNotFound.isHidden = true
         viewStatusBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
@@ -79,35 +77,10 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                 } else {
                     self.isBankCard = false
                 }
-                if(sdkModel!.isBarcodeEnable) {
-                    self.isBarcode = true
-                } else {
-                    self.isBarcode = false
-                }
             }
             if(self.isMRZCell)
             {
                 self.arrCountryList.add("Passport MRZ")
-                self.arrCountryList.add("ID card MRZ")
-                self.arrCountryList.add("VISA MRZ")
-                self.arrCountryList.add("All MRZ")
-            }
-            if(self.isBankCard) {
-                self.arrCountryList.add("Bank Card")
-               
-            }
-            if(self.isBarcode) {
-                self.arrCountryList.add("Barcode")
-            }
-            let countryListStr = self.accuraCameraWrapper?.getOCRList()
-            if(countryListStr != nil)
-            {
-                for i in countryListStr!{
-                    self.arrCountryList.add(i)
-                }
-            }
-            else{
-//                GlobalMethods.showAlertView("", with: self)
             }
             
              if(sdkModel != nil){
@@ -119,14 +92,13 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
                 self.accuraCameraWrapper?.setGlarePercentage(6, intMax: 99)
                 self.accuraCameraWrapper?.setBlurPercentage(60)
                 self.accuraCameraWrapper?.setCameraFacing(.CAMERA_FACING_BACK)
-//                self.accuraCameraWrapper?.setCheckPhotoCopy(false, stCheckPhotoMessage: "")
              }
             }
             
             self.tblViewCountryList.delegate = self
             self.tblViewCountryList.dataSource = self
             self.tblViewCountryList.reloadData()
-            SVProgressHUD.dismiss()
+//            SVProgressHUD.dismiss()
         }
     }
     
@@ -199,12 +171,7 @@ class CountryNameViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellDict = arrCountryList.object(at: indexPath.row)
         if let stringCell = cellDict as? String {
-            if(stringCell == "Barcode")
-            {
-                let loginVC = UIStoryboard(name: "CodeScanVC", bundle: nil).instantiateViewController(withIdentifier: "CodeScanVC") as! CodeScanVC
-                loginVC.isBarcodeEnabled = true
-                self.navigationController?.pushViewController(loginVC, animated: true)
-            } else if(stringCell == "Bank Card") {
+            if(stringCell == "Bank Card") {
                 let vc: ViewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
                 vc.isCheckScanOCR = true
                 vc.cardType = 3

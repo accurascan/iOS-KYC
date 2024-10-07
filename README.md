@@ -9,45 +9,16 @@ Below steps to setup Accura SDK's in your project.
 1. install Git LFS using command `install git-lfs` 
 
 2. Add below pod in podfile
-```
-    # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC', '3.1.1'
-
-    # not require below pods if you are installing AccuraKYC pod
+```  
 
     # install the AccuraOCR pod for AccuraOCR only.
-    pod 'AccuraOCR', '3.1.1'
+    pod 'AccuraOCR','1.0.0.0'
     
     # install the AccuraLiveness_FM pod for AccuraLiveness And AccuraFacematch both.</br>
-    pod 'AccuraLiveness_FM', '3.1.0'
+    pod 'AccuraLiveness_FM', '4.3.4'
+    
 ```
 
-3. Run `pod install`
-
-Note :- after pod install, make sure to check the pod size as mentioned below </br>
-* If you are using `AccuraKYC` pod </br>
-    `your Project's root dicrectory/Pods/AccuraKYC/Framework/AccuraOCR.framework` </br>
-    the `AccuraOCR.framework` size should be around 285 MB
-            
-* If you are using `AccuraOCR` pod </br>
-   ` your Project's root dicrectory/Pods/AccuraOCR/Framework/AccuraOCR.framework` </br>
-    the `AccuraOCR.framework` size should be around 270 MB
-* If you are using `AccuraLiveness_FM` pod </br>
-   ` your Project's root dicrectory/Pods/AccuraLiveness_FM/Framework/AccuraLiveness_FM.framework` </br>
-    the `AccuraLiveness_FM.framework` size should be around 157 MB
-    
-    
-            
-
- 4. Solving pod issue (follow this step only if pod size doesnt match as said in point 3) </br>
-     i.   Clean the pod using `pod clean` command </br>
-     ii.  install Git LFS using `install git-lfs` command </br>
-     iii. Run `pod install` </br>
-
- 5. Run the App in Simulator.  ( Optional )
-    1. Download required framework [AccuraKYC.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.1/AccuraKYC.framework.zip), [AccuraOCR.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.1/AccuraOCR.framework.zip),  [AccuraLiveness+fm.framework.zip](https://github.com/accurascan/iOS-KYC/releases/download/3.1.0/AccuraLiveness_fm.framework.zip) and Extract it
-    
-    2. add this framework in your project's root directory
 
 ## 1. Setup Accura OCR
 
@@ -55,7 +26,6 @@ Note :- after pod install, make sure to check the pod size as mentioned below </
 
 `key.license`
 
-Generate your Accura license from https://accurascan.com/developer/dashboard <br/>
 
 #### Step 2: To initialize sdk on app start:
 ```
@@ -157,10 +127,6 @@ accuraCameraWrapper?.switchCamera()
 accuraCameraWrapper?.cardSide(.FRONT_CARD_SCAN)
 ```
 
-* Enable Print logs in OCR and Liveness SDK
-```
-accuraCameraWrapper?.showLogFile(true) // Set true to print log from KYC SDK
-```
 
 #### Step 3: Set CameraView
 
@@ -363,9 +329,36 @@ func reco_titleMessage(_ messageCode: Int32) {
 }
 ```
 
+
+#### Step 4: Set NFC
+
+Important Grant NFCReaderUsageDescription Permission.</br>
+```
+    <key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+    <array>
+        <string>A0000002471001</string>
+        <string>A0000002472001</string>
+        <string>00000000000000</string>
+    </array>
+```
+##### Start NFC
+```
+    import AccuraOCR
+
+        var accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self)
+        accuraCameraWrapper?.startNFC(forPassport: nfcDob, doe: nfcDoe, passportNumber: nfcPassportNumber)
+```
+##### NFC Response
+```
+extension ViewController: VideoCameraWrapperDelegate{
+        func nfcData(_ NFCKey: [Any]!, nfcValue NFCValue: [Any]!, face: UIImage!) {}
+        
+        func nfcError(_ error: String!) {}
+}
+```
+
 ## 2. Setup Accura liveness
 
-Contact to  [connect@accurascan.com](mailto:connect@accurascan.com)  to get Url for liveness </br>
 Step 1: Open camera for liveness Detectcion.
 
 * import the module name  `import AccuraLiveness_fm`  if you are using `AccuraLiveness_FM` pod
@@ -401,9 +394,6 @@ liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
 // Set min and max percentage for glare
 liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove this filter
 
-// if you want to enable SSL certificate pinning for Liveness API set it true. 
-// if 'evaluateServerTrustWIthSSLPinning()' is true must have to add SSL Certificate of Your liveness API Server in Your Proeject's Root directory
-liveness.evaluateServerTrustWIthSSLPinning(true)
 ```
 
 Step 2: Handle Accura liveness Result
@@ -425,7 +415,6 @@ Step 1: Add licence file in to your project.<br />
 
 - `accuraface.license` for Accura Face Match <br />
 
-Generate your Accura licence from <https://accurascan.com/developer/sdk-license>
 
 Step 2: Add `FaceView.swift` file in your project.
 

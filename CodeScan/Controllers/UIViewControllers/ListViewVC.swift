@@ -92,15 +92,6 @@ class ListViewVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellDict = screenList.object(at: indexPath.row) as! NSDictionary
-        if(cellDict.value(forKey: "card_type") as! Int == 1)
-        {
-            let loginVC = UIStoryboard(name: "CodeScanVC", bundle: nil).instantiateViewController(withIdentifier: "CodeScanVC") as! CodeScanVC
-            loginVC.cardid = cellDict.value(forKey: "card_id") as? Int
-            loginVC.countryid = countryId
-            loginVC.isBarcodeEnabled = false
-            self.navigationController?.pushViewController(loginVC, animated: true)
-        }
-        else{
             let vc: ViewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
             vc.cardid = cellDict.value(forKey: "card_id") as? Int
             vc.docName = (cellDict.value(forKey: "card_name") as? String)!
@@ -110,7 +101,6 @@ class ListViewVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             vc.cardType = cellDict.value(forKey: "card_type") as? Int//cardtype
             
             self.navigationController?.pushViewController(vc, animated: true)
-        }
     }
     
 }

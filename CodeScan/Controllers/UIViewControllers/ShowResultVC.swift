@@ -1,6 +1,5 @@
 
 import UIKit
-import SVProgressHUD
 import AccuraOCR
 
 //Define Global Key
@@ -15,6 +14,8 @@ let KEY_VALUE_FACE_MATCH           =  "KEY_VALUE_FACE_MATCH"
 let KEY_TITLE_FACE_MATCH1          =  "KEY_TITLE_FACE_MATCH1"
 let KEY_VALUE_FACE_MATCH1          =  "KEY_VALUE_FACE_MATCH1"
 
+var uniqueID = ""
+
 struct Objects {
     var name : String!
     var objects : String!
@@ -26,14 +27,23 @@ struct Objects {
     
 }
 
-class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, LivenessData, FacematchData {
+@available(iOS 15, *)
+class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate,VideoCameraWrapperDelegate{
+
     //MARK:- Outlet
     @IBOutlet weak var img_height: NSLayoutConstraint!
     @IBOutlet weak var lblLinestitle: UILabel!
     @IBOutlet weak var tblResult: UITableView!
     @IBOutlet weak var imgPhoto: UIImageView!
-    
-    
+        
+    @IBOutlet weak var dobLab: UILabel!
+    @IBOutlet weak var passNo: UILabel!
+    @IBOutlet weak var doeLabel: UILabel!
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var doePicker: UIDatePicker!
+    @IBOutlet weak var dobPicker: UIDatePicker!
+    @IBOutlet weak var addDateView: UIView!
+    var docFrontImage:UIImage?
     @IBOutlet weak var viewTable: UIView!
     
     @IBOutlet weak var viewStatusBar: UIView!
@@ -42,12 +52,13 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     @IBOutlet weak var labelTitle: UILabel!
     
+    @IBOutlet weak var heightOfNFC: NSLayoutConstraint!
+    
     //MARK:- Variable
     let obj_AppDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     var uniqStr = ""
     var mrz_val = ""
-    
     var imgDoc: UIImage?
     var retval: Int = 0
     var lines = ""
@@ -82,10 +93,11 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 
     var fontImgRotation = ""
     var backImgRotation = ""
-    
+    var arrnfcPassportKey :[Any]? = nil
+    var arrnfcPassportData:[Any]? = nil
     var photoImage: UIImage?
     var documentImage: UIImage?
-    
+    var nfcpassportImage: UIImage?
     var isFirstTime:Bool = false
     var arrDocumentData: [[String:AnyObject]] = [[String:AnyObject]]()
     var dictDataShow: [String:AnyObject] = [String:AnyObject]()
@@ -98,10 +110,13 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     let picker: UIImagePickerController = UIImagePickerController()
     var stLivenessResult: String = ""
-    var faceRegion: NSFaceRegion?
-    
+    var nfcPassportNumber = ""
+    var accuraCameraWrapper: AccuraCameraWrapper? = nil
+
+    var nfcDob = ""
+    var nfcDoe = ""
     var scannedData: NSMutableDictionary = [:]
-    
+    let datePicker = UIDatePicker()
     var dictFaceData : NSMutableDictionary = [:]
     var dictSecurityData : NSMutableDictionary = [:]
     var dictFaceBackData : NSMutableDictionary = [:]
@@ -142,12 +157,20 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var livenessValue: String = ""
     var intID: Int?
     var orientation: UIInterfaceOrientationMask?
-    var liveness = Liveness()
-    var facematch = Facematch()
     
     //MARK:- UIViewContoller Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        clearLogFile()
+        uniqueID = randomString(length: 5)
+        addDateView.layer.cornerRadius = 10
+        addDateView.layer.borderColor = UIColor.black.cgColor
+        addDateView.layer.borderWidth = 1
+        textField.returnKeyType = .done
+        textField.autocapitalizationType = .allCharacters
+        textField.autocorrectionType = .no
+//        textField.becomeFirstResponder()
+        textField.delegate = self
         isCheckLiveNess = false
         viewStatusBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
         viewNavigationBar.backgroundColor = UIColor(red: 231.0 / 255.0, green: 52.0 / 255.0, blue: 74.0 / 255.0, alpha: 1.0)
@@ -155,120 +178,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         isFirstTime = true
         
         
-//        AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-        /*
-         FaceMatch SDK method to check if engine is initiated or not
-         Return: true or false
-         */
-        let fmInit = EngineWrapper.isEngineInit()
-        if !fmInit{
-            
-            /*
-             FaceMatch SDK method initiate SDK engine
-             */
-            
-            EngineWrapper.faceEngineInit()
-        }
-        
-        /*
-         Facematch SDK method to get SDK engine status after initialization
-         Return: -20 = Face Match license key not found, -15 = Face Match license is invalid.
-         */
-        let fmValue = EngineWrapper.getEngineInitValue() //get engineWrapper load status
-        if fmValue == -20{
-            GlobalMethods.showAlertView("key not found", with: self)
-        }else if fmValue == -15{
-            GlobalMethods.showAlertView("License Invalid", with: self)
-        }
-        NotificationCenter.default.addObserver(self, selector: #selector(loadPhotoCaptured), name: NSNotification.Name("_UIImagePickerControllerUserDidCaptureItem"), object: nil)
-        if pageType == .ScanOCR{
-            for(key, value) in dictOCRTypeData {
-                arrOCRTypeData.append(value as! String)
-                
-            }
-            dictScanningData = NSDictionary(dictionary: scannedData)
-            if arrDataForntKey.count != 0 && self.arrDataBackKey.count != 0{
-                setFaceImage()
-                for (index,dataKey) in arrDataForntKey.enumerated(){
-                    if dataKey == "MRZ"{
-                        arrDataForntKey.remove(at: index)
-                        arrDataForntValue.remove(at: index)
-                    }
-                }
-                for (index,dataKey) in arrDataBackKey.enumerated(){
-                    if dataKey == "MRZ"{
-                        arrDataBackKey.remove(at: index)
-                        arrDataBackValue.remove(at: index)
-                    }
-                }
-                for(key,value) in dictFaceData{
-                    if key as? String != "Face"{
-                        arrDataForntKey.append(key as! String)
-                        arrDataForntValue.append(value as! String)
-                    }
-                }
-                for(key,value) in dictFaceBackData{
-                  if key as? String != "Face"{
-                    arrDataBackKey.append(key as! String)
-                    arrDataBackValue.append(value as! String)
-                    }
-                }
-                for(key,value) in dictSecurityData{
-                    let ansData = Objects.init(sName: key as? String ?? "", sObjects: value as? String ?? "")
-                    arrSecurity.append(ansData.objects)
-                }
-                scanMRZData()
-            }else{
-                let arrFinalResult1 = [dictFaceData]
-                setFaceImage()
-                for (index,dataKey) in arrDataForntKey.enumerated(){
-                    if dataKey == "MRZ"{
-                        arrDataForntKey.remove(at: index)
-                        arrDataForntValue.remove(at: index)
-                    }
-                }
-                for(key,value) in dictFaceData{
-                    if key as? String != "Face"{
-                    arrDataForntKey.append(key as! String)
-                    arrDataForntValue.append(value as! String)
-                    }
-                }
-                for(key,value) in dictFaceBackData{
-                  if key as? String != "Face"{
-                    arrDataBackKey.append(key as! String)
-                    arrDataBackValue.append(value as! String)
-                    }
-                }
-                
-                for(key,value) in dictSecurityData{
-                    let ansData = Objects.init(sName: key as? String ?? "", sObjects: value as? String ?? "")
-                    arrSecurity.append(ansData.objects)
-                }
-                scanMRZData()
-            }
-        } else if pageType == .BankCard{
-            dictScanningData = NSDictionary(dictionary: scannedData)
-            var dict: [String:AnyObject] = [String:AnyObject]()
-            if let cardType = dictScanningData["card_type"] {
-                dict = [KEY_VALUE: cardType,KEY_TITLE:"Card Type"] as [String : AnyObject]
-                arrDocumentData.append(dict)
-            }
-            if let cardNumber = dictScanningData["card_number"] {
-                dict = [KEY_VALUE: cardNumber,KEY_TITLE:"Number"] as [String : AnyObject]
-                arrDocumentData.append(dict)
-            }
-            if let ExpiryMonth = dictScanningData["expiration_month"] {
-                dict = [KEY_VALUE: ExpiryMonth,KEY_TITLE:"Expiry Month"] as [String : AnyObject]
-                arrDocumentData.append(dict)
-            }
-            if let expiryYear = dictScanningData["expiration_year"] {
-                dict = [KEY_VALUE: expiryYear,KEY_TITLE:"Expiry Year"] as [String : AnyObject]
-                arrDocumentData.append(dict)
-            }
-          
-            
-        } else{
-//                // print(dictScanningData)
+
                 dictScanningData = NSDictionary(dictionary: scannedData)
 
                 if let stFontRotaion:String = dictScanningData["fontImageRotation"] as? String{
@@ -280,20 +190,21 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 scanMRZData()
                 if let image_photoImage: Data = dictScanningData["photoImage"] as? Data {
                     self.photoImage = UIImage(data: image_photoImage)
-                    self.faceRegion = nil;
+//                    self.faceRegion = nil;
                     if (self.photoImage != nil){
-                        self.faceRegion = EngineWrapper.detectSourceFaces(photoImage) //Identify face in Document scanning image
+//                        self.faceRegion = EngineWrapper.detectSourceFaces(photoImage) //Identify face in Document scanning image
                     }
                 }
                 if let image_documentFontImage: Data = dictScanningData["docfrontImage"] as? Data  {
                     appDocumentImage.append(UIImage(data: image_documentFontImage)!)
+                    docFrontImage = UIImage(data: image_documentFontImage)!
                 }
                 
                 if let image_documentImage: Data = dictScanningData["documentImage"] as? Data  {
                     appDocumentImage.append(UIImage(data: image_documentImage)!)
                 }
                 imgDoc = documentImage
-        }
+//        }
         
         //**************************************************************//
         
@@ -312,54 +223,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        liveness.setLivenessURL("YourURL")
-        liveness.setBackGroundColor("#C4C4C5")
-        liveness.setCloseIconColor("#000000")
-        liveness.setFeedbackBackGroundColor("#C4C4C5")
-        liveness.setFeedbackTextColor("#000000")
-        liveness.setFeedbackTextSize(Float(18.0))
-        liveness.setFeedBackframeMessage("Frame Your Face")
-        liveness.setFeedBackAwayMessage("Move Phone Away")
-        liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
-        liveness.setFeedBackCloserMessage("Move Phone Closer")
-        liveness.setFeedBackCenterMessage("Center Your Face")
-        liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
-        liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
-        liveness.setFeedBackLowLightMessage("Low light detected")
-        liveness.setFeedBackBlurFaceMessage("Blur detected over face")
-        liveness.setFeedBackGlareFaceMessage("Glare detected")
-        // 0 for clean face and 100 for Blurry face
-        liveness.setBlurPercentage(80) // set blure percentage -1 to remove this filter
-
-        // Set min and max percentage for glare
-        liveness.setGlarePercentage(-1, -1) //set glaremin -1 to remove this filter
-        liveness.evaluateServerTrustWIthSSLPinning(true)
-        
-        
-        
-
-        facematch.setBackGroundColor("#C4C4C5")
-        facematch.setCloseIconColor("#000000")
-        facematch.setFeedbackBackGroundColor("#C4C4C5")
-        facematch.setFeedbackTextColor("#000000")
-        facematch.setFeedbackTextSize(Float(18.0))
-        facematch.setFeedBackframeMessage("Frame Your Face")
-        facematch.setFeedBackAwayMessage("Move Phone Away")
-        facematch.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
-        facematch.setFeedBackCloserMessage("Move Phone Closer")
-        facematch.setFeedBackCenterMessage("Center Your Face")
-        facematch.setFeedbackMultipleFaceMessage("Multiple face detected")
-        facematch.setFeedBackFaceSteadymessage("Keep Your Head Straight")
-        facematch.setFeedBackLowLightMessage("Low light detected")
-        facematch.setFeedBackBlurFaceMessage("Blur detected over face")
-        facematch.setFeedBackGlareFaceMessage("Glare detected")
-        // 0 for clean face and 100 for Blurry face
-        facematch.setBlurPercentage(80) // set blure percentage -1 to remove this filter
-
-        // Set min and max percentage for glare
-        facematch.setGlarePercentage(-1, -1) //set glaremin -1 to remove this filter
-        
-        
         //Set TableView Height
         self.tblResult.estimatedRowHeight = 60.0
         self.tblResult.rowHeight = UITableView.automaticDimension
@@ -381,6 +244,19 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyMMdd"
+        let date: Date? = dateFormatter.date(from: birth ?? "")
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        dobPicker.date = date!//date(toFormatedDate: birth)
+        
+        
+        
+//        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyMMdd"
+        let date1: Date? = dateFormatter.date(from: expirationDate ?? "")
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        doePicker.date = date1!//date(toFormatedDate: birth)
         super.viewDidAppear(animated)
     
     }
@@ -391,6 +267,45 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     override func viewWillDisappear(_ animated: Bool) {
        
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        let text = textField.text
+        print("\(text)")
+        nfcPassportNumber = "\(text)"
+         return true
+    }
+    
+    @IBAction func startNFC(_ sender: Any) {
+        heightOfNFC.constant = 0
+        accuraCameraWrapper = AccuraCameraWrapper.init(delegate: self)
+        accuraCameraWrapper?.startNFC(forPassport: nfcDob, doe: nfcDoe, passportNumber: nfcPassportNumber)
+        dobLab.isHidden = true
+        passNo.isHidden = true
+        doeLabel.isHidden = true
+        textField.isHidden = true
+        doePicker.isHidden = true
+        dobPicker.isHidden = true
+        addDateView.isHidden = true
+    }
+    
+    
+    @IBAction func dobEdit(_ sender: Any) {
+        dobPicker.datePickerMode = UIDatePicker.Mode.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyMMdd"
+        let selectedDate = dateFormatter.string(from: dobPicker.date)
+        nfcDob = selectedDate
+    }
+    @IBAction func doeEdit(_ sender: Any) {
+        doePicker.datePickerMode = UIDatePicker.Mode.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyMMdd"
+        let selectedDate = dateFormatter.string(from: doePicker.date)
+        nfcDoe = selectedDate
+    }
+                   
     //MARK:- Custom Methods
     func scanMRZData(){
         if let strline: String =  dictScanningData["lines"] as? String {
@@ -537,6 +452,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     let stringWithoutSpaces = passportNumber.replacingOccurrences(of: "<", with: "")
                     dict = [KEY_VALUE: stringWithoutSpaces,KEY_TITLE:"Document No."] as [String : AnyObject]
                     arrDocumentData.append(dict)
+                    textField.text = stringWithoutSpaces
+                    nfcPassportNumber = stringWithoutSpaces
                 }
             case 5:
                 if passportNumberChecksum != ""{
@@ -570,6 +487,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     stSex = "FEMALE";
                 }else if sex == "M" {
                     stSex = "MALE";
+                } else if sex == "x" {
+                    stSex = "OTHER";
                 } else {
                     stSex = sex
                 }
@@ -584,6 +503,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                         
                         dict = [KEY_VALUE: birthDate,KEY_TITLE:"Date of Birth"] as [String : AnyObject]
                         arrDocumentData.append(dict)
+                        nfcDob = birth
                     }
                 }
                 break
@@ -608,6 +528,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                         
                         dict = [KEY_VALUE: expiryDate,KEY_TITLE:"Date of Expiry"] as [String : AnyObject]
                         arrDocumentData.append(dict)
+                        nfcDoe = expirationDate
                     }
                 }
                 break
@@ -683,6 +604,261 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
      * This method use set scanning data
      *
      */
+    
+    func setNFCData(){
+        //Set tableView Data
+        for index in 0..<56 + appDocumentImage.count{
+            var dict: [String:AnyObject] = [String:AnyObject]()
+            switch index {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                break
+            case 3:
+                break
+            case 4:
+                break
+            case 5:
+                break
+            case 6:
+                break
+            case 7:
+                break
+            case 8:
+                break
+            case 9:
+                break
+            case 10:
+                break
+            case 11:
+                break
+            case 12:
+                break
+            case 13:
+                break
+            case 14:
+                break
+            case 15:
+                break
+            case 16:
+                break
+            case 17:
+                break
+            case 18:
+                break
+            case 19:
+                break
+            case 20:
+                break
+              
+            case 21:
+                break
+            case 22:
+                break
+            case 23:
+                break
+            case 24:
+                break
+            case 25:
+                break
+            case 26:
+                break
+            case 23:
+                if arrnfcPassportKey![0] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[0],KEY_TITLE:arrnfcPassportKey![0]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+            case 24:
+                if arrnfcPassportKey![1] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[1],KEY_TITLE:arrnfcPassportKey![1]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+
+                }
+                break
+
+            case 25:
+                if arrnfcPassportKey![2] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[2],KEY_TITLE:arrnfcPassportKey![2]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+
+                }
+                break
+
+            case 26:
+                if arrnfcPassportKey![3] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[3],KEY_TITLE:arrnfcPassportKey![3]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+
+                }
+                break
+            case 27:
+                if arrnfcPassportKey![4] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[4],KEY_TITLE:arrnfcPassportKey![4]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+
+                }
+                break
+            case 28:
+                if arrnfcPassportKey![5] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[5],KEY_TITLE:arrnfcPassportKey![5]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+
+                }
+                break
+            case 29:
+                if arrnfcPassportKey![6] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[6],KEY_TITLE:arrnfcPassportKey![6]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+
+                }
+                break
+            case 30:
+                if arrnfcPassportKey![7] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[7],KEY_TITLE:arrnfcPassportKey![7]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 31:
+                if arrnfcPassportKey![8] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[8],KEY_TITLE:arrnfcPassportKey![8]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 32:
+                if arrnfcPassportKey![9] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[9],KEY_TITLE:arrnfcPassportKey![9]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 33:
+                if arrnfcPassportKey![10] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[10],KEY_TITLE:arrnfcPassportKey![10]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 34:
+                if arrnfcPassportKey![11] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[11],KEY_TITLE:arrnfcPassportKey![11]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 35:
+                if arrnfcPassportKey![12] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[12],KEY_TITLE:arrnfcPassportKey![12]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 36:
+                if arrnfcPassportKey![13] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[13],KEY_TITLE:arrnfcPassportKey![13]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 37:
+                if arrnfcPassportKey![14] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[14],KEY_TITLE:arrnfcPassportKey![14]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 38:
+                if arrnfcPassportKey![15] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[15],KEY_TITLE:arrnfcPassportKey![15]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 39:
+                if arrnfcPassportKey![16] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[16],KEY_TITLE:arrnfcPassportKey![16]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 40:
+                if arrnfcPassportKey![17] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[17],KEY_TITLE:arrnfcPassportKey![17]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 41:
+                if arrnfcPassportKey![18] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[18],KEY_TITLE:arrnfcPassportKey![18]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 42:
+                if arrnfcPassportKey![19] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[19],KEY_TITLE:arrnfcPassportKey![19]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 43:
+                if arrnfcPassportKey![20] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[20],KEY_TITLE:arrnfcPassportKey![20]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 44:
+                if arrnfcPassportKey![21] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[21],KEY_TITLE:arrnfcPassportKey![21]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 45:
+                if arrnfcPassportKey![22] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[22],KEY_TITLE:arrnfcPassportKey![22]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 46:
+                if arrnfcPassportKey![23] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[23],KEY_TITLE:arrnfcPassportKey![23]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 47:
+                if arrnfcPassportKey![24] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[24],KEY_TITLE:arrnfcPassportKey![24]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 48:
+                if arrnfcPassportKey![25] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[25],KEY_TITLE:arrnfcPassportKey?[25]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 49:
+                if arrnfcPassportKey![26] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[26],KEY_TITLE:arrnfcPassportKey![26]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 50:
+                if arrnfcPassportKey![27] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[27],KEY_TITLE:arrnfcPassportKey![27]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 51:
+                if arrnfcPassportKey![28] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[28],KEY_TITLE:arrnfcPassportKey![28]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            case 52:
+                if arrnfcPassportKey![29] as! String != ""{
+                    dict = [KEY_VALUE: arrnfcPassportData?[29],KEY_TITLE:arrnfcPassportKey![29]] as [String : AnyObject]
+                    arrDocumentData.append(dict)
+                }
+                break
+            default:
+                break
+            }
+        }
+    }
+    
+    
     func setData(){
         //Set tableView Data
         for index in 0..<26 + appDocumentImage.count{
@@ -759,6 +935,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     
                     dict = [KEY_VALUE: stringWithoutSpaces,KEY_TITLE:"Document No."] as [String : AnyObject]
                     arrDocumentData.append(dict)
+                    textField.text = stringWithoutSpaces
+                    nfcPassportNumber = stringWithoutSpaces
                 }
                 
             case 7:
@@ -792,7 +970,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     stSex = "FEMALE";
                 }else if sex == "M" {
                     stSex = "MALE";
-                } else {
+                }else if sex == "X" {
+                    stSex = "OTHER";
+                }  else {
                     stSex = sex
                 }
                 if(sex != "") {
@@ -807,6 +987,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                         
                         dict = [KEY_VALUE: birthDate,KEY_TITLE:"Date of Birth"] as [String : AnyObject]
                         arrDocumentData.append(dict)
+                        nfcDob = birth
                     }
                 }
                 break
@@ -830,6 +1011,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                         
                         dict = [KEY_VALUE: expiryDate,KEY_TITLE:"Date of Expiry"] as [String : AnyObject]
                         arrDocumentData.append(dict)
+                        nfcDoe = expirationDate
                     }
                 }
                 break
@@ -956,17 +1138,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     
     
-    //MARK:- Image Rotation
-    @objc func loadPhotoCaptured() {
-        let img = allImageViewsSubViews(picker.viewControllers.first?.view)?.last
-        if img != nil {
-            if let imgView: UIImageView = img as? UIImageView{
-                imagePickerController(picker, didFinishPickingMediaWithInfo: convertToUIImagePickerControllerInfoKeyDictionary([convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage) : imgView.image!]))
-            }
-        } else {
-            picker.dismiss(animated: true)
-        }
-    }
     
     /**
      * This method is used to get captured view
@@ -1008,7 +1179,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if pageType == .ScanOCR{
             removeAllData()
         }
-        EngineWrapper.faceEngineClose()
+//        EngineWrapper.faceEngineClose()
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -1038,10 +1209,10 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         if pageType == .ScanOCR{
             return 7
-        }else if pageType == .DLPlate {
-            return 2
-        }else if pageType == .BankCard {
-            return 2
+//        }else if pageType == .DLPlate {
+//            return 2
+//        }else if pageType == .BankCard {
+//            return 2
         } else{
             return 1
         }
@@ -1087,222 +1258,25 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             default:
                 return 0
             }
-        }else if(pageType == .DLPlate){
-            return 1
-        } else if pageType == .BankCard {
-            if section == 0 {
-                return arrDocumentData.count
-            } else {
-                return 1
-            }
-        } else{
+        }
+//        else if(pageType == .DLPlate){
+//            return 1
+//        } else if pageType == .BankCard {
+//            if section == 0 {
+//                return arrDocumentData.count
+//            } else {
+//                return 1
+//            }
+//        }
+        else{
             return  self.arrDocumentData.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if pageType == .ScanOCR{
-            if indexPath.section == 0{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "UserImgTableCell") as! UserImgTableCell
-                cell.selectionStyle = .none
-                cell.view2.isHidden = true
-                cell.User_img2.isHidden = true
-                cell.user_img.image = faceImage
-                
-                if imgCamaraFace != nil{
-                    cell.view2.isHidden = false
-                    cell.User_img2.isHidden = false
-                    cell.User_img2.image = imgCamaraFace
-                }
-                
-                return cell
-            }else if indexPath.section == 1{
-                
-                let cell: FaceMatchResultTableViewCell = tableView.dequeueReusableCell(withIdentifier: "FaceMatchResultTableViewCell") as! FaceMatchResultTableViewCell
-                if(!isFLpershow)
-                {
-                    cell.constraintHeight.constant = 0
-                }
-                else{
-                    cell.constraintHeight.constant = 40
-                }
-                cell.btnFaceMatch.addTarget(self, action: #selector(buttonClickedFaceMatch(sender:)), for: .touchUpInside)
-                cell.btnLiveness.addTarget(self, action: #selector(buttonClickedLiveness(sender:)), for: .touchUpInside)
-                
-                
-                if !arrFaceLivenessScor.isEmpty{
-                    let  dictResultData = arrFaceLivenessScor[indexPath.row]
-                    
-                    if isCheckLiveNess!{
-
-                        cell.lblValueLiveness.text = "\(livenessValue)"
-                        cell.lblValueFaceMatch.text = "\(String(describing: faceScoreData!)) %"
-                    }else{
-                        
-                        if dictResultData.name == "FACEMATCH SCORE : "{
-                            cell.lblValueLiveness.text = "0 %"
-                            cell.lblValueFaceMatch.text = "\(dictResultData.objects!) %"
-                        }
-                    }
-                }else{
-                    cell.lblValueFaceMatch.text = "0 %"
-                    cell.lblValueLiveness.text = "0 %"
-                }
-                return cell
-            }else if indexPath.section == 2{
-                let cell: DocumantVarifyCell = tableView.dequeueReusableCell(withIdentifier: "DocumantVarifyCell") as! DocumantVarifyCell
-                if !arrSecurity.isEmpty{
-                    let data = arrSecurity[indexPath.row]
-                    if data == "true"{
-                        cell.labelYES.text = "YES"
-                        cell.labelYES.isHidden = false
-                        cell.labelYES.textColor = UIColor(red: 137.0 / 255.0, green: 212.0 / 255.0, blue: 47.0 / 255.0, alpha: 1)
-                    }else{
-                        cell.labelYES.text = "NO"
-                        cell.labelYES.isHidden = true
-                        cell.labelYES.textColor = UIColor(red: 219.0 / 255.0, green: 68.0 / 255.0, blue: 55.0 / 255.0, alpha: 1)
-                    }
-                    
-                }
-                return cell
-            }else if indexPath.section == 3{
-                
-                let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
-                
-                cell.selectionStyle = .none
-                
-                if !arrDataForntKey.isEmpty{
-                    let objDataKey = arrDataForntKey[indexPath.row]
-                    let objDataValue = arrDataForntValue[indexPath.row]
-                    cell.lblName.text = objDataKey
-                    cell.lblValue.text = objDataValue
-                    cell.imageViewSignHeight.constant = 0
-                    if !arrOCRTypeData.isEmpty {
-                        if (arrOCRTypeData[indexPath.row] == "2") {
-                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters)
-                        {
-                            let image = UIImage(data: decodedData)
-                            cell.imageViewSignHeight.constant = 51
-                            cell.imageViewSign.image = image
-                            cell.lblValue.text = ""
-
-                        }
-                        
-                    }
-                }
-                }
-                return cell
-            }
-            else if indexPath.section == 4{
-                let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
-                cell.selectionStyle = .none
-                cell.imageViewSignHeight.constant = 0
-                if !arrDataBackKey.isEmpty{
-                    let objDatakey = arrDataBackKey[indexPath.row]
-                    let objDataValue = arrDataBackValue[indexPath.row]
-                    cell.lblName.text = objDatakey
-                    cell.lblValue.text = objDataValue
-                    
-                    
-                    if objDatakey.contains("Sign") || objDatakey.contains("SIGN"){
-                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters) {
-                            let image = UIImage(data: decodedData)
-                            cell.imageViewSignHeight.constant = 51
-                            cell.imageViewSign.image = image
-                            cell.lblValue.text = ""
-                        }
-                    }
-                    
-                }
-
-                return cell
-            }else if indexPath.section == 5{
-                let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
-                if !arrDocumentData.isEmpty{
-                    
-                    let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
-                    cell.imageViewSignHeight.constant = 0
-                    if indexPath.row == 0{
-                        cell.lblName.text = "MRZ"
-                        cell.lblValue.text = dictResultData[KEY_VALUE] as? String ?? ""
-                    }else{
-                        cell.lblName.text = dictResultData[KEY_TITLE] as? String ?? ""
-                        cell.lblValue.text = dictResultData[KEY_VALUE] as? String ?? ""
-                    }
-                    
-                }
-                return cell
-            }
-                
-            else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
-                
-                cell.selectionStyle = .none
-                cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
-                if indexPath.row == 0{
-                    cell.lblDocName.text = "FRONT SIDE"
-                    if imgViewFront != nil{
-                        cell.imgDocument.image = imgViewFront!
-                    }
-                }else{
-                    cell.lblDocName.text = "BACK SIDE"
-                    if imgViewBack != nil{
-                        cell.imgDocument.image = imgViewBack!
-                    }
-                }
-                
-                return cell
-            }
-        }else if pageType == .DLPlate {
-
-            if indexPath.section == 0{
-                let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
-                cell.SignImageBG.tag = indexPath.section
-                if(cell.SignImageBG.tag == indexPath.section) {
-                    cell.imageViewSign.isHidden = true
-                }
-                cell.lblName.text = "Number Plate :"
-                cell.lblValue.text = plateNumber
-                return cell
-            }else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
-                
-                cell.selectionStyle = .none
-                cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
-                cell.lblDocName.text = "FRONT SIDE"
-                if DLPlateImage != nil{
-                    cell.imgDocument.image = DLPlateImage!
-                }
-                return cell
-            }
-            
-            
-        }  else if pageType == .BankCard {
-            if indexPath.section == 0{
-                let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
-                let cell: ResultTableCell = tableView.dequeueReusableCell(withIdentifier: "ResultTableCell") as! ResultTableCell
-                cell.SignImageBG.tag = indexPath.section
-                if(cell.SignImageBG.tag == indexPath.section) {
-                    cell.imageViewSign.isHidden = true
-                }
-                cell.lblName.text = dictResultData[KEY_TITLE] as! String
-                cell.lblValue.text = dictResultData[KEY_VALUE] as! String
-                return cell
-            }else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableCell") as! DocumentTableCell
-                
-                cell.selectionStyle = .none
-                cell.lblDocName.font = UIFont.init(name: "Aller-Bold", size: 16)
-                cell.lblDocName.text = "FRONT SIDE"
-                if bankCardImage != nil{
-                    cell.imgDocument.image = bankCardImage!
-                }
-                return cell
-            }
-            
-        } else{
+        
             let  dictResultData: [String:AnyObject] = arrDocumentData[indexPath.row]
-            let index = indexPath.row
+            let index = indexPath.row + 30
             // print(dictResultData)
             if dictResultData[KEY_FACE_IMAGE] != nil{
                 //Set User Image
@@ -1331,8 +1305,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 else{
                     cell.constraintHeight.constant = 40
                 }
-                cell.btnFaceMatch.addTarget(self, action: #selector(buttonClickedFaceMatch(sender:)), for: .touchUpInside)
-                cell.btnLiveness.addTarget(self, action: #selector(buttonClickedLiveness(sender:)), for: .touchUpInside)
+//                cell.btnFaceMatch.addTarget(self, action: #selector(buttonClickedFaceMatch(sender:)), for: .touchUpInside)
+//                cell.btnLiveness.addTarget(self, action: #selector(buttonClickedLiveness(sender:)), for: .touchUpInside)
                 if(dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("FACEMATCH SCORE : ") ?? false || dictResultData[KEY_TITLE_FACE_MATCH]?.isEqual("LIVENESS SCORE : ") ?? false){
                     if isCheckLiveNess!{
 
@@ -1416,8 +1390,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 }
                 return cell
             }
-        }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -1474,9 +1446,9 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             }else if dictResultData[KEY_VALUE_FACE_MATCH] != nil && dictResultData[KEY_TITLE_FACE_MATCH] != nil{
                 if(isFLpershow)
                 {
-                    return 116
+                    return 0
                 }
-                return 76
+                return 0
             } else if dictResultData[KEY_TITLE] != nil && dictResultData[KEY_VALUE] != nil{
                 return UITableView.automaticDimension
             }
@@ -1663,103 +1635,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
 
     
-    //MARK:- UIImagePickerController Delegate
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        // Local variable inserted by Swift 4.2 migrator.
-        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-        
-        picker.dismiss(animated: true, completion: nil)
-        isFLpershow = true
-        SVProgressHUD.show(withStatus: "Loading...")
-        DispatchQueue.global(qos: .background).async {
-            guard var chosenImage:UIImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else{return}
-            
-            //Capture Image Left flipped
-            DispatchQueue.main.async {
-                if picker.sourceType == UIImagePickerController.SourceType.camera && picker.cameraDevice == .front {
-                    var flippedImage: UIImage? = nil
-                    if let CGImage = chosenImage.cgImage {
-                        flippedImage = UIImage(cgImage: CGImage, scale: chosenImage.scale, orientation: .leftMirrored)
-                    }
-                    chosenImage = flippedImage!
-                }
-            }
-
-            
-            //Image Resize
-            
-            let ratio = CGFloat(chosenImage.size.width) / chosenImage.size.height
-            chosenImage = self.compressimage(with: chosenImage, convertTo: CGSize(width: 600 * ratio, height: 600))!
-            
-            
-            self.faceRegion = nil;
-            if (self.photoImage != nil || self.faceImage != nil){
-                /*
-                 Accura Face SDK method to detect user face from document image
-                 Param: Document image
-                 Return: User Face
-                 */
-                if self.photoImage != nil{
-                    self.faceRegion = EngineWrapper.detectSourceFaces(self.photoImage)
-                }else{
-                    self.faceRegion = EngineWrapper.detectSourceFaces(self.faceImage)
-                }
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-                if (self.faceRegion != nil){
-                    /*
-                     Accura Face SDK method to detect user face from selfie or camera stream
-                     Params: User photo, user face found in document scanning
-                     Return: User face from user photo
-                     */
-                    let face2 : NSFaceRegion? = EngineWrapper.detectTargetFaces(chosenImage, feature1: self.faceRegion?.feature as Data?)   //identify face in back image which found in front image
-                    /*
-                     Accura Face SDK method to get face match score
-                     Params: face image from document with user image from selfie or camera stream
-                     Returns: face match score
-                     */
-                    let fm_Score = EngineWrapper.identify(self.faceRegion?.feature, featurebuff2: face2?.feature)
-                    if(fm_Score != 0.0){
-                        let data = face2?.bound
-                        self.isCheckLiveNess = false
-                        let image = self.resizeImage(image: chosenImage, targetSize: data!)
-                        if self.pageType != .ScanOCR{
-                            self.removeOldValue1("0 %")
-                            var isFindImg: Bool = false
-                            for (index,var dict) in self.arrDocumentData.enumerated(){
-                                for st in dict.keys{
-                                    if st == KEY_FACE_IMAGE{
-                                        self.imgCamaraFace = image
-                                        dict[KEY_FACE_IMAGE2] = image
-                                        self.arrDocumentData[index] = dict
-                                        isFindImg = true
-                                        break
-                                    }
-                                    if isFindImg{ break }
-                                }
-                            }
-                        }else{
-                            self.imgCamaraFace = image
-                        }
-                        self.removeOldValue("LIVENESS SCORE : ")
-                        self.removeOldValue("FACEMATCH SCORE : ")
-                        let twoDecimalPlaces = String(format: "%.2f", fm_Score * 100) //Match score Convert Float Value
-                        if self.pageType != .ScanOCR{
-                            let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
-                            self.arrDocumentData.insert(dict, at: 1)
-                        }else{
-                            let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
-                            self.arrFaceLivenessScor.insert(ansData, at: 0)
-                        }
-                    }else {
-                    }
-                }
-                self.tblResult.reloadData()
-                SVProgressHUD.dismiss()
-            })
-        }
-    }
-    
      func resizeImage(image: UIImage, targetSize: CGRect) -> UIImage {
         let contextImage: UIImage = UIImage(cgImage: image.cgImage!)
         var newX = targetSize.origin.x - (targetSize.size.width * 0.4)
@@ -1786,63 +1661,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     //MARK:-  customURLConnection Delegate
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, withResponse response: Any!) {
-        SVProgressHUD.dismiss()
-        if tagCon == LivenessTag{
-            let dictResponse: NSDictionary = response as? NSDictionary ?? NSDictionary()
-            // print(response as Any)
-            let dictFinalResponse: NSDictionary = dictResponse["data"] as! NSDictionary
-            if let livenseeScore: String = dictFinalResponse["livenessResult"] as? String{
-                stLivenessResult = livenseeScore
-            }
-            if let livenessScore: Double = dictFinalResponse["livenessScore"] as? Double{
-                // print(livenessScore)
-                isFLpershow = true
-                self.removeOldValue("LIVENESS SCORE : ")
-                self.removeOldValue1("0 %")
-                isCheckLiveNess = true
-                let twoDecimalPlaces = String(format: "%.2f", livenessScore)
-                // print(twoDecimalPlaces)
-                if pageType != .ScanOCR{
-                    let dict = [KEY_VALUE_FACE_MATCH: "\((twoDecimalPlaces))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
-                    arrDocumentData.insert(dict, at: 1)
-                }else{
-                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
-                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-                }
-                
-                self.tblResult.reloadData()
-            }
-        }
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive response: URLResponse!) {
-        
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didFailWithError error: Error!) {
-        SVProgressHUD.dismiss()
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, with exception: NSException!, withTag tagCon: Int32) {
-        
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive data: Data!) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!, from url: URL!) {
-        
-    }
     
     //MARK:- Custom
     func date(toFormatedDate dateStr: String?) -> String? {
@@ -1868,200 +1686,105 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         return nil
     }
     
-    func setFaceImage(){
-        if(imagePhoto != nil)
-        {
-            faceImage = imagePhoto
-        }
-        else{
-            faceImage = UIImage(named: "default_user")
+    @IBAction func closeAddDateView(_ sender: UIButton) {
+           heightOfNFC.constant = 0
+//           scanPassport()
+           dobLab.isHidden = true
+           passNo.isHidden = true
+           doeLabel.isHidden = true
+           textField.isHidden = true
+           doePicker.isHidden = true
+           dobPicker.isHidden = true
+           addDateView.isHidden = true
+       }
+    
+    //Find Value for array
+    func getValue(stKey: String) -> String {
+        let arrResult = arrDocumentData.filter( { (details: [String:AnyObject]) -> Bool in
+            return ("\(details[KEY_TITLE] ?? "" as AnyObject)" == stKey )
+        })
+//        print(arrResult)
+        let dictResult = arrResult.isEmpty ? [String:AnyObject]() : arrResult[0]
+        var stResult: String = ""
+        if dictResult[KEY_VALUE] != nil { stResult = "\(dictResult[KEY_VALUE] ?? "" as AnyObject)"  }
+        else{ stResult = "" }
+        return stResult
+    }
+    
+    
+    func nfcData(_ NFCKey: [Any]!, nfcValue NFCValue: [Any]!, face: UIImage!) {
+
+        arrnfcPassportKey = NFCKey
+        arrnfcPassportData = NFCValue
+        
+        // Dictionary to store key-value pairs
+        var dictData: [String: Any] = [:]
+
+        // Iterate over the arrays and populate the dictionary
+        for (index, key) in NFCKey.enumerated() {
+            // Check if index is within bounds of NFCValue array
+            if index < NFCValue.count {
+                let value = NFCValue[index]
+                dictData[key as? String ?? "" ] = value
+            } else {
+                // Handle case where NFCValue array might be shorter than NFCKey array
+                // Optionally, you can decide what to do if lengths don't match
+                print("Warning: Value not found for key \(key)")
+            }
         }
         
         DispatchQueue.main.async {
-            self.faceRegion = nil;
-            if (self.faceImage != nil){
-                self.faceRegion = EngineWrapper.detectSourceFaces(self.faceImage) //Identify face in Document scanning image
+            
+            if face != nil {
+                self.nfcpassportImage = face
+
             }
+            self.setNFCData()
+            self.tblResult.reloadData()
+//            self.showDetails = true
+
         }
-    }
 
-   @objc func buttonClickedFaceMatch(sender:UIButton)
-    {
-    let orientastion = UIApplication.shared.statusBarOrientation
-    if orientastion ==  UIInterfaceOrientation.landscapeLeft {
-        orientation = .landscapeLeft
-    } else if orientastion == UIInterfaceOrientation.landscapeRight {
-        orientation = .landscapeRight
-    } else {
-        orientation = .portrait
-    }
-        AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-    facematch.setFacematch(self)
 
     }
     
-   @objc func buttonClickedLiveness(sender:UIButton)
-    {
-    let orientastion = UIApplication.shared.statusBarOrientation
-    if orientastion ==  UIInterfaceOrientation.landscapeLeft {
-        orientation = .landscapeLeft
-    } else if orientastion == UIInterfaceOrientation.landscapeRight {
-        orientation = .landscapeRight
-    } else {
-        orientation = .portrait
-    }
-        AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-    liveness.setLiveness(self)
-    
+    func clearLogFile() {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        let path = (documentsDirectory as NSString).appendingPathComponent("AccuraNFCLog.txt")
         
-    }
-    
-    func livenessData(_ stLivenessValue: String, livenessImage: UIImage, status: Bool) {
-//        if(orientation == .landscapeLeft) {
-//            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-//        } else if orientation == .landscapeRight {
-//            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
-//        }
-        
-        isFLpershow = true
-        self.livenessValue = stLivenessValue
-        self.imgCamaraFace = livenessImage
-        if status == false{
-            GlobalMethods.showAlertView("Please try again", with: self)
-        }
-        
-        if (faceRegion != nil)
-        {
-            /*
-             FaceMatch SDK method call to detect Face in back image
-             @Params: BackImage, Front Face Image faceRegion
-             @Return: Face Image Frame
-             */
-            
-            let face2 = EngineWrapper.detectTargetFaces(livenessImage, feature1: faceRegion?.feature)
-            let face11 = faceRegion?.image
-            /*
-             FaceMatch SDK method call to get FaceMatch Score
-             @Params: FrontImage Face, BackImage Face
-             @Return: Match Score
-             
-             */
-            
-            let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
-            if(fm_Score != 0.0){
-            let data = face2?.bound
-            let image = self.resizeImage(image: livenessImage, targetSize: data!)
-            imgCamaraFace = image
-            let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
-                faceScoreData = twoDecimalPlaces
-            self.removeOldValue("FACEMATCH SCORE : ")
-            self.removeOldValue1("0 %")
-            isCheckLiveNess = true
-                if self.pageType != .ScanOCR{
-                    let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
-                    self.arrDocumentData.insert(dict, at: 1)
-                }else{
-                    let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
-                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-                }
-                
-                let stFaceImage = convertImageToBase64(image: image)
-                let stLivenessInage = convertImageToBase64(image: livenessImage)
-//                print(intID as Any)
-                var dictParam: [String: String] = [String: String]()
-                dictParam["kyc_id"] = "\(intID ?? 0)"
-                dictParam["face_match"] = "True"
-                dictParam["liveness"] = "True"
-                dictParam["face_match_score"] = "\(faceScoreData)"
-
-                dictParam["liveness_score"] = stLivenessValue
-                dictParam["facematch_image"] = stFaceImage
-                dictParam["liveness_image"] = stLivenessInage
-                
-                // print(twoDecimalPlaces)
-//                if pageType != .ScanOCR{
-//                    let dict = [KEY_VALUE_FACE_MATCH: "\((stLivenessValue))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
-//                    arrDocumentData.insert(dict, at: 1)
-//                }else{
-//                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
-//                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-//                }
-        }
-            tblResult.reloadData()
+        // Overwrite the file with an empty string
+        let emptyString = ""
+        do {
+            try emptyString.write(toFile: path, atomically: true, encoding: .utf8)
+            print("Log file cleared successfully")
+        } catch {
+            print("Error clearing log file: \(error.localizedDescription)")
         }
     }
     
-    func livenessViewDisappear() {
-        if(orientation == .landscapeLeft) {
-            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-        } else if orientation == .landscapeRight {
-            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
-        }
+    func randomString(length: Int) -> String {
+            let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            return String((0..<length).map{ _ in letters.randomElement()! })
     }
     
-    func facematchViewDisappear() {
-        if(orientation == .landscapeLeft) {
-            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
-        } else if orientation == .landscapeRight {
-            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
-        }
-    }
-    func facematchData(_ FaceImage: UIImage!) {
-        isFLpershow = true
-        self.imgCamaraFace = FaceImage
-        self.livenessValue = "0.00 %"
+    func nfcError(_ error: String!) {
+        // Create the alert controller
+
+        let alertController = UIAlertController(title: "Alert!", message: error, preferredStyle: .alert)
         
-        if (faceRegion != nil)
-        {
-            /*
-             FaceMatch SDK method call to detect Face in back image
-             @Params: BackImage, Front Face Image faceRegion
-             @Return: Face Image Frame
-             */
-            
-            let face2 = EngineWrapper.detectTargetFaces(FaceImage, feature1: faceRegion?.feature)
-            let face11 = faceRegion?.image
-            /*
-             FaceMatch SDK method call to get FaceMatch Score
-             @Params: FrontImage Face, BackImage Face
-             @Return: Match Score
-             
-             */
-            
-            let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
-            if(fm_Score != 0.0){
-            let data = face2?.bound
-            let image = self.resizeImage(image: FaceImage, targetSize: data!)
-            imgCamaraFace = image
-            let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
-                faceScoreData = twoDecimalPlaces
-            self.removeOldValue("FACEMATCH SCORE : ")
-            self.removeOldValue1("0 %")
-            isCheckLiveNess = true
-                if self.pageType != .ScanOCR{
-                    let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
-                    self.arrDocumentData.insert(dict, at: 1)
-                }else{
-                    let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
-                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-                }
+//        datePicker.datePickerMode = .date
+//        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+        // Create the actions
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+//            self.scanPassport()
         }
-            tblResult.reloadData()
+
+        // Add the actions
+        alertController.addAction(okAction)
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
         }
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
-    return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIImagePickerControllerInfoKeyDictionary(_ input: [String: Any]) -> [UIImagePickerController.InfoKey: Any] {
-    return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIImagePickerController.InfoKey(rawValue: key), value)})
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
-    return input.rawValue
 }
