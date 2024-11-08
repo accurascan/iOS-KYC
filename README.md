@@ -13,7 +13,7 @@ Below steps to setup Accura SDK's in your project.
 2. Add below pod in podfile
 ```
     # install the AccuraKYC pod for  AccuraOCR, AccuraFacematch And AccuraLiveness </br>
-    pod 'AccuraKYC', '4.1.0-KYC'
+    pod 'AccuraKYC', '4.1.2'
 
 ```
   
