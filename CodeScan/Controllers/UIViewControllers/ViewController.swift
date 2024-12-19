@@ -393,9 +393,13 @@ extension ViewController: VideoCameraWrapperDelegate {
         self.imgViewCardFront =  resultmodel.frontSideImage
         if isbothSideAvailable {
             accuraCameraWrapper?.cardSide(.BACK_CARD_SCAN)
-            if(resultmodel.arrayocrBackSideDataKey.count > 0) {
+            if(resultmodel.arrayocrBackSideDataKey.count > 0 || resultmodel.shareScanningMRZListing.allKeys.count > 0) {
               
                 passDataOtherViewController()
+            }else{
+                DispatchQueue.main.async(){
+                    self.flipAnimation()
+                }
             }
         } else {
             passDataOtherViewController()
