@@ -165,6 +165,12 @@ accuraCameraWrapper?.setHologramDetection(true/*isDetectHologram*/)
 accuraCameraWrapper?.setLowLightTolerance(10/*lowlighttolerance*/)
 ```
 
+* Set API data
+    Make sure to call this function after loadEngine(..).
+```
+self.accuraCameraWrapper?.setAPIData("your server url", apiKey: "your server api key")
+```
+
 * Set motion threshold to detect motion on camera document
 ```
 // 1 - allows 1% motion on document and
