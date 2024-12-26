@@ -166,7 +166,8 @@ accuraCameraWrapper?.setLowLightTolerance(10/*lowlighttolerance*/)
 ```
 
 * Set API data
-    Make sure to call this function after loadEngine(..).
+  
+	Make sure to call this function after loadEngine(..) to store data on portal.
 ```
 self.accuraCameraWrapper?.setAPIData("your server url", apiKey: "your server api key")
 ```
