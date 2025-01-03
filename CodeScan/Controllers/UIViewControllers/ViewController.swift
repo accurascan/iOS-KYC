@@ -367,6 +367,12 @@ extension ViewController: VideoCameraWrapperDelegate {
        
         
     }
+
+    func onAPIError(_ error: String!) {
+        DispatchQueue.main.async {
+            GlobalMethods.showAlertView(error, with: self)
+        }
+    }
     
     func dlPlateNumber(_ plateNumber: String!, andImageNumberPlate imageNumberPlate: UIImage!) {
         shareScanningListing["plate_number"] = plateNumber
