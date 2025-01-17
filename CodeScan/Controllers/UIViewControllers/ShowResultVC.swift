@@ -26,7 +26,8 @@ struct Objects {
     
 }
 
-class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, FacematchData {
+class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, FacematchData, LivenessData {
+    
     //MARK:- Outlet
     @IBOutlet weak var img_height: NSLayoutConstraint!
     @IBOutlet weak var lblLinestitle: UILabel!
@@ -47,7 +48,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     var uniqStr = ""
     var mrz_val = ""
-    var isLiveness = false
     var imgDoc: UIImage?
     var retval: Int = 0
     var lines = ""
@@ -143,6 +143,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var intID: Int?
     var orientation: UIInterfaceOrientationMask?
     var facematch = Facematch()
+    var liveness = Liveness()
     
     //MARK:- UIViewContoller Methods
     override func viewDidLoad() {
@@ -311,6 +312,25 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        liveness.setLivenessURL("YOURURL")
+        liveness.setBackGroundColor("#C4C4C5")
+        liveness.setCloseIconColor("#000000")
+        liveness.setFeedbackBackGroundColor("#C4C4C5")
+        liveness.setFeedbackTextColor("#000000")
+        liveness.setFeedbackTextSize(Float(18.0))
+        liveness.setFeedBackframeMessage("Frame Your Face")
+        liveness.setFeedBackAwayMessage("Move Phone Away")
+        liveness.setFeedBackOpenEyesMessage("Keep Open Your Eyes")
+        liveness.setFeedBackCloserMessage("Move Phone Closer")
+        liveness.setFeedBackCenterMessage("Center Your Face")
+        liveness.setFeedbackMultipleFaceMessage("Multiple face detected")
+        liveness.setFeedBackFaceSteadymessage("Keep Your Head Straight")
+        liveness.setFeedBackLowLightMessage("Low light detected")
+        liveness.setFeedBackBlurFaceMessage("Blur detected over face")
+        liveness.setFeedBackGlareFaceMessage("Glare detected")
+        liveness.setBlurPercentage(80)
+        liveness.setGlarePercentage(-1, -1)
         
         facematch.setBackGroundColor("#C4C4C5")
         facematch.setCloseIconColor("#000000")
@@ -1954,7 +1974,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     } else {
         orientation = .portrait
     }
-        isLiveness = false
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
     facematch.setFacematch(self)
 
@@ -1971,11 +1990,82 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         orientation = .portrait
     }
         AppDelegate.AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-//    liveness.setLiveness(self)
-        isLiveness = true
-        facematch.setFacematch(self)
+    liveness.setLiveness(self)
+
     
         
+    }
+    
+    func livenessData(_ stLivenessValue: String!, livenessImage: UIImage!, status: Bool) {
+        
+   
+        isFLpershow = true
+        self.livenessValue = stLivenessValue
+        self.imgCamaraFace = livenessImage
+        if status == false{
+            GlobalMethods.showAlertView("Please try again", with: self)
+        }
+        
+        if (faceRegion != nil)
+        {
+            /*
+             FaceMatch SDK method call to detect Face in back image
+             @Params: BackImage, Front Face Image faceRegion
+             @Return: Face Image Frame
+             */
+            
+            let face2 = EngineWrapper.detectTargetFaces(livenessImage, feature1: faceRegion?.feature)
+            let face11 = faceRegion?.image
+            /*
+             FaceMatch SDK method call to get FaceMatch Score
+             @Params: FrontImage Face, BackImage Face
+             @Return: Match Score
+             
+             */
+            
+            let fm_Score = EngineWrapper.identify(faceRegion?.feature, featurebuff2: face2?.feature)
+            if(fm_Score != 0.0){
+            let data = face2?.bound
+            let image = self.resizeImage(image: livenessImage, targetSize: data!)
+            imgCamaraFace = image
+            let twoDecimalPlaces = String(format: "%.2f", fm_Score*100) //Face Match score convert to float value
+                faceScoreData = twoDecimalPlaces
+            self.removeOldValue("FACEMATCH SCORE : ")
+            self.removeOldValue1("0 %")
+            isCheckLiveNess = true
+                if self.pageType != .ScanOCR{
+                    let dict = [KEY_VALUE_FACE_MATCH: "\(twoDecimalPlaces)",KEY_TITLE_FACE_MATCH:"FACEMATCH SCORE : "] as [String : AnyObject]
+                    self.arrDocumentData.insert(dict, at: 1)
+                }else{
+                    let ansData = Objects.init(sName: "FACEMATCH SCORE : ", sObjects: "\(twoDecimalPlaces)")
+                    self.arrFaceLivenessScor.insert(ansData, at: 0)
+                }
+                
+                let stFaceImage = convertImageToBase64(image: image)
+                let stLivenessInage = convertImageToBase64(image: livenessImage)
+//                print(intID as Any)
+                var dictParam: [String: String] = [String: String]()
+                dictParam["kyc_id"] = "\(intID ?? 0)"
+                dictParam["face_match"] = "True"
+                dictParam["liveness"] = "True"
+                dictParam["face_match_score"] = "\(faceScoreData)"
+
+                dictParam["liveness_score"] = stLivenessValue
+                dictParam["facematch_image"] = stFaceImage
+                dictParam["liveness_image"] = stLivenessInage
+                
+        }
+            tblResult.reloadData()
+        }
+    }
+    
+    
+    func livenessViewDisappear() {
+        if(orientation == .landscapeLeft) {
+            AppDelegate.AppUtility.lockOrientation(.landscapeLeft, andRotateTo: .landscapeLeft)
+        } else if orientation == .landscapeRight {
+            AppDelegate.AppUtility.lockOrientation(.landscapeRight, andRotateTo: .landscapeRight)
+        }
     }
     
     func facematchViewDisappear() {
@@ -1989,24 +2079,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         isFLpershow = true
         self.imgCamaraFace = FaceImage
         self.livenessValue = "0.00 %"
-        if isLiveness {
-            postMethodWithParamsAndImage(parameters: [:], forMethod: "Your API", images: FaceImage, faceImg: nil, success: { (response) in
-                
-                let responses = response as? [String:Any]
-                
-                if let score = responses?["score"] {
-                    self.livenessValue = "\(score) %"
-                    self.imgCamaraFace = FaceImage
-                    
-                    DispatchQueue.main.async {
-                        self.tblResult.reloadData()
-                    }
-                }
-                
-            }) { (error) in
-                print(error)
-            }
-        }
         if (faceRegion != nil)
         {
             /*
