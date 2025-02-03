@@ -1176,17 +1176,6 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     cell.lblValue.text = objDataValue
                     cell.imageViewSignHeight.constant = 0
                     if !arrOCRTypeData.isEmpty {
-                        if (arrOCRTypeData[indexPath.row] == "2") {
-                        if let decodedData = Data(base64Encoded: objDataValue, options: .ignoreUnknownCharacters)
-                        {
-                            let image = UIImage(data: decodedData)
-                            cell.imageViewSignHeight.constant = 51
-                            cell.imageViewSign.image = image
-                            cell.lblValue.text = ""
-
-                        }
-                        
-                    }
                 }
                 }
                 return cell
