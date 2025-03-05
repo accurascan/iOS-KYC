@@ -1,0 +1,11 @@
+framework module AccuraMICR {
+  umbrella header "AccuraMICR.h"
+  export *
+
+  module * { export * }
+}
+
+module AccuraMICR.Swift {
+  header "AccuraMICR-Swift.h"
+  requires objc
+}
