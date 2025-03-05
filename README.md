@@ -6,7 +6,7 @@
 
 2. Clone the demo app and get the AccuraMICR.framework file and add it in your project
 
-3. After adding the framework go to targets->general and there select AccuraMICR.framework and chandge the embed symbol to `Embed & Sign`
+3. After adding the framework go to targets->general and there select AccuraMICR.framework and change the embed symbol to `Embed & Sign`
 
 4. Open `AccuraSDK.xcworkspace` in xcode for a better understanding of the project
 
