@@ -47,13 +47,13 @@ Call this function after initialize sdk if license is valid(sdkModel.i > 0)
 * Set Blur Percentage to allow blur on document
 ```
 // 0 for clean document and 100 for Blurry document
-self.accuraCameraWrapper?.setBlurPercentage(60/*blurPercentage*/)
+self.accuraMICRWrapper?.setBlurPercentage(60/*blurPercentage*/)
 ```
 
 * Set Glare Percentage to detect Glare on document
 ```
 // Set min and max percentage for glare
-accuraCameraWrapper?.setGlarePercentage(6/*minPercentage*/, 98/*maxPercentage*/)
+accuraMICRWrapper?.setGlarePercentage(6/*minPercentage*/, 98/*maxPercentage*/)
 ```
 
 #### Step 3: Set CameraView
@@ -63,21 +63,21 @@ supports Landscape Camera
 ```
 import AccuraOCR
 import AVFoundation
-var accuraCameraWrapper: AccuraCameraWrapper? = nil
+var accuraMICRWrapper: AccuraMICRWrapper? = nil
 override func viewDidLoad() {
 	super.viewDidLoad()
     // initialize Camera for MICR
-    accuraCameraWrapper = AccuraMICRWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, type: bankCode/*MICRTYPE*/)   
+    accuraMICRWrapper = AccuraMICRWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, type: bankCode/*MICRTYPE*/)   
 }
 
 override func viewDidAppear(_ animated: Bool) {
 	super.viewDidAppear(animated)
-	accuraCameraWrapper?.startCamera()
+	accuraMICRWrapper?.startCamera()
 }
 
 override func viewWillDisappear(_ animated: Bool) {
-	accuraCameraWrapper?.stopCamera()
-	accuraCameraWrapper = nil
+	accuraMICRWrapper?.stopCamera()
+	accuraMICRWrapper = nil
 	super.viewWillDisappear(animated)
 }
 
