@@ -430,6 +430,19 @@ liveness.setGlarePercentage(6, 99) //set glaremin -1 and glaremax -1 to remove t
 liveness.setLiveness(self)
 ```
 
+* To Enable Face Movement
+```
+// true to enable false to disable
+liveness.enableFaceMovement(true)
+```
+
+* To Enable Oral Verification
+```
+// true to enable false to disable
+liveness.enableOralVerification(true)
+```
+
+
 Step 2: Handle Accura liveness Result
 ```
 // it calls when get liveness result

@@ -330,6 +330,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         liveness.setFeedBackBlurFaceMessage("Blur detected over face")
         liveness.setFeedBackGlareFaceMessage("Glare detected")
         liveness.setBlurPercentage(80)
+        liveness.enableFaceMovement(true)
+        liveness.enableOralVerification(true)
         liveness.setGlarePercentage(-1, -1)
         
         facematch.setBackGroundColor("#C4C4C5")
