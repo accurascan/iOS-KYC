@@ -67,7 +67,7 @@ var accuraMICRWrapper: AccuraMICRWrapper? = nil
 override func viewDidLoad() {
 	super.viewDidLoad()
     // initialize Camera for MICR
-    accuraMICRWrapper = AccuraMICRWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, type: bankCode/*MICRTYPE*/)   
+    accuraMICRWrapper = AccuraMICRWrapper.init(delegate: self, andImageView: /*setImageView*/ _imageView, andLabelMsg: */setLable*/ lblOCRMsg, andurl: */your PathForDirectories*/ NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String, type: .E13B//.CMC7/*MICRTYPE*/)   
 }
 
 override func viewDidAppear(_ animated: Bool) {
