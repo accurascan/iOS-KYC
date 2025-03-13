@@ -331,6 +331,8 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         liveness.setFeedBackGlareFaceMessage("Glare detected")
         liveness.setBlurPercentage(80)
         liveness.setGlarePercentage(-1, -1)
+        liveness.enableFaceMovement(true)
+        liveness.enableOralVerification(true)
         
         facematch.setBackGroundColor("#C4C4C5")
         facematch.setCloseIconColor("#000000")
