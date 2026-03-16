@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0021908E22ACE78400E08B01 /* ListViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0021908D22ACE78400E08B01 /* ListViewVC.swift */; };
 		53B28D712F67CC05002040AF /* accuraface.license in Resources */ = {isa = PBXBuildFile; fileRef = 53B28D702F67CC05002040AF /* accuraface.license */; };
-		53B28D732F67CC0C002040AF /* accuraactiveliveness.license.license in Resources */ = {isa = PBXBuildFile; fileRef = 53B28D722F67CC0C002040AF /* accuraactiveliveness.license.license */; };
+		53B28D732F67CC0C002040AF /* accuraactivelivenes.license in Resources */ = {isa = PBXBuildFile; fileRef = 53B28D722F67CC0C002040AF /* accuraactivelivenes.license */; };
 		53B28D752F67CC10002040AF /* key.license in Resources */ = {isa = PBXBuildFile; fileRef = 53B28D742F67CC10002040AF /* key.license */; };
 		5C67D9812111E40B00154EB7 /* default_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C67D9802111E40A00154EB7 /* default_user.png */; };
 		5C7D02532143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7D02512143CDFE00F05ADE /* DrivingPDFstringTableViewCell.swift */; };
@@ -103,7 +103,7 @@
 		4017C20070C8B50B946F6AF2 /* Pods_AccuraSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AccuraSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EEB8E7E4174954C301AA7A /* Pods-AccuraSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AccuraSDK.release.xcconfig"; path = "Target Support Files/Pods-AccuraSDK/Pods-AccuraSDK.release.xcconfig"; sourceTree = "<group>"; };
 		53B28D702F67CC05002040AF /* accuraface.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = accuraface.license; sourceTree = "<group>"; };
-		53B28D722F67CC0C002040AF /* accuraactiveliveness.license.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = accuraactiveliveness.license.license; sourceTree = "<group>"; };
+		53B28D722F67CC0C002040AF /* accuraactivelivenes.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = accuraactivelivenes.license; sourceTree = "<group>"; };
 		53B28D742F67CC10002040AF /* key.license */ = {isa = PBXFileReference; lastKnownFileType = file; path = key.license; sourceTree = "<group>"; };
 		5C67D96B2111E03500154EB7 /* Accura Scan-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Accura Scan-Bridging-Header.h"; sourceTree = "<group>"; };
 		5C67D9802111E40A00154EB7 /* default_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user.png; sourceTree = "<group>"; };
@@ -389,7 +389,7 @@
 			children = (
 				53B28D742F67CC10002040AF /* key.license */,
 				53B28D702F67CC05002040AF /* accuraface.license */,
-				53B28D722F67CC0C002040AF /* accuraactiveliveness.license.license */,
+				53B28D722F67CC0C002040AF /* accuraactivelivenes.license */,
 			);
 			path = License;
 			sourceTree = "<group>";
@@ -494,7 +494,7 @@
 				6104CC8420BB4E6E00AC428E /* Assets.xcassets in Resources */,
 				5C94E027211ACA8200428686 /* Aller_Std_Lt.ttf in Resources */,
 				A324C4322476ED020002AE35 /* UserImgTableCell.xib in Resources */,
-				53B28D732F67CC0C002040AF /* accuraactiveliveness.license.license in Resources */,
+				53B28D732F67CC0C002040AF /* accuraactivelivenes.license in Resources */,
 				A324C4272476ECD10002AE35 /* FaceMatchResultTableViewCell.xib in Resources */,
 				FAD8829823DDE04E007247EC /* CodeScanVC.storyboard in Resources */,
 				5C7D02542143CDFE00F05ADE /* DrivingPDFstringTableViewCell.xib in Resources */,
