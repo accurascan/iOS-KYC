@@ -313,7 +313,7 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        liveness.setLivenessURL("YOURURL")
+        liveness.setLivenessURL("http://164.52.198.73:8007/upload.php")
         liveness.setBackGroundColor("#C4C4C5")
         liveness.setCloseIconColor("#000000")
         liveness.setFeedbackBackGroundColor("#C4C4C5")

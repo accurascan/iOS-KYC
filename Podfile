@@ -6,7 +6,7 @@ target 'AccuraSDK' do
   use_frameworks!
   
   # Pods for CodeScan
-  pod 'AccuraKYC', '4.2.0'
+  pod 'AccuraKYC', '4.2.5.5'
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
