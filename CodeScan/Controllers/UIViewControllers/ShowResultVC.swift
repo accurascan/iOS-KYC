@@ -26,7 +26,7 @@ struct Objects {
     
 }
 
-class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, CustomAFNetWorkingDelegate, FacematchData, LivenessData {
+class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate, FacematchData, LivenessData {
     
     //MARK:- Outlet
     @IBOutlet weak var img_height: NSLayoutConstraint!
@@ -1854,64 +1854,64 @@ class ShowResultVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     //MARK:-  customURLConnection Delegate
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, withResponse response: Any!) {
-//        ProgressHUD.dismiss()
-        if tagCon == LivenessTag{
-            let dictResponse: NSDictionary = response as? NSDictionary ?? NSDictionary()
-            // print(response as Any)
-            let dictFinalResponse: NSDictionary = dictResponse["data"] as! NSDictionary
-            if let livenseeScore: String = dictFinalResponse["livenessResult"] as? String{
-                stLivenessResult = livenseeScore
-            }
-            if let livenessScore: Double = dictFinalResponse["livenessScore"] as? Double{
-                // print(livenessScore)
-                isFLpershow = true
-                self.removeOldValue("LIVENESS SCORE : ")
-                self.removeOldValue1("0 %")
-                isCheckLiveNess = true
-                let twoDecimalPlaces = String(format: "%.2f", livenessScore)
-                // print(twoDecimalPlaces)
-                if pageType != .ScanOCR{
-                    let dict = [KEY_VALUE_FACE_MATCH: "\((twoDecimalPlaces))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
-                    arrDocumentData.insert(dict, at: 1)
-                }else{
-                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
-                    self.arrFaceLivenessScor.insert(ansData, at: 0)
-                }
-                
-                self.tblResult.reloadData()
-            }
-        }
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive response: URLResponse!) {
-        
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didFailWithError error: Error!) {
-//        ProgressHUD.dismiss()
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, with exception: NSException!, withTag tagCon: Int32) {
-        
-    }
-    
-    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive data: Data!) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!) {
-        
-    }
-    
-    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!, from url: URL!) {
-        
-    }
-    
+//    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, withResponse response: Any!) {
+////        ProgressHUD.dismiss()
+//        if tagCon == LivenessTag{
+//            let dictResponse: NSDictionary = response as? NSDictionary ?? NSDictionary()
+//            // print(response as Any)
+//            let dictFinalResponse: NSDictionary = dictResponse["data"] as! NSDictionary
+//            if let livenseeScore: String = dictFinalResponse["livenessResult"] as? String{
+//                stLivenessResult = livenseeScore
+//            }
+//            if let livenessScore: Double = dictFinalResponse["livenessScore"] as? Double{
+//                // print(livenessScore)
+//                isFLpershow = true
+//                self.removeOldValue("LIVENESS SCORE : ")
+//                self.removeOldValue1("0 %")
+//                isCheckLiveNess = true
+//                let twoDecimalPlaces = String(format: "%.2f", livenessScore)
+//                // print(twoDecimalPlaces)
+//                if pageType != .ScanOCR{
+//                    let dict = [KEY_VALUE_FACE_MATCH: "\((twoDecimalPlaces))",KEY_TITLE_FACE_MATCH:"LIVENESS SCORE : "] as [String : AnyObject]
+//                    arrDocumentData.insert(dict, at: 1)
+//                }else{
+//                    let ansData = Objects.init(sName: "LIVENESS SCORE : ", sObjects: "\(stLivenessResult)")
+//                    self.arrFaceLivenessScor.insert(ansData, at: 0)
+//                }
+//                
+//                self.tblResult.reloadData()
+//            }
+//        }
+//    }
+//    
+//    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive response: URLResponse!) {
+//        
+//    }
+//    
+//    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didFailWithError error: Error!) {
+////        ProgressHUD.dismiss()
+//    }
+//    
+//    func customURLConnection(_ connection: CustomAFNetWorking!, with exception: NSException!, withTag tagCon: Int32) {
+//        
+//    }
+//    
+//    func customURLConnection(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, didReceive data: Data!) {
+//        
+//    }
+//    
+//    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32) {
+//        
+//    }
+//    
+//    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!) {
+//        
+//    }
+//    
+//    func customURLConnectionDidFinishLoading(_ connection: CustomAFNetWorking!, withTag tagCon: Int32, with data: NSMutableData!, from url: URL!) {
+//        
+//    }
+//    
     //MARK:- Custom
     func date(toFormatedDate dateStr: String?) -> String? {
         let dateFormatter = DateFormatter()
